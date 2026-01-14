@@ -171,10 +171,10 @@ python test_setup.py
 - Terminal/command line
 
 ### Additional Resources
-- [Official Claude Docs](https://platform.claude.com/docs)
+- [Official Claude Docs](https://platform.claude.com/docs/en/home)
 - [Anthropic Cookbook](https://github.com/anthropics/anthropic-cookbook)
 - [Python SDK GitHub](https://github.com/anthropics/anthropic-sdk-python)
-- [MCP Documentation](https://modelcontextprotocol.io)
+- [MCP Documentation](https://modelcontextprotocol.io/docs/getting-started/intro)
 
 ## 🎯 Next Steps
 
@@ -209,7 +209,7 @@ python test_setup.py
 - [Twitter](https://twitter.com/AnthropicAI)
 
 ### Troubleshooting
-- Check [API documentation](https://platform.claude.com/docs)
+- Check [API documentation](https://platform.claude.com/docs/en/api/overview)
 - Review error handling guides
 - Test with simple examples
 

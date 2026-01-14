@@ -575,5 +575,5 @@ response = client.messages.create(
 
 ## Additional Resources
 - [Official Messages API Documentation](https://platform.claude.com/docs/en/api/messages)
-- [API Reference](https://platform.claude.com/docs/en/api/reference)
+- [API Reference](https://platform.claude.com/docs/en/api/overview)
 - [Best Practices Guide](https://platform.claude.com/docs/en/build-with-claude/best-practices)

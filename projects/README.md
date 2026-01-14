@@ -328,8 +328,8 @@ Want to contribute a project?
 - [Anthropic Quickstarts](https://github.com/anthropics/anthropic-quickstarts)
 
 ### Documentation
-- [Claude API Docs](https://platform.claude.com/docs)
-- [MCP Documentation](https://modelcontextprotocol.io)
+- [Claude API Docs](https://platform.claude.com/docs/en/home)
+- [MCP Documentation](https://modelcontextprotocol.io/docs/getting-started/intro)
 
 ### Community
 - [Discord Community](https://discord.gg/anthropic)

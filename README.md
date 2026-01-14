@@ -275,15 +275,15 @@ python -c "import anthropic; print('Setup successful!')"
 ## 📚 Additional Resources
 
 ### Official Documentation
-- [Anthropic Documentation](https://platform.claude.com/docs)
-- [API Reference](https://platform.claude.com/docs/en/api/reference)
+- [Anthropic Documentation](https://platform.claude.com/docs/en/home)
+- [API Reference](https://platform.claude.com/docs/en/api/overview)
 - [Python SDK GitHub](https://github.com/anthropics/anthropic-sdk-python)
 - [Anthropic Cookbook](https://github.com/anthropics/anthropic-cookbook)
 
 ### Learning Resources
 - [Build with Claude Academy](https://www.anthropic.com/learn/build-with-claude)
-- [Model Context Protocol](https://modelcontextprotocol.io)
-- [Prompt Engineering Guide](https://platform.claude.com/docs/en/prompt-engineering)
+- [Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro)
+- [Prompt Engineering Guide](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
 
 ### Community
 - [Anthropic Discord](https://discord.gg/anthropic)
