@@ -2,26 +2,6 @@
 
 The following files are referenced in the module READMEs but are missing from the codebase.
 
-## Module 1: Foundation & Setup
-- `modules/module1_foundation/02_model_selection.md` (Will be created)
-- `modules/module1_foundation/03_pricing_limits.md` (Will be created)
-- `modules/module1_foundation/04_python_setup.md` (Will be created)
-- `modules/module1_foundation/08_request_response.md` (Will be created)
-- `modules/module1_foundation/09_error_handling.md` (Will be created)
-
-## Module 2: Core API Features
-- `modules/module2_core_api/02_system_prompts.md`
-- `modules/module2_core_api/03_conversations.md`
-- `modules/module2_core_api/05_streaming_advanced.md`
-- `modules/module2_core_api/06_vision_images.md`
-- `modules/module2_core_api/07_pdf_support.md`
-- `modules/module2_core_api/08_document_analysis.md`
-- `modules/module2_core_api/09_files_api.md`
-- `modules/module2_core_api/10_file_management.md`
-- `modules/module2_core_api/11_error_handling.md`
-- `modules/module2_core_api/12_retry_logic.md`
-- `modules/module2_core_api/13_rate_limiting.md`
-
 ## Module 3: Advanced Features
 - `modules/module3_advanced_features/02_custom_tools.md`
 - `modules/module3_advanced_features/03_multi_tool.md`
