@@ -340,6 +340,10 @@ This training course is provided for educational purposes. Code examples are pro
 
 ## 🙏 Acknowledgments
 
+### Course Creation
+This comprehensive training course was created and developed by **[Future Tales](https://futuretales.ai)** - Empowering developers to build the future with AI.
+
+### Course Foundation
 This course is based on:
 - Official Anthropic documentation
 - Community best practices

@@ -223,4 +223,8 @@ Or dive right into coding with [Exercise 1: Hello Claude](./exercises/beginner/0
 
 **Happy Learning! 🚀**
 
-*This course was created based on official Anthropic documentation and best practices. Last updated: January 2026*
+---
+
+*This course was created and developed by **[Future Tales](https://futuretales.ai)***
+
+*Based on official Anthropic documentation and best practices. Last updated: January 2026*
