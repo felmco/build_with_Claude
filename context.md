@@ -527,3 +527,11 @@ This comprehensive guide covers everything you need to begin developing Claude-p
 - 💻 [Code Examples](./modules/)
 - 🎯 [Hands-On Exercises](./exercises/)
 - 🏗️ [Sample Projects](./projects/)
+
+---
+
+## 🙏 Credits
+
+**Created by [Future Tales](https://futuretales.ai)** - Empowering developers to build the future with AI.
+
+This comprehensive guide was developed based on official Anthropic documentation and industry best practices.
