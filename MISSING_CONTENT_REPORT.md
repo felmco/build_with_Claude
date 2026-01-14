@@ -2,23 +2,6 @@
 
 The following files are referenced in the module READMEs but are missing from the codebase.
 
-## Module 3: Advanced Features
-- `modules/module3_advanced_features/02_custom_tools.md`
-- `modules/module3_advanced_features/03_multi_tool.md`
-- `modules/module3_advanced_features/04_tool_best_practices.md`
-- `modules/module3_advanced_features/06_cache_optimization.md`
-- `modules/module3_advanced_features/07_cost_reduction.md`
-- `modules/module3_advanced_features/08_batch_processing.md`
-- `modules/module3_advanced_features/09_batch_use_cases.md`
-- `modules/module3_advanced_features/10_batch_monitoring.md`
-- `modules/module3_advanced_features/11_vision_basics.md`
-- `modules/module3_advanced_features/12_vision_advanced.md`
-- `modules/module3_advanced_features/13_document_vision.md`
-- `modules/module3_advanced_features/14_extended_thinking.md`
-- `modules/module3_advanced_features/15_thinking_use_cases.md`
-- `modules/module3_advanced_features/16_computer_use.md`
-- `modules/module3_advanced_features/17_computer_automation.md`
-
 ## Module 4: Building Applications
 - `modules/module4_applications/01_chatbot_patterns.md`
 - `modules/module4_applications/02_qa_systems.md`
