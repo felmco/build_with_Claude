@@ -19,7 +19,7 @@ Este programa de formación está diseñado para desarrolladores que desean domi
 
 ## 📚 Estructura del Curso
 
-### [Módulo 1: Fundamentos y Configuración](./modules/module1_foundation/README.md)
+### [Módulo 1: Fundamentos y Configuración](modulos/modulo1_fundamentos/README.md)
 **Duración**: 2-3 horas | **Nivel**: Principiante
 
 Empieza con los fundamentos de la API de Claude:
@@ -30,14 +30,14 @@ Empieza con los fundamentos de la API de Claude:
 - Manejo básico de peticiones/respuestas
 
 **Temas Clave**:
-- [Visión General de Modelos](./modules/module1_foundation/01_models_overview.md)
-- [Instalación del SDK](./modules/module1_foundation/05_sdk_installation.md)
-- [Gestión de Claves API](./modules/module1_foundation/06_api_keys.md)
-- [Primera Llamada a la API](./modules/module1_foundation/07_first_api_call.md)
+- [Visión General de Modelos](modulos/modulo1_fundamentos/01_vision_general_modelos.md)
+- [Instalación del SDK](modulos/modulo1_fundamentos/05_instalacion_sdk.md)
+- [Gestión de Claves API](modulos/modulo1_fundamentos/06_claves_api.md)
+- [Primera Llamada a la API](modulos/modulo1_fundamentos/07_primera_llamada_api.md)
 
 ---
 
-### [Módulo 2: Características Principales de la API](./modules/module2_core_api/README.md)
+### [Módulo 2: Características Principales de la API](modulos/modulo2_api_nucleo/README.md)
 **Duración**: 4-6 horas | **Nivel**: Principiante a Intermedio
 
 Domina las características principales de la API de Claude:
@@ -49,8 +49,8 @@ Domina las características principales de la API de Claude:
 - Manejo de errores y reintentos
 
 **Temas Clave**:
-- [Fundamentos de la API de Mensajes](./modules/module2_core_api/01_messages_api.md)
-- [Fundamentos de Streaming](./modules/module2_core_api/04_streaming_basics.md)
+- [Fundamentos de la API de Mensajes](modulos/modulo2_api_nucleo/01_api_mensajes.md)
+- [Fundamentos de Streaming](modulos/modulo2_api_nucleo/04_conceptos_basicos_streaming.md)
 - Capacidades de visión y multimodales
 - Patrones robustos de manejo de errores
 
@@ -62,7 +62,7 @@ Domina las características principales de la API de Claude:
 
 ---
 
-### [Módulo 3: Características Avanzadas](./modules/module3_advanced_features/README.md)
+### [Módulo 3: Características Avanzadas](modulos/modulo3_caracteristicas_avanzadas/README.md)
 **Duración**: 6-8 horas | **Nivel**: Intermedio a Avanzado
 
 Explora las capacidades avanzadas de la API de Claude:
@@ -73,8 +73,8 @@ Explora las capacidades avanzadas de la API de Claude:
 - Uso de computadora (beta)
 
 **Temas Clave**:
-- [Fundamentos de Uso de Herramientas](./modules/module3_advanced_features/01_tool_use_basics.md)
-- [Almacenamiento en Caché de Prompts](./modules/module3_advanced_features/05_prompt_caching.md)
+- [Fundamentos de Uso de Herramientas](modulos/modulo3_caracteristicas_avanzadas/01_conceptos_basicos_uso_herramientas.md)
+- [Almacenamiento en Caché de Prompts](modulos/modulo3_caracteristicas_avanzadas/05_cache_prompt.md)
 - API de lotes de mensajes
 - Capacidades de visión
 - Pensamiento extendido
@@ -88,7 +88,7 @@ Explora las capacidades avanzadas de la API de Claude:
 
 ---
 
-### [Módulo 4: Construcción de Aplicaciones](./modules/module4_applications/README.md)
+### [Módulo 4: Construcción de Aplicaciones](modulos/modulo4_aplicaciones/README.md)
 **Duración**: 8-10 horas | **Nivel**: Intermedio a Avanzado
 
 Construye aplicaciones del mundo real con patrones probados:
@@ -114,7 +114,7 @@ Construye aplicaciones del mundo real con patrones probados:
 
 ---
 
-### [Módulo 5: Optimización y Mejores Prácticas](./modules/module5_optimization/README.md)
+### [Módulo 5: Optimización y Mejores Prácticas](modulos/modulo5_optimizacion/README.md)
 **Duración**: 6-8 horas | **Nivel**: Avanzado
 
 Optimiza y despliega aplicaciones listas para producción:
@@ -227,21 +227,21 @@ python -c "import anthropic; print('¡Configuración exitosa!')"
 
 ## 🎯 Ejercicios Prácticos
 
-### [Ejercicios para Principiantes](./exercises/beginner/)
+### [Ejercicios para Principiantes](ejercicios/principiante)
 - Variaciones de "Hola Claude"
 - Chatbot simple
 - Generación de texto
 - Sistema de Preguntas y Respuestas (Q&A)
 - Experimentos de temperatura
 
-### [Ejercicios Intermedios](./exercises/intermediate/)
+### [Ejercicios Intermedios](ejercicios/intermedio)
 - Chatbot con streaming
 - Herramienta de análisis de imágenes
 - Implementaciones de uso de herramientas
 - Gestión de conversaciones
 - Interacciones de múltiples turnos
 
-### [Ejercicios Avanzados](./exercises/advanced/)
+### [Ejercicios Avanzados](ejercicios/avanzado/)
 - Sistema RAG
 - Agente autónomo
 - Pipeline de procesamiento por lotes
@@ -250,7 +250,7 @@ python -c "import anthropic; print('¡Configuración exitosa!')"
 
 ## 🚀 Proyectos de Muestra
 
-### [Directorio de Proyectos](./projects/)
+### [Directorio de Proyectos](proyectos)
 
 1. **Bot de Soporte al Cliente**
    - Respuestas en streaming
@@ -354,17 +354,17 @@ Este curso se basa en:
 
 ## 🚀 ¿Listo para Empezar?
 
-Comienza tu viaje con el [Módulo 1: Fundamentos y Configuración](./modules/module1_foundation/README.md)
+Comienza tu viaje con el [Módulo 1: Fundamentos y Configuración](modulos/modulo1_fundamentos/README.md)
 
 **¡Feliz Aprendizaje! 🎉**
 
 ---
 
 ### Navegación Rápida
-- [Módulo 1: Fundamentos](./modules/module1_foundation/README.md)
-- [Módulo 2: API Principal](./modules/module2_core_api/README.md)
-- [Módulo 3: Características Avanzadas](./modules/module3_advanced_features/README.md)
-- [Módulo 4: Aplicaciones](./modules/module4_applications/README.md)
-- [Módulo 5: Optimización](./modules/module5_optimization/README.md)
-- [Ejercicios](./exercises/)
-- [Proyectos](./projects/)
+- [Módulo 1: Fundamentos](modulos/modulo1_fundamentos/README.md)
+- [Módulo 2: API Principal](modulos/modulo2_api_nucleo/README.md)
+- [Módulo 3: Características Avanzadas](modulos/modulo3_caracteristicas_avanzadas/README.md)
+- [Módulo 4: Aplicaciones](modulos/modulo4_aplicaciones/README.md)
+- [Módulo 5: Optimización](modulos/modulo5_optimizacion/README.md)
+- [Ejercicios](ejercicios)
+- [Proyectos](proyectos)
