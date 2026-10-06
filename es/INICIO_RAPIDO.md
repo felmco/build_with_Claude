@@ -37,7 +37,7 @@ pip install anthropic python-dotenv
 echo "ANTHROPIC_API_KEY=tu-clave-api-aqui" > .env
 ```
 
-Obtén tu clave API en: https://console.anthropic.com
+Obtén tu clave API en: https://platform.claude.com
 
 ### Paso 3: Probar tu Configuración
 ```python
@@ -46,7 +46,7 @@ from anthropic import Anthropic
 
 client = Anthropic()
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello!"}]
 )
@@ -160,7 +160,7 @@ python test_setup.py
 ## 🛠️ Herramientas y Recursos
 
 ### Requerido
-- Python 3.7+
+- Python 3.10+
 - Clave API de Anthropic
 - Editor de texto/IDE
 
@@ -227,4 +227,4 @@ O sumérgete directamenente en el código con [Ejercicio 1: Hola Claude](ejercic
 
 *Este curso fue creado y desarrollado por **[Future Tales](https://futuretales.ai)***
 
-*Basado en documentación oficial de Anthropic y mejores prácticas. Última actualización: Enero 2026*
+*Basado en documentación oficial de Anthropic y mejores prácticas. Última actualización: Octubre 2026*

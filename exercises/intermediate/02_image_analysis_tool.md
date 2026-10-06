@@ -30,6 +30,7 @@ def encode_image(image_path):
         return base64.b64encode(image_file.read()).decode('utf-8')
 
 # TODO: Call API with image content block
+# TODO: derive the media_type from the file extension (image/jpeg, image/png, image/gif, image/webp)
 ```
 
 ## ✅ Expected Output
@@ -57,13 +58,37 @@ Use `type: image` in message content.
 <summary>Click to view solution</summary>
 
 ```python
-messages=[{
-    "role": "user", 
-    "content": [
-        {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": b64_data}},
-        {"type": "text", "text": "What is in this image?"}
-    ]
-}]
+import base64
+import mimetypes
+import sys
+
+import anthropic
+
+client = anthropic.Anthropic()
+
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode("utf-8")
+
+def describe(image_path, question="What is in this image?"):
+    media_type = mimetypes.guess_type(image_path)[0]
+    if media_type not in ("image/jpeg", "image/png", "image/gif", "image/webp"):
+        raise ValueError(f"Unsupported image type: {media_type}")
+    message = client.messages.create(
+        model="claude-sonnet-5-5",
+        max_tokens=1024,
+        messages=[{
+            "role": "user",
+            "content": [
+                {"type": "image", "source": {"type": "base64", "media_type": media_type, "data": encode_image(image_path)}},
+                {"type": "text", "text": question},
+            ],
+        }],
+    )
+    return message.content[0].text
+
+if __name__ == "__main__":
+    print(describe(sys.argv[1]))
 ```
 </details>
 
@@ -81,7 +106,7 @@ Ask specific questions about the image.
 
 ## ❓ Common Issues
 
-File size too large (>5MB).
+File size too large: the API rejects images over 5 MB (and very large images are downscaled), so resize before sending. Make sure `media_type` matches the real file format.
 
 ## 🎉 Completion
 

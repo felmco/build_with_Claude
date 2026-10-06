@@ -4,11 +4,11 @@
 Entender el Model Context Protocol (MCP) implementando un servidor básico que exponga recursos locales a Claude.
 
 ## ⏱️ Tiempo
-60 minutos
+60+ minutos
 
 ## 📚 Requisitos Previos
 - Familiaridad con servidores web (conceptos básicos)
-- Biblioteca `mcp` (instalar con pip)
+- Paquete oficial `mcp` de Python (instalar con pip)
 
 ## 🎓 Nivel de Dificultad
 ⭐⭐⭐ Avanzado
@@ -16,7 +16,7 @@ Entender el Model Context Protocol (MCP) implementando un servidor básico que e
 ## 📝 Instrucciones
 
 ### Parte 1: Configurar Servidor
-Usa el SDK de MCP para iniciar un servidor.
+Usa el SDK de MCP (`FastMCP`) para iniciar un servidor.
 
 ### Parte 2: Exponer un Recurso
 Expone un archivo local (ej., logs del sistema) como un recurso legible por Claude.
@@ -30,16 +30,35 @@ Expone una función Python (ej., consultar base de datos SQL) como una herramien
 ## 💻 Código de Inicio
 
 ```python
-from mcp.server import Server
+from mcp.server.fastmcp import FastMCP
 
-app = Server("mi-demo-mcp")
+mcp = FastMCP("my-server")
 
-@app.tool()
-def consultar_db(query: str) -> str:
-    return "Resultados simulados para " + query
+@mcp.tool()
+def add(a: int, b: int) -> int:
+    """Suma dos números."""
+    return a + b
 
-# TODO: Ejecutar servidor
+# TODO: añade tus propias herramientas (por ejemplo consultar_db)
+
+if __name__ == "__main__":
+    mcp.run()
 ```
+
+## 🎁 Pistas
+
+Usa el paquete oficial `mcp` de Python: `from mcp.server.fastmcp import FastMCP`, crea `mcp = FastMCP("nombre")`, decora las funciones con `@mcp.tool()` y ejecuta con `mcp.run()`. Pruébalo con el MCP Inspector o con Claude Desktop. Consulta modelcontextprotocol.io para ver la documentación actual.
+
+## ✨ Solución
+
+<details>
+<summary>Click para ver solución</summary>
+
+```python
+# Esquema de referencia: amplía el servidor FastMCP anterior con herramientas que envuelvan una API real
+# (por ejemplo consultas meteorológicas), valida las entradas y devuelve mensajes de error claros.
+```
+</details>
 
 ## 📖 Resultados de Aprendizaje
 

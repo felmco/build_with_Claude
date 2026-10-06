@@ -1,0 +1,6 @@
+.env
+logs/*.jsonl
+data/tickets.jsonl
+data/escalations.jsonl
+__pycache__/
+.pytest_cache/

@@ -2,7 +2,7 @@
 
 ## Serverless (Lambda/Cloud Functions)
 - **Pros:** Cheap for low traffic.
-- **Cons:** "Cold Starts" add latency to the first request.
+- **Cons:** "Cold Starts" add latency to the first request, and function timeouts can be shorter than a long generation. Use streaming and set client timeouts below the function limit.
 
 ## Long-Running Containers (Fargate/K8s)
 - **Pros:** No cold starts, better for streaming connections (WebSockets).

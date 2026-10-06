@@ -30,6 +30,7 @@ def codificar_imagen(ruta_imagen):
         return base64.b64encode(archivo_imagen.read()).decode('utf-8')
 
 # TODO: Llamar API con bloque de contenido de imagen
+# TODO: deduce el media_type a partir de la extensión del archivo (image/jpeg, image/png, image/gif, image/webp)
 ```
 
 ## ✅ Salida Esperada
@@ -57,15 +58,38 @@ Usa `type: image` en el contenido del mensaje.
 <summary>Click para ver solución</summary>
 
 ```python
-messages=[{
-    "role": "user", 
-    "content": [
-        {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": b64_data}},
-        {"type": "text", "text": "¿Qué hay en esta imagen?"}
-    ]
-}]
-```
-</details>
+import base64
+import mimetypes
+import sys
+
+import anthropic
+
+client = anthropic.Anthropic()
+
+def codificar_imagen(ruta_imagen):
+    with open(ruta_imagen, "rb") as archivo_imagen:
+        return base64.b64encode(archivo_imagen.read()).decode("utf-8")
+
+def describir(ruta_imagen, pregunta="¿Qué hay en esta imagen?"):
+    media_type = mimetypes.guess_type(ruta_imagen)[0]
+    if media_type not in ("image/jpeg", "image/png", "image/gif", "image/webp"):
+        raise ValueError(f"Tipo de imagen no soportado: {media_type}")
+    message = client.messages.create(
+        model="claude-sonnet-5-5",
+        max_tokens=1024,
+        messages=[{
+            "role": "user",
+            "content": [
+                {"type": "image", "source": {"type": "base64", "media_type": media_type, "data": codificar_imagen(ruta_imagen)}},
+                {"type": "text", "text": pregunta},
+            ],
+        }],
+    )
+    return message.content[0].text
+
+if __name__ == "__main__":
+    print(describir(sys.argv[1]))
+```</details>
 
 ## 🚀 Extensiones
 
@@ -81,7 +105,7 @@ Haz preguntas específicas sobre la imagen.
 
 ## ❓ Problemas Comunes
 
-Tamaño de archivo demasiado grande (>5MB).
+Tamaño de archivo demasiado grande: la API rechaza las imágenes de más de 5 MB (y las imágenes muy grandes se reducen), así que redimensiona antes de enviar. Asegúrate de que `media_type` coincida con el formato real del archivo.
 
 ## 🎉 Finalización
 

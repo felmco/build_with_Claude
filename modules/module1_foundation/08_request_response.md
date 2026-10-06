@@ -10,7 +10,7 @@ When you call `client.messages.create()`, you are creating a **Message**.
 
 ```python
 {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-5-5",
     "max_tokens": 1024,
     "messages": [
         {"role": "user", "content": "Hello, Claude!"}
@@ -23,11 +23,13 @@ When you call `client.messages.create()`, you are creating a **Message**.
 - `max_tokens`: (Required) The maximum output length.
 - `messages`: (Required) A list of message objects (`role` and `content`).
 - `system`: (Optional) System-level instructions.
-- `temperature`: (Optional) Controls randomness (0.0 to 1.0).
+- `temperature`: (Optional, Haiku 4.5 and older models only) Controls randomness (0.0 to 1.0). Fable 5.1, Opus 5.5 and Sonnet 5.5 reject non-default `temperature`, `top_p` and `top_k` with a 400.
+- `output_config`: (Optional) `effort` (`low` to `max`) and `format` (structured outputs).
+- `thinking`: (Optional) `{"type": "adaptive"}` on the 5.x models; `{"type": "enabled", "budget_tokens": N}` on Haiku 4.5 only.
 
 ### Response Structure (Output)
 
-The API returns a `Message` object. Here represents its JSON structure:
+The API returns a `Message` object. Here is its JSON structure:
 
 ```json
 {
@@ -40,7 +42,7 @@ The API returns a `Message` object. Here represents its JSON structure:
       "text": "Hello! How can I assist you today?"
     }
   ],
-  "model": "claude-sonnet-4-5-20250929",
+  "model": "claude-sonnet-5-5",
   "stop_reason": "end_turn",
   "stop_sequence": null,
   "usage": {
@@ -52,11 +54,13 @@ The API returns a `Message` object. Here represents its JSON structure:
 
 **Key Fields:**
 - `id`: Unique identifier for the request.
-- `content`: An list of content blocks. Usually contains one text block.
+- `content`: A list of content blocks. Plain replies have one `text` block, but the list can also hold `thinking` or `tool_use` blocks, so look at each block's `type`.
 - `role`: Always "assistant" for responses.
 - `stop_reason`: Why the generation stopped.
   - `"end_turn"`: Natural completion.
   - `"max_tokens"`: Hit the limit.
+  - `"tool_use"`: Claude wants to call a tool.
+  - `"refusal"`: The request was declined. `content` may be empty, so check `stop_reason` before reading it.
 - `usage`: Token counts for billing.
 
 ## Accessing Response Data in Python
@@ -66,8 +70,8 @@ The Python SDK wraps this JSON in an object.
 ```python
 response = client.messages.create(...)
 
-# Get the text content
-text = response.content[0].text
+# Get the text content (skip any thinking blocks)
+text = "".join(b.text for b in response.content if b.type == "text")
 
 # Get the ID
 msg_id = response.id

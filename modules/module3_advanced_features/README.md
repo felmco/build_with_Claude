@@ -10,7 +10,7 @@ By the end of this module, you will be able to:
 - Process requests in batches
 - Work with images and visual content
 - Use extended thinking for complex reasoning
-- Integrate Computer Use capabilities (beta)
+- Integrate Computer Use capabilities (`computer_toolset_20260801`)
 
 ## Topics Covered
 
@@ -39,7 +39,7 @@ By the end of this module, you will be able to:
 - [Extended Thinking Overview](./14_extended_thinking.md)
 - [When to Use Extended Thinking](./15_thinking_use_cases.md)
 
-### 3.6 Computer Use (Beta)
+### 3.6 Computer Use
 - [Computer Use Introduction](./16_computer_use.md)
 - [Automation with Computer Use](./17_computer_automation.md)
 

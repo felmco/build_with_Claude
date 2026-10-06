@@ -6,7 +6,7 @@ API keys are your credentials for accessing Claude's API. Proper management of A
 ## Getting Your API Key
 
 ### Step 1: Create an Anthropic Account
-1. Visit [console.anthropic.com](https://console.anthropic.com)
+1. Visit [platform.claude.com](https://platform.claude.com)
 2. Sign up or log in
 3. Complete any required verification
 
@@ -108,11 +108,10 @@ pip install python-dotenv
 ```bash
 # Anthropic API Configuration
 ANTHROPIC_API_KEY=your-api-key-here
-ANTHROPIC_MODEL=claude-sonnet-4-5-20250929
+ANTHROPIC_MODEL=claude-sonnet-5-5
 
 # Optional settings
 MAX_TOKENS=1024
-TEMPERATURE=1.0
 ```
 
 ### Step 3: Add .env to .gitignore
@@ -143,7 +142,7 @@ load_dotenv()
 client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 # Use other environment variables
-model = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-5-20250929")
+model = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5")
 max_tokens = int(os.getenv("MAX_TOKENS", "1024"))
 ```
 
@@ -155,9 +154,8 @@ max_tokens = int(os.getenv("MAX_TOKENS", "1024"))
 ```json
 {
     "api_key": "your-api-key-here",
-    "model": "claude-sonnet-4-5-20250929",
-    "max_tokens": 1024,
-    "temperature": 1.0
+    "model": "claude-sonnet-5-5",
+    "max_tokens": 1024
 }
 ```
 
@@ -192,11 +190,10 @@ class Config:
 
     # API Configuration
     API_KEY = os.getenv("ANTHROPIC_API_KEY")
-    MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-5-20250929")
+    MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5")
 
     # Request Defaults
     MAX_TOKENS = int(os.getenv("MAX_TOKENS", "1024"))
-    TEMPERATURE = float(os.getenv("TEMPERATURE", "1.0"))
 
     # Application Settings
     DEBUG = os.getenv("DEBUG", "False").lower() == "true"
@@ -390,7 +387,7 @@ client = Anthropic()
 # This is a placeholder for when the API supports it
 def check_usage():
     """Check API usage (via Console currently)"""
-    print("Check usage at: https://console.anthropic.com/settings/usage")
+    print("Check usage at: https://platform.claude.com/settings/usage")
 ```
 
 ### Set Up Alerts
@@ -428,12 +425,12 @@ class MonitoredClient:
 ### Error: Invalid API Key
 
 ```python
-from anthropic import APIError, AuthenticationError
+from anthropic import Anthropic, AuthenticationError
 
 try:
     client = Anthropic(api_key="invalid-key")
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": "Hello"}]
     )
@@ -489,7 +486,7 @@ def validate_api_key() -> str:
     try:
         client = Anthropic(api_key=api_key)
         client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=10,
             messages=[{"role": "user", "content": "test"}]
         )
@@ -520,6 +517,6 @@ client = Anthropic(api_key=api_key)
 - Learn about [Request and Response Handling](./08_request_response.md)
 
 ## Additional Resources
-- [Anthropic Console](https://console.anthropic.com)
+- [Anthropic Console](https://platform.claude.com)
 - [API Key Best Practices](https://platform.claude.com/docs/en/security/api-keys)
 - [python-dotenv Documentation](https://pypi.org/project/python-dotenv/)

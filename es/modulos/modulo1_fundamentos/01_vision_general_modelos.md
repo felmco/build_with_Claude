@@ -3,95 +3,107 @@
 ## Introducción
 Claude ofrece múltiples modelos, cada uno optimizado para diferentes casos de uso. Entender estos modelos te ayudará a elegir el correcto para tu aplicación.
 
-## Modelos Actuales de Claude (2026)
+## Modelos Actuales de Claude (octubre de 2026)
 
-### Claude Opus 4.5
-**ID del Modelo**: `claude-opus-4-5-20251101`
+> Verificado con la [Visión general de modelos](https://platform.claude.com/docs/en/about-claude/models/overview). Los modelos cambian con frecuencia: consulta esa página (o la Models API) antes de fijar un ID en tu código.
 
-**Mejor Para**:
-- Tareas de razonamiento complejo
-- Generación de código avanzada
-- Análisis e investigación detallada
-- Tareas que requieren la más alta inteligencia
+### Claude Fable 5.1
+**ID del modelo**: `claude-fable-5-1`
+
+**Ideal para**:
+- El razonamiento más exigente
+- Trabajo agéntico autónomo de largo horizonte
+- Casos en los que tus evaluaciones con Opus 5.5 y mayor esfuerzo aún no alcanzan
 
 **Características**:
-- Nivel de capacidad más alto
-- Opción más costosa
-- Tiempos de respuesta más lentos
-- Lo mejor para aplicaciones críticas de calidad
+- Modelo más capaz de amplia disponibilidad
+- El pensamiento siempre está activo (se controla con `effort`)
+- El más lento y caro ($10 / $50 por MTok)
 
-**Casos de Uso**:
+### Claude Opus 5.5
+**ID del modelo**: `claude-opus-5-5`
+
+**Ideal para**:
+- Programación agéntica de larga duración y trabajo de conocimiento
+- Razonamiento y análisis complejos
+- Una excelente opción por defecto cuando la calidad importa más
+
+**Características**:
+- Pensamiento adaptativo siempre activo; `effort` por defecto: `medium`
+- Contexto de 1M tokens, salida máxima de 128K
+- $4 / $20 por MTok
+
+**Casos de uso**:
 ```
 ✅ Diseño de arquitectura de software compleja
-✅ Resolución de problemas matemáticos avanzados
+✅ Refactorizaciones de varios archivos y sesiones largas de programación
 ✅ Análisis detallado de documentos legales o técnicos
-✅ Tareas de razonamiento de múltiples pasos
 ✅ Investigación y planificación estratégica
 ```
 
-### Claude Sonnet 4.5
-**ID del Modelo**: `claude-sonnet-4-5-20250929`
+### Claude Sonnet 5.5
+**ID del modelo**: `claude-sonnet-5-5`
 
-**Mejor Para**:
-- La mayoría de las aplicaciones de producción
-- Rendimiento y velocidad equilibrados
-- Tareas de propósito general
-- Soluciones rentables
+**Ideal para**:
+- La mayoría de las aplicaciones en producción
+- La mejor combinación de velocidad e inteligencia
+- Programación, agentes y trabajo empresarial del día a día con buena relación coste-beneficio
 
 **Características**:
-- Excelente equilibrio entre capacidad y velocidad
-- Opción más popular para producción
-- Precios moderados
-- Tiempos de respuesta rápidos
+- Rápido, con pensamiento adaptativo (`effort` por defecto: `high`)
+- Contexto de 1M tokens, salida máxima de 128K
+- $2 / $10 por MTok
 
-**Casos de Uso**:
+**Casos de uso**:
 ```
 ✅ Chatbots e IA conversacional
 ✅ Generación y edición de contenido
 ✅ Asistencia y revisión de código
-✅ Análisis y resumen de datos
+✅ Análisis de datos y resúmenes
 ✅ Automatización de soporte al cliente
 ```
 
-### Claude Haiku 3.5
-**ID del Modelo**: `claude-3-5-haiku-20241022`
+### Claude Haiku 4.5
+**ID del modelo**: `claude-haiku-4-5` (snapshot fijo: `claude-haiku-4-5-20251001`)
 
-**Mejor Para**:
+**Ideal para**:
 - Aplicaciones de alto volumen
 - Respuestas en tiempo real
-- Tareas simples
-- Proyectos conscientes del presupuesto
+- Sub-agentes y tareas simples
+- Proyectos con presupuesto ajustado
 
 **Características**:
-- Tiempos de respuesta más rápidos
-- El más rentable
-- Menor capacidad que Sonnet/Opus
-- Genial para tareas directas
+- El modelo más rápido, con inteligencia casi de frontera
+- Contexto de 200K tokens, salida máxima de 64K
+- Usa pensamiento extendido manual (`budget_tokens`), sin parámetro `effort`
+- $1 / $5 por MTok
 
-**Casos de Uso**:
+**Casos de uso**:
 ```
-✅ Tareas de clasificación simple
-✅ Sistemas rápidos de Preguntas y Respuestas (Q&A)
+✅ Clasificación y extracción
+✅ Sistemas rápidos de preguntas y respuestas
 ✅ Procesamiento por lotes de grandes conjuntos de datos
 ✅ Aplicaciones de chat en tiempo real
-✅ Moderación de contenido simple
+✅ Moderación de contenido
 ```
+
+> **Modelos heredados** (aún disponibles): Claude Fable 5, Opus 5, Opus 4.8, Opus 4.7, Opus 4.6, Sonnet 5 y Sonnet 4.6. Los IDs antiguos que aparecen en tutoriales, como `claude-3-5-haiku-20241022` o `claude-sonnet-4-5-20250929`, están en camino de retirada. Consulta [Deprecaciones de modelos](https://platform.claude.com/docs/en/about-claude/model-deprecations).
 
 ## Tabla de Comparación de Modelos
 
-| Característica | Haiku 3.5 | Sonnet 4.5 | Opus 4.5 |
-|----------------|-----------|------------|----------|
-| Velocidad | ⚡⚡⚡ Más Rápido | ⚡⚡ Rápido | ⚡ Moderado |
-| Inteligencia | 🧠 Buena | 🧠🧠 Excelente | 🧠🧠🧠 Mejor |
-| Coste | 💰 Más Bajo | 💰💰 Moderado | 💰💰💰 Más Alto |
-| Ventana de Contexto | 200K tokens | 200K tokens | 200K tokens |
-| Mejor Uso | Alto volumen | Producción | Tareas complejas |
+| Característica | Haiku 4.5 | Sonnet 5.5 | Opus 5.5 | Fable 5.1 |
+|----------------|-----------|------------|----------|-----------|
+| Velocidad | ⚡⚡⚡ La más rápida | ⚡⚡ Rápida | ⚡ Moderada | 🐢 Más lenta |
+| Inteligencia | 🧠 Casi de frontera | 🧠🧠 Excelente | 🧠🧠🧠 La mejor para la mayoría | 🧠🧠🧠🧠 La más alta |
+| Precio (entrada / salida por MTok) | $1 / $5 | $2 / $10 | $4 / $20 | $10 / $50 |
+| Ventana de contexto | 200K tokens | 1M tokens | 1M tokens | 1M tokens |
+| Salida máxima | 64K tokens | 128K tokens | 128K tokens | 128K tokens |
+| Pensamiento | Extendido (`budget_tokens`) | Adaptativo | Adaptativo (siempre activo) | Adaptativo (siempre activo) |
+| Mejor uso | Alto volumen | Producción | Programación agéntica | Problemas más difíciles |
 
 ## Límites de Tokens
 
-Todos los modelos de Claude soportan:
-- **Ventana de Contexto**: 200,000 tokens (~150,000 palabras)
-- **Tokens de Salida**: Hasta 8,192 tokens por petición (configurable)
+Los límites varían según el modelo (tabla anterior). No los des por sentados: consulta la **Models API** (`client.models.retrieve("claude-sonnet-5-5")`), que devuelve `max_input_tokens`, `max_tokens` y un objeto `capabilities`.
 
 ## Capacidades del Modelo
 
@@ -99,27 +111,30 @@ Todos los modelos de Claude soportan:
 - ✅ Generación de texto y conversación
 - ✅ Comprensión y generación de código
 - ✅ Soporte multi-idioma (Inglés, Español, Francés, Alemán, etc.)
-- ✅ Modo JSON para salidas estructuradas
+- ✅ Salidas estructuradas (`output_config.format`)
 - ✅ Llamada a funciones/herramientas
 - ✅ Visión (comprensión de imágenes)
 - ✅ Procesamiento de contexto largo
 
 ### Características Avanzadas (Específicas del Modelo):
-- **Pensamiento Extendido**: Disponible en modelos seleccionados para razonamiento complejo
-- **Uso de Computadora**: Característica beta para automatización de escritorio
+- **Pensamiento adaptativo + `effort`**: Claude decide cuánto pensar; tú controlas la profundidad con `output_config.effort`
+- **Uso de Computadora**: Automatización de escritorio mediante la herramienta `computer_toolset_20260801`
+- **Salidas Estructuradas**: Restringen las respuestas a un esquema JSON con `output_config.format`
 
 ## Eligiendo Tu Modelo: Árbol de Decisión Rápida
 
 ```
 Comienza Aquí
     |
-    ├─ ¿Necesitas el razonamiento de más alta calidad? → Usa Opus 4.5
+    ├─ ¿Razonamiento más difícil / ejecuciones autónomas largas? → Usa Fable 5.1
     |
-    ├─ ¿Necesitas las respuestas más rápidas? → Usa Haiku 3.5
+    ├─ ¿Necesitas el razonamiento de más alta calidad? → Usa Opus 5.5
     |
-    ├─ ¿Necesitas el mejor equilibrio? → Usa Sonnet 4.5 ⭐ (Recomendado para la mayoría)
+    ├─ ¿Necesitas las respuestas más rápidas? → Usa Haiku 4.5
     |
-    └─ ¿No estás seguro? → Empieza con Sonnet 4.5, optimiza después
+    ├─ ¿Necesitas el mejor equilibrio? → Usa Sonnet 5.5 ⭐ (Recomendado para la mayoría)
+    |
+    └─ ¿No estás seguro? → Empieza con Sonnet 5.5, optimiza después
 ```
 
 ## Ejemplo en Python: Comprobando Capacidades del Modelo
@@ -131,9 +146,10 @@ client = Anthropic()
 
 # Diccionario de modelos disponibles
 MODELS = {
-    "haiku": "claude-3-5-haiku-20241022",
-    "sonnet": "claude-sonnet-4-5-20250929",
-    "opus": "claude-opus-4-5-20251101"
+    "haiku": "claude-haiku-4-5",
+    "sonnet": "claude-sonnet-5-5",
+    "opus": "claude-opus-5-5",
+    "fable": "claude-fable-5-1",
 }
 
 def test_model(model_name: str, prompt: str):
@@ -162,19 +178,18 @@ print(test_model("opus", prompt))
 
 ## Mejores Prácticas
 
-1. **Empieza con Sonnet 4.5**: Ofrece el mejor equilibrio para la mayoría de las aplicaciones
+1. **Empieza con Sonnet 5.5**: Ofrece el mejor equilibrio para la mayoría de las aplicaciones
 2. **Prototipa Primero**: Prueba con Sonnet antes de optimizar costes
 3. **Usa Haiku para Escalar**: Una vez que tu aplicación funcione, considera Haiku para tareas de alto volumen
-4. **Reserva Opus para Complejidad**: Usa Opus solo cuando Sonnet no cumpla con tus necesidades de calidad
+4. **Reserva Opus y Fable para Complejidad**: Sube de nivel solo cuando Sonnet no cumpla con tus necesidades de calidad
 5. **Monitoriza el Rendimiento**: Rastrea métricas de calidad, velocidad y coste para optimizar
 
 ## Versiones y Actualizaciones de Modelos
 
-Los modelos de Claude están versionados con fechas de lanzamiento:
-- Ejemplo: `claude-sonnet-4-5-20250929` (lanzado el 29 de Septiembre de 2025)
-- Usa siempre la última versión estable para producción
-- Las versiones antiguas pueden quedar obsoletas con el tiempo
-- Revisa las notas de lanzamiento para cambios importantes
+Desde la generación 4.6, los IDs de modelos Claude no llevan fecha y cada uno es un **snapshot fijo** (por ejemplo `claude-sonnet-5-5`). No les añadas sufijos de fecha.
+- Elige un modelo actual para trabajo nuevo y planifica según las fechas de retirada de [Deprecaciones de modelos](https://platform.claude.com/docs/en/about-claude/model-deprecations)
+- Las plataformas cloud usan sus propios formatos: Amazon Bedrock `anthropic.claude-sonnet-5-5`, Google Cloud `claude-sonnet-5-5`
+- Vuelve a ejecutar tus evaluaciones al migrar: valores por defecto como `effort` y el comportamiento del pensamiento cambian entre generaciones ([Guía de migración](https://platform.claude.com/docs/en/about-claude/models/migration-guide))
 
 ## Conceptos Erróneos Comunes
 
@@ -190,13 +205,13 @@ Los modelos de Claude están versionados con fechas de lanzamiento:
 def select_model(task_complexity: str, speed_priority: bool = False, budget_tight: bool = False):
     """Función auxiliar para seleccionar el modelo apropiado"""
     if budget_tight and task_complexity == "simple":
-        return "claude-3-5-haiku-20241022"
+        return "claude-haiku-4-5"
     elif speed_priority and task_complexity != "complex":
-        return "claude-3-5-haiku-20241022"
+        return "claude-haiku-4-5"
     elif task_complexity == "complex":
-        return "claude-opus-4-5-20251101"
+        return "claude-opus-5-5"  # usa claude-fable-5-1 para los problemas más difíciles
     else:
-        return "claude-sonnet-4-5-20250929"  # Elección por defecto
+        return "claude-sonnet-5-5"  # Elección por defecto
 ```
 
 ## Próximos Pasos
@@ -204,6 +219,9 @@ def select_model(task_complexity: str, speed_priority: bool = False, budget_tigh
 - Aprende sobre [Precios y Límites del Modelo](03_precios_limites.md)
 
 ## Recursos Adicionales
-- [Comparación Oficial de Modelos](https://platform.claude.com/docs/en/models/overview)
-- [Página de Precios de Anthropic](https://www.anthropic.com/pricing)
-- [Notas de Lanzamiento de Modelos](https://platform.claude.com/docs/en/release-notes)
+- [Visión general de modelos](https://platform.claude.com/docs/en/about-claude/models/overview)
+- [Elegir un modelo](https://platform.claude.com/docs/en/about-claude/models/choosing-a-model)
+- [Precios](https://platform.claude.com/docs/en/about-claude/pricing)
+- [Deprecaciones de modelos](https://platform.claude.com/docs/en/about-claude/model-deprecations)
+- [Notas de lanzamiento](https://platform.claude.com/docs/en/release-notes/overview)
+- [Centro de referencias oficiales](../../REFERENCIAS.md)

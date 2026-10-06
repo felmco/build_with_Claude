@@ -69,8 +69,8 @@ Explora las capacidades avanzadas de la API de Claude:
 - Uso de herramientas y llamadas a funciones
 - Almacenamiento en caché de prompts para optimización de costes
 - Procesamiento por lotes (Batch processing)
-- Pensamiento extendido (Extended thinking) para razonamiento complejo
-- Uso de computadora (beta)
+- Pensamiento adaptativo (adaptive thinking) y `effort` para razonamiento complejo
+- Uso de computadora (`computer_toolset_20260801`)
 
 **Temas Clave**:
 - [Fundamentos de Uso de Herramientas](modulos/modulo3_caracteristicas_avanzadas/01_conceptos_basicos_uso_herramientas.md)
@@ -136,6 +136,19 @@ Optimiza y despliega aplicaciones listas para producción:
 
 ---
 
+### [Módulo 6: Características Más Recientes de la Plataforma](modulos/modulo6_caracteristicas_plataforma/README.md)
+**Duración**: 6-8 horas | **Nivel**: Avanzado
+
+Capacidades más nuevas de la plataforma que usan las aplicaciones modernas de Claude:
+- Herramientas del lado del servidor (búsqueda web, web fetch, ejecución de código, tool search)
+- Salidas estructuradas, rechazos y alternativas
+- Presupuestos de tarea, compactación y edición de contexto
+- Agent Skills y el conector MCP
+- El Claude Agent SDK y Managed Agents
+- Admin API, informes de uso y coste
+
+---
+
 ## 🎓 Ruta de Aprendizaje
 
 ### Para Principiantes
@@ -161,10 +174,10 @@ Optimiza y despliega aplicaciones listas para producción:
 
 ### Requerido
 - Conocimiento básico de programación en Python (variables, funciones, clases)
-- Python 3.7 o superior instalado
+- Python 3.10 o superior (requerido por el SDK `anthropic` actual) instalado
 - Editor de texto o IDE (VS Code, PyCharm, etc.)
 - Familiaridad con la línea de comandos
-- Cuenta de la API de Anthropic ([regístrate aquí](https://console.anthropic.com))
+- Cuenta de la API de Anthropic ([regístrate aquí](https://platform.claude.com))
 
 ### Recomendado
 - Comprensión de APIs REST
@@ -275,15 +288,21 @@ python -c "import anthropic; print('¡Configuración exitosa!')"
 ## 📚 Recursos Adicionales
 
 ### Documentación Oficial
-- [Documentación de Anthropic](https://platform.claude.com/docs/en/home)
+Mapa completo de documentación y lecciones: **[REFERENCIAS.md](./REFERENCIAS.md)**
+- [Documentación de la plataforma Claude](https://platform.claude.com/docs/en/home)
+- [Visión general de modelos](https://platform.claude.com/docs/en/about-claude/models/overview)
 - [Referencia de la API](https://platform.claude.com/docs/en/api/overview)
+- [Documentación de Claude Code](https://code.claude.com/docs/en/overview) y [Agent SDK](https://code.claude.com/docs/en/agent-sdk)
 - [GitHub del SDK de Python](https://github.com/anthropics/anthropic-sdk-python)
 - [Libro de Recetas (Cookbook) de Anthropic](https://github.com/anthropics/anthropic-cookbook)
 
 ### Recursos de Aprendizaje
-- [Academia Build with Claude](https://www.anthropic.com/learn/build-with-claude)
+- [Claude Academy (cursos gratuitos)](https://academy.claude.com/courses): Claude 101, Building with the Claude API, Introduction to MCP, Claude Code in Action, Introduction to Agent Skills
 - [Protocolo de Contexto de Modelo (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro)
-- [Guía de Ingeniería de Prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
+- [Mejores prácticas de prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
+
+### Extra: Mod de Claude Code
+- [MODS.md](./MODS.md): añade un panel de **Consumo** en vivo (tokens, gasto, contexto, herramientas, sesión) a Claude Code. Código en [`../mods/consumo`](../mods/consumo).
 
 ### Comunidad
 - [Discord de Anthropic](https://discord.gg/anthropic)
@@ -291,8 +310,8 @@ python -c "import anthropic; print('¡Configuración exitosa!')"
 - [Twitter/X](https://twitter.com/AnthropicAI)
 
 ### Herramientas
-- [Consola de Anthropic](https://console.anthropic.com)
-- [Generador de Prompts](https://console.anthropic.com/prompt-generator)
+- [Consola de Claude](https://platform.claude.com)
+- [Generador de Prompts](https://platform.claude.com/dashboard)
 - [Claude Desktop](https://claude.ai/download)
 
 ## 💡 Consejos para el Éxito
@@ -313,8 +332,8 @@ Este curso se actualiza regularmente para reflejar:
 - Actualizaciones de mejores prácticas
 - Comentarios de la comunidad
 
-**Última Actualización**: Enero 2026
-**Modelos Claude**: Opus 4.5, Sonnet 4.5, Haiku 3.5
+**Última Actualización**: Octubre 2026 (ver [NOVEDADES.md](./NOVEDADES.md))
+**Modelos Claude**: Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 4.5
 
 ## 📝 Finalización del Curso
 
@@ -366,5 +385,6 @@ Comienza tu viaje con el [Módulo 1: Fundamentos y Configuración](modulos/modul
 - [Módulo 3: Características Avanzadas](modulos/modulo3_caracteristicas_avanzadas/README.md)
 - [Módulo 4: Aplicaciones](modulos/modulo4_aplicaciones/README.md)
 - [Módulo 5: Optimización](modulos/modulo5_optimizacion/README.md)
+- [Módulo 6: Características Más Recientes de la Plataforma](modulos/modulo6_caracteristicas_plataforma/README.md)
 - [Ejercicios](ejercicios)
 - [Proyectos](proyectos)

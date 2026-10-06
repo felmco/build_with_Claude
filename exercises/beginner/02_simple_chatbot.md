@@ -7,7 +7,7 @@ Build an interactive loop that allows continuous conversation with Claude.
 20 minutes
 
 ## 📚 Prerequisites
-- Python 3.7+ installed
+- Python 3.10+ installed
 - Anthropic SDK installed
 - API key configured
 
@@ -93,7 +93,7 @@ Use `if user_input.lower() == 'quit': break`
 <summary>Click to view solution</summary>
 
 ```python
-import os
+import anthropic
 from anthropic import Anthropic
 
 def main():
@@ -109,15 +109,15 @@ def main():
             
         try:
             message = client.messages.create(
-                model="claude-sonnet-4-5-20250929",
+                model="claude-sonnet-5-5",
                 max_tokens=1024,
                 messages=[
                     {"role": "user", "content": user_input}
                 ]
             )
-            print(f"Claude: {message.content[0].text}")
+            print(f"Claude: {message.content[0].text}")  # text-only reply; see Ex. 1 for joining blocks
             
-        except Exception as e:
+        except anthropic.APIError as e:
             print(f"Error: {e}")
 
 if __name__ == "__main__":

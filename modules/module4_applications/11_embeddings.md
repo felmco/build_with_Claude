@@ -4,7 +4,7 @@ An **embedding** is a vector (list of numbers) representing the semantic meaning
 
 ## Choosing a Provider
 Anthropic does not produce embeddings directly. Use:
-- **Voyage AI:** Highly recommended for Claude.
+- **Voyage AI:** Anthropic's recommended embeddings provider (`pip install voyageai`, needs `VOYAGE_API_KEY`).
 - **OpenAI:** `text-embedding-3-small`.
 - **HuggingFace:** `sentence-transformers` (Local).
 
@@ -15,6 +15,7 @@ import voyageai
 
 vo = voyageai.Client()
 text = "Hello world"
+# Model names change: check the Voyage AI docs for the current recommended model
 vector = vo.embed([text], model="voyage-3-large").embeddings[0]
 print(vector[:5]) # [0.012, -0.04, ...]
 ```

@@ -18,7 +18,7 @@ response = client.messages.create(
 
 ## Parallel Tool Use
 
-Claude might try to call multiple tools at once (e.g., getting stock price for AAPL and GOOGL simultaneously).
+Claude may call multiple independent tools at once (e.g., getting stock price for AAPL and GOOGL simultaneously).
 
 The API returns a list of `content` blocks. You might see multiple `tool_use` blocks.
 
@@ -44,10 +44,14 @@ messages.append({"role": "assistant", "content": response.content})
 messages.append({"role": "user", "content": tool_results})
 ```
 
+Add `"disable_parallel_tool_use": true` to `tool_choice` (`{"type": "auto", "disable_parallel_tool_use": True}`) if you want at most one tool call per turn.
+
+If a tool fails, return its `tool_result` with `"is_error": True` and an error message so Claude can recover. Every `tool_use` block needs a matching `tool_result` in the next user message.
+
 ## Sequential Orchestration (Chaining)
 
 Sometimes tool B needs the output of tool A.
-- Claude handles this automatically!
+- Claude handles this automatically, as long as you keep looping: call the API, run the requested tools, send results back, and repeat until `stop_reason` is no longer `"tool_use"`. Cap the number of iterations.
 - It calls Tool A.
 - You return result.
 - Claude sees result, then calls Tool B.

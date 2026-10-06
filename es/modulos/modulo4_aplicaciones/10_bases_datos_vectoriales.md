@@ -11,7 +11,7 @@ Las bases de datos vectoriales almacenan datos como números de alta dimensión 
 ## Patrón de Integración
 
 ```python
-# Pseudo-código
+# Chroma genera los embeddings con su propio modelo local por defecto (no Claude)
 import chromadb
 
 client = chromadb.Client()
@@ -28,7 +28,7 @@ results = collection.query(
     query_texts=["feline"],
     n_results=1
 )
-# Devuelve "This is a doc about cats"
+# results["documents"] -> [["This is a doc about cats"]]
 ```
 
 ## Próximos Pasos

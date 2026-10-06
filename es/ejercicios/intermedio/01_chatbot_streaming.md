@@ -155,7 +155,7 @@ Tú: /guardar
 
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=conversation
 ) as stream:
@@ -189,7 +189,7 @@ self.conversation.append({
 
 ```python
 try:
-    # Código de streaming
+    ...  # Código de streaming
 except KeyboardInterrupt:
     print("\n\n⚠️  Interrumpido por el usuario")
     return
@@ -211,7 +211,8 @@ from anthropic import Anthropic
 from typing import List, Dict
 import time
 from datetime import datetime
-import sys
+
+import anthropic
 
 class StreamingChatbot:
     """Chatbot interactivo en streaming con historial"""
@@ -219,7 +220,7 @@ class StreamingChatbot:
     def __init__(self):
         self.client = Anthropic()
         self.conversation: List[Dict] = []
-        self.model = "claude-sonnet-4-5-20250929"
+        self.model = "claude-sonnet-5-5"
         self.turn_count = 0
 
     def chat(self, user_message: str) -> bool:
@@ -270,7 +271,9 @@ class StreamingChatbot:
             # Añadir al historial
             self.conversation.append({
                 "role": "assistant",
-                "content": final_message.content[0].text
+                "content": "".join(
+                    b.text for b in final_message.content if b.type == "text"
+                )
             })
 
             # Mostrar estadísticas
@@ -278,10 +281,18 @@ class StreamingChatbot:
 
         except KeyboardInterrupt:
             print("\n\n⚠️  Respuesta interrumpida por el usuario")
-        except Exception as e:
+            self._rollback_turn()
+        except anthropic.APIError as e:
             print(f"\n❌ Error: {e}")
+            self._rollback_turn()
 
         return True
+
+    def _rollback_turn(self):
+        """Descartar el mensaje de usuario sin respuesta para que el historial mantenga los roles alternados"""
+        if self.conversation and self.conversation[-1]["role"] == "user":
+            self.conversation.pop()
+            self.turn_count -= 1
 
     def _handle_command(self, command: str):
         """Manejar comandos especiales"""
@@ -306,7 +317,7 @@ class StreamingChatbot:
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         filename = f"conversation_{timestamp}.txt"
 
-        with open(filename, 'w') as f:
+        with open(filename, 'w', encoding='utf-8') as f:
             f.write("="*60 + "\n")
             f.write("Conversación con Claude\n")
             f.write(f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")

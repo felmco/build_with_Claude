@@ -4,7 +4,7 @@
 Construir un sistema de Generación Aumentada por Recuperación (RAG) que permita a Claude responder preguntas basándose en una "base de conocimiento" de documentos de texto.
 
 ## ⏱️ Tiempo
-45 minutos
+60+ minutos
 
 ## 📚 Requisitos Previos
 - Completar ejercicios intermedios
@@ -86,7 +86,13 @@ Usa `if word in document` para encontrar coincidencias.
 </details>
 
 <details>
-<summary>Pista 2: Inyección de Contexto</summary>
+<summary>Pista 2: Búsqueda semántica real</summary>
+
+Anthropic no ofrece un endpoint de embeddings. Para búsqueda semántica usa un proveedor de terceros como Voyage AI (`pip install voyageai`) para generar los embeddings de los trozos y de las consultas, guarda los vectores (una lista en memoria o una base de datos vectorial), recupera los k trozos principales por similitud del coseno y pásalos a Claude como contexto en el prompt.
+</details>
+
+<details>
+<summary>Pista 3: Inyección de Contexto</summary>
 
 ```python
 prompt = f"Contexto:\n{context_str}\n\nPregunta: {query}"
@@ -119,7 +125,7 @@ def chat_with_rag(query):
     Pregunta: {query}"""
     
     msg = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     )
@@ -129,7 +135,7 @@ def chat_with_rag(query):
 
 ## 🚀 Extensiones
 
-1. Usa una biblioteca real como `chromadb` o `faiss` para búsqueda semántica.
+1. Genera embeddings de los documentos con un proveedor de terceros (por ejemplo Voyage AI) y úsalos con una biblioteca real como `chromadb` o `faiss` para búsqueda semántica.
 2. Carga documentos desde archivos de texto reales.
 
 ## 📖 Resultados de Aprendizaje

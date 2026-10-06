@@ -88,7 +88,7 @@ tools = [
 user_message = "What is 125 multiplied by 8?"
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     tools=tools,
     messages=[
@@ -164,13 +164,15 @@ messages = [
 
 # Obtener respuesta final
 final_response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     tools=tools,
     messages=messages
 )
 
-print(final_response.content[0].text)
+# La respuesta puede empezar con un bloque thinking en los modelos actuales,
+# así que elige el bloque de texto en lugar de asumir content[0]
+print(next(b.text for b in final_response.content if b.type == "text"))
 # Salida: "125 multiplied by 8 equals 1000."
 ```
 
@@ -190,9 +192,9 @@ def calculator(operation: str, a: float, b: float) -> float:
         "add": lambda x, y: x + y,
         "subtract": lambda x, y: x - y,
         "multiply": lambda x, y: x * y,
-        "divide": lambda x, y: x / y if y != 0 else float('inf')
+        "divide": lambda x, y: x / y
     }
-    return operations[operation](a, b)
+    return operations[operation](a, b)  # lanza ZeroDivisionError al dividir por cero
 
 def use_tool(user_message: str) -> str:
     """Enviar mensaje con capacidad de uso de herramientas"""
@@ -229,7 +231,7 @@ def use_tool(user_message: str) -> str:
     messages = [{"role": "user", "content": user_message}]
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         tools=tools,
         messages=messages
@@ -268,16 +270,16 @@ def use_tool(user_message: str) -> str:
 
         # Obtener respuesta final
         final_response = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             tools=tools,
             messages=messages
         )
 
-        return final_response.content[0].text
+        return next(b.text for b in final_response.content if b.type == "text")
 
     # Si no hay uso de herramienta, devolver respuesta directa
-    return response.content[0].text
+    return next(b.text for b in response.content if b.type == "text")
 
 def main():
     """Probar herramienta calculadora"""
@@ -366,7 +368,7 @@ def weather_assistant(user_message: str) -> str:
 
     # Petición inicial
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         tools=tools,
         messages=messages
@@ -400,15 +402,15 @@ def weather_assistant(user_message: str) -> str:
         ]
 
         final_response = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             tools=tools,
             messages=messages
         )
 
-        return final_response.content[0].text
+        return next(b.text for b in final_response.content if b.type == "text")
 
-    return response.content[0].text
+    return next(b.text for b in response.content if b.type == "text")
 
 def main():
     """Probar herramienta del clima"""
@@ -572,7 +574,8 @@ result = safe_tool_execution(tool_use_block.name, tool_use_block.input)
 tool_result = {
     "type": "tool_result",
     "tool_use_id": tool_use_block.id,
-    "content": str(result) if result["success"] else f"Error: {result['error']}"
+    "content": str(result["result"]) if result["success"] else f"Error: {result['error']}",
+    "is_error": not result["success"],  # indica a Claude que la llamada falló
 }
 ```
 
@@ -592,7 +595,7 @@ tools = [{
 
 # 2. Hacer petición con herramientas
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     tools=tools,
     messages=[{"role": "user", "content": "..."}]
@@ -616,12 +619,16 @@ if response.stop_reason == "tool_use":
 
     # 5. Obtener respuesta final
     final = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         tools=tools,
         messages=messages
     )
 ```
+
+## Tool Choice
+
+Por defecto (`tool_choice={"type": "auto"}`) Claude decide si llama a una herramienta. Forzar una llamada con `{"type": "any"}` o `{"type": "tool", "name": ...}` se rechaza con un 400 en Claude Fable 5.1, Opus 5.5 y Sonnet 5.5. En esos modelos, mantén `auto`, indica en el prompt que debe usarse la herramienta ("Use the calculator tool for arithmetic") y añade `"strict": true` a la definición de la herramienta para garantizar entradas válidas según el esquema. Comprueba siempre `stop_reason == "tool_use"` en lugar de asumir que se hizo una llamada.
 
 ## Próximos Pasos
 - Aprende sobre [Construyendo Herramientas Personalizadas](02_herramientas_personalizadas.md)

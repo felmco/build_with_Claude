@@ -58,6 +58,16 @@ Use <context> tags to delimit the text.
 <summary>Click to view solution</summary>
 
 ```python
+import anthropic
+
+client = anthropic.Anthropic()
+
+context = """
+The return policy allows returns within 30 days.
+Receipt is required. Refunds take 5-7 business days.
+"""
+question = "Can I return without a receipt?"
+
 prompt = f"""
 Answer the question based only on the following context:
 
@@ -66,8 +76,16 @@ Answer the question based only on the following context:
 </context>
 
 Question: {question}
+
+If the context does not contain the answer, say "I don't know."
 """
 
+message = client.messages.create(
+    model="claude-sonnet-5-5",
+    max_tokens=300,
+    messages=[{"role": "user", "content": prompt}],
+)
+print(message.content[0].text)
 ```
 </details>
 

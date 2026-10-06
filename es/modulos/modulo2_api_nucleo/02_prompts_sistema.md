@@ -14,7 +14,7 @@ import anthropic
 client = anthropic.Anthropic()
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system="You are a helpful assistant who speaks like a pirate.",
     messages=[
@@ -60,6 +60,8 @@ Always respond with valid JSON in the following format:
 """
 ```
 
+Para un JSON que deba cumplir un esquema siempre, prefiere las salidas estructuradas (`output_config={"format": {...}}`, ver [Gestionando Conversaciones](03_conversaciones.md)) en lugar de depender solo de las instrucciones del prompt.
+
 ### 4. Usar Etiquetas XML para Estructura
 Para prompts complejos, usa etiquetas XML para separar secciones.
 
@@ -99,9 +101,11 @@ Puedes instruir a Claude para que piense antes de responder dentro del prompt de
 ```python
 system = """
 You are a math tutor. When solving problems, first think through the steps step-by-step
-inside <thinking> tags, and then provide the final answer to the student.
+inside <scratchpad> tags, and then provide the final answer to the student.
 """
 ```
+
+En Opus 5.5, Fable 5.1 y Sonnet 5.5, Claude ya razona con pensamiento adaptativo, así que normalmente obtienes esto sin hacer nada y puedes ajustar la profundidad con `output_config={"effort": ...}`. El razonamiento paso a paso inducido por el prompt es útil sobre todo en Haiku 4.5 o cuando quieres que el razonamiento sea visible en el texto de la respuesta.
 
 ## Errores Comunes
 

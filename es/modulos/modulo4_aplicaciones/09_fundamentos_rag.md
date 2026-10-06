@@ -22,7 +22,8 @@ def retrieve(query):
     # Búsqueda por palabras clave (TF-IDF) o simplemente devolver todo para conjuntos diminutos
     return "\n\n".join(docs)
 
-context = retrieve("question")
+query = "question"
+context = retrieve(query)
 prompt = f"Context:\n{context}\n\nQuestion: {query}"
 ```
 

@@ -51,7 +51,21 @@ def create_user(profile: UserProfile):
     pass
 ```
 
-*Note: You'll need to write or use a helper to convert Pydantic models to JSON Schema for Anthropic.*
+Pydantic v2 can generate the schema for you with `model_json_schema()`:
+
+```python
+tool = {
+    "name": "create_user",
+    "description": "Create a new user",
+    "input_schema": {
+        "type": "object",
+        "properties": {"profile": UserProfile.model_json_schema()},
+        "required": ["profile"],
+    },
+}
+```
+
+Pydantic puts nested models under `$defs`; for deeply nested models, inline or hoist those definitions into `input_schema`. Always validate the `input` Claude sends (for example with `UserProfile.model_validate(...)`) before acting on it.
 
 ## Handling File Uploads in Tools
 
@@ -63,8 +77,13 @@ Tools can't accept file binaries directly in the JSON arguments. Instead:
 ```json
 {
     "name": "analyze_csv",
-    "properties": {
-        "file_url": {"type": "string", "description": "URL of the CSV file"}
+    "description": "Analyze a CSV file and return summary statistics",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "file_url": {"type": "string", "description": "URL of the CSV file"}
+        },
+        "required": ["file_url"]
     }
 }
 ```

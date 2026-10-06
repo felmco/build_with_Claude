@@ -51,7 +51,21 @@ def create_user(profile: UserProfile):
     pass
 ```
 
-*Nota: Necesitarás escribir o usar un ayudante para convertir modelos Pydantic a JSON Schema para Anthropic.*
+Pydantic v2 puede generar el esquema por ti con `model_json_schema()`:
+
+```python
+tool = {
+    "name": "create_user",
+    "description": "Create a new user",
+    "input_schema": {
+        "type": "object",
+        "properties": {"profile": UserProfile.model_json_schema()},
+        "required": ["profile"],
+    },
+}
+```
+
+Pydantic coloca los modelos anidados bajo `$defs`; para modelos con mucho anidamiento, incorpora esas definiciones en línea o súbelas al nivel de `input_schema`. Valida siempre el `input` que envía Claude (por ejemplo con `UserProfile.model_validate(...)`) antes de actuar sobre él.
 
 ## Manejando Subidas de Archivos en Herramientas
 
@@ -63,8 +77,13 @@ Las herramientas no pueden aceptar binarios de archivos directamente en los argu
 ```json
 {
     "name": "analyze_csv",
-    "properties": {
-        "file_url": {"type": "string", "description": "URL of the CSV file"}
+    "description": "Analyze a CSV file and return summary statistics",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "file_url": {"type": "string", "description": "URL of the CSV file"}
+        },
+        "required": ["file_url"]
     }
 }
 ```

@@ -14,7 +14,7 @@ import anthropic
 client = anthropic.Anthropic()
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system="You are a helpful assistant who speaks like a pirate.",
     messages=[
@@ -60,6 +60,8 @@ Always respond with valid JSON in the following format:
 """
 ```
 
+For JSON that must match a schema every time, prefer structured outputs (`output_config={"format": {...}}`, see [Managing Conversations](./03_conversations.md)) over prompt instructions alone.
+
 ### 4. Use XML Tags for Structure
 For complex prompts, use XML tags to separate sections.
 
@@ -99,9 +101,11 @@ You can instruct Claude to think before answering within the system prompt to im
 ```python
 system = """
 You are a math tutor. When solving problems, first think through the steps step-by-step
-inside <thinking> tags, and then provide the final answer to the student.
+inside <scratchpad> tags, and then provide the final answer to the student.
 """
 ```
+
+On Opus 5.5, Fable 5.1 and Sonnet 5.5, Claude already reasons with adaptive thinking, so you usually get this for free and can tune depth with `output_config={"effort": ...}`. Prompted step-by-step reasoning is mainly useful on Haiku 4.5 or when you want the reasoning visible in the reply text.
 
 ## Common Pitfalls
 

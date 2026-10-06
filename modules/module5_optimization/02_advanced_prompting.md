@@ -3,7 +3,9 @@
 Once you master the basics, these techniques allow for complex problem solving.
 
 ## 1. Chain of Thought (CoT)
-Ask Claude to "Think step-by-step" before answering. This improves reasoning significantly.
+Ask Claude to "Think step-by-step" before answering. This improves reasoning on multi-step problems.
+
+> On current models you can also let the model reason natively: set `thinking={"type": "adaptive"}` and tune `output_config={"effort": ...}` instead of (or in addition to) prompting for steps. See [Chain of Thought](./04_chain_of_thought.md).
 
 ```
 Question: If I have 3 apples and eat one, then buy two more, how many do I have?

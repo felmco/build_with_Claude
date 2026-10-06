@@ -1,7 +1,7 @@
 # 3.2 Understanding Prompt Caching
 
 ## Introduction
-Prompt caching allows you to reuse large portions of your prompt across multiple requests, dramatically reducing costs (up to 90%) and latency (up to 80%) for repeated content.
+Prompt caching allows you to reuse large portions of your prompt across multiple requests, dramatically reducing costs (cache reads cost about 10% of the normal input price) and latency for repeated content.
 
 ## Why Prompt Caching?
 
@@ -16,33 +16,37 @@ Request 3: Process 10,000 tokens → Full cost (same content!)
 ### With Caching
 Reuse cached portions:
 ```
-Request 1: Process 10,000 tokens → Cache them → Full cost
+Request 1: Process 10,000 tokens → Cache them → Full cost + 25% write premium
 Request 2: Read from cache → 90% cost reduction!
 Request 3: Read from cache → 90% cost reduction!
 ```
 
 ## Cost Comparison
 
-### Pricing (Approximate)
-- **Regular input tokens**: $3 per million tokens
-- **Cache write**: $3.75 per million tokens (25% more)
-- **Cache read**: $0.30 per million tokens (90% less!)
+### Pricing (multipliers of the base input price)
+- **Cache write (5-minute TTL)**: 1.25x base input price
+- **Cache write (1-hour TTL)**: 2x base input price
+- **Cache read**: about 0.1x base input price (even less on some models, for example 0.05x on Claude Opus 5.5)
+
+Prices change, so check the [pricing page](https://claude.com/pricing). The example below uses Claude Sonnet 5.5 at $2 per million input tokens: $2.50 per MTok for a 5-minute cache write and $0.20 per MTok for a cache read.
 
 ### Example Calculation
-10,000 token prompt, used 100 times:
+10,000 token prompt, used 100 times (within the cache lifetime):
 
 **Without caching**:
 ```
-100 requests × 10,000 tokens × $3/MTok = $3.00
+100 requests × 10,000 tokens × $2/MTok = $2.00
 ```
 
 **With caching**:
 ```
-Write: 1 × 10,000 × $3.75/MTok = $0.0375
-Reads: 99 × 10,000 × $0.30/MTok = $0.297
-Total: $0.0375 + $0.297 = $0.3345
-Savings: $3.00 - $0.33 = $2.67 (89% reduction!)
+Write: 1 × 10,000 × $2.50/MTok = $0.025
+Reads: 99 × 10,000 × $0.20/MTok = $0.198
+Total: $0.025 + $0.198 = $0.223
+Savings: $2.00 - $0.223 = $1.777 (about 89% reduction)
 ```
+
+Because a write costs 1.25x and a read 0.1x, caching pays off after as few as two requests that share the prefix.
 
 ## How Prompt Caching Works
 
@@ -55,7 +59,7 @@ from anthropic import Anthropic
 client = Anthropic()
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {
@@ -75,9 +79,11 @@ message = client.messages.create(
 ```
 
 ### Cache Duration
-- **Duration**: 5 minutes
-- **Refresh**: Each cache hit extends duration by 5 minutes
-- **Maximum**: Caches last as long as they're used within 5-minute windows
+- **Default duration**: 5 minutes (`{"type": "ephemeral"}`)
+- **Refresh**: Each cache hit resets the timer at no extra cost, so a prefix that is used at least every 5 minutes stays warm
+- **1-hour option**: `{"type": "ephemeral", "ttl": "1h"}` costs more to write (2x) but survives longer gaps between requests
+- **Limits**: at most 4 `cache_control` breakpoints per request. Caches are scoped to your workspace and to the model.
+- **Minimum size**: the prefix must reach a model-dependent minimum (512 to 4096 tokens, see Troubleshooting) or it is silently not cached.
 
 ## Basic Caching Example
 
@@ -118,14 +124,14 @@ Python Programming Guide:
    - __init__ method for initialization
    - self parameter for instance reference
 
-[... imagine this is 10,000+ tokens of documentation ...]
+[... imagine this is several thousand tokens of documentation ...]
 """
 
 def ask_with_caching(question: str):
     """Ask question with cached knowledge base"""
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         system=[
             {
@@ -147,13 +153,13 @@ def ask_with_caching(question: str):
     usage = response.usage
     print(f"""
 📊 Token Usage:
-   Input tokens: {usage.input_tokens}
+   Input tokens (uncached): {usage.input_tokens}
    Cache creation: {getattr(usage, 'cache_creation_input_tokens', 0)}
    Cache read: {getattr(usage, 'cache_read_input_tokens', 0)}
    Output tokens: {usage.output_tokens}
     """)
 
-    return response.content[0].text
+    return next(b.text for b in response.content if b.type == "text")
 
 def main():
     """Test caching with multiple requests"""
@@ -203,7 +209,7 @@ Request #2: Explain Python functions
 ### Single System Prompt
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {
@@ -219,7 +225,7 @@ message = client.messages.create(
 ### Multiple System Blocks
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {
@@ -244,6 +250,9 @@ message = client.messages.create(
 ## Caching Conversation History
 
 ### Caching Long Conversations
+
+Put a breakpoint on the last block of the most recent turn. Each new request then reads the whole earlier conversation from the cache. (If you do not need to control placement, you can instead pass a top-level `cache_control={"type": "ephemeral"}` to `messages.create()`, which places the breakpoint on the last cacheable block automatically.)
+
 ```python
 def chat_with_caching(messages: list, new_message: str):
     """Chat with cached conversation history"""
@@ -274,15 +283,16 @@ def chat_with_caching(messages: list, new_message: str):
     cached_messages.append(messages[-1])
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=cached_messages
     )
 
-    # Add assistant response to history
+    # Add assistant response to history (text only; in tool-use loops
+    # append response.content unchanged so thinking blocks are preserved)
     messages.append({
         "role": "assistant",
-        "content": response.content[0].text
+        "content": next(b.text for b in response.content if b.type == "text")
     })
 
     return response
@@ -321,7 +331,7 @@ def query_with_tools_cached(question: str):
     """Query with cached tool definitions"""
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         tools=TOOLS,
         system=[
@@ -351,7 +361,7 @@ def query_with_tools_cached(question: str):
 - Conversation history
 
 ❌ **Poor candidates**:
-- Small prompts (< 1000 tokens)
+- Prompts below the model's minimum cacheable size (512 to 4096 tokens depending on the model)
 - Unique, one-time content
 - Frequently changing content
 
@@ -456,7 +466,7 @@ def multi_level_cache(project_id: str, user_query: str):
     user_context = f"Current query: {user_query}"
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         system=[
             {
@@ -492,7 +502,7 @@ with open("diagram.png", "rb") as f:
     image_data = base64.b64encode(f.read()).decode("utf-8")
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {
@@ -561,7 +571,7 @@ class CachedRAG:
             })
 
         response = self.client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             system=system_parts,
             messages=[
@@ -569,7 +579,7 @@ class CachedRAG:
             ]
         )
 
-        return response.content[0].text
+        return next(b.text for b in response.content if b.type == "text")
 
 def main():
     """Test RAG with caching"""
@@ -610,10 +620,10 @@ if __name__ == "__main__":
 **Problem**: `cache_read_input_tokens` is always 0
 
 **Solutions**:
-1. Check minimum cache size (must be substantial)
-2. Verify cache duration hasn't expired (5 minutes)
-3. Ensure exact same content is being sent
-4. Confirm `cache_control` is properly set
+1. Check the minimum cacheable prefix. It depends on the model: 512 tokens on Claude Sonnet 5.5, Opus 5.5, and Fable 5.1; 1024 on several earlier Sonnet/Opus models; 4096 on Claude Haiku 4.5. Shorter prefixes are silently not cached (no error, `cache_creation_input_tokens` is 0). Confirm the current value in the docs.
+2. Verify the cache hasn't expired (5 minutes by default, measured from the start of the last request that wrote or read it)
+3. Ensure the prefix is byte-identical. The cache is a prefix match in the order tools, system, messages, so a timestamp, a changed tool list, or unsorted JSON keys early in the prompt invalidates everything after it.
+4. Confirm `cache_control` is set on the last block of the stable prefix, and that you use the same model and workspace
 
 ### High Cache Creation Costs
 **Problem**: Creating too many caches
@@ -622,14 +632,14 @@ if __name__ == "__main__":
 1. Consolidate cacheable content
 2. Use fewer cache breakpoints
 3. Cache only frequently reused content
-4. Consider batch processing
+4. Make sure the prefix is stable, so entries are read instead of rewritten
 
 ## Quick Reference
 
 ```python
 # Cache system prompt
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {

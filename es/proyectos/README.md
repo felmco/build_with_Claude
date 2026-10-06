@@ -1,13 +1,32 @@
 # Proyectos de Ejemplo
 
-Este directorio contiene proyectos completos y del mundo real que demuestran cómo construir aplicaciones listas para producción con la API de Claude.
+Cuatro proyectos completos y ejecutables construidos sobre la API de Claude. Cada uno tiene una CLI, datos de ejemplo, un README con un diagrama de arquitectura y una **suite de pruebas offline que usa un cliente falso**, así que puedes ejecutar las pruebas y la mayoría de las demos sin clave de API y sin ningún coste.
+
+| # | Proyecto | Ejecución offline | Pruebas |
+|---|----------|-------------------|---------|
+| 1 | [Bot de Soporte al Cliente](./1_bot_soporte_cliente/) | `python main.py --dry-run` | 26 |
+| 2 | [Q&A de Documentos (RAG)](./2_sistema_qa_documentos/) | `python main.py search "refund"` (solo recuperación) | 27 |
+| 3 | [Agente de Revisión de Código](./3_agente_revision_codigo/) | `python main.py --diff examples/sample.diff --repo examples/sample_repo --dry-run` | 64 |
+| 4 | [Asistente de Investigación](./4_asistente_investigacion/) | `python main.py --offline-demo "your question"` | 31 |
+
+Inicio rápido para cualquier proyecto:
+```bash
+cd es/proyectos/<proyecto>
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+pytest -q                      # offline
+cp .env.example .env           # añade ANTHROPIC_API_KEY para ejecuciones reales
+python main.py --help
+```
+
+> **Estado honesto:** el código se verificó contra las firmas del SDK instalado y la documentación oficial, y se probó con clientes falsos, pero **no se ha ejecutado contra la API real**. Espera tener que ajustar pequeños detalles (comportamiento del modelo, versiones de herramientas, umbrales de caché) en la primera ejecución real. Cada README indica lo que no está verificado. El Proyecto 5 de abajo sigue siendo un plan.
 
 ## 🚀 Proyectos Disponibles
 
-### 1. [Chatbot de Soporte al Cliente](1_bot_soporte_cliente)
+### 1. [Chatbot de Soporte al Cliente](./1_bot_soporte_cliente/)
 **Nivel**: Intermedio | **Tiempo**: 3-4 horas
 
-Un chatbot de soporte al cliente listo para producción con:
+Un chatbot de soporte al cliente con:
 - Respuestas en streaming para interacción en tiempo real
 - Historial de conversación y gestión de contexto
 - Uso de herramientas para acceder a base de conocimiento
@@ -24,7 +43,7 @@ Un chatbot de soporte al cliente listo para producción con:
 
 ---
 
-### 2. [Sistema de Q&A de Documentos](2_sistema_qa_documentos)
+### 2. [Sistema de Q&A de Documentos](./2_sistema_qa_documentos/)
 **Nivel**: Avanzado | **Tiempo**: 4-6 horas
 
 Sistema basado en RAG para responder preguntas sobre documentos:
@@ -43,7 +62,7 @@ Sistema basado en RAG para responder preguntas sobre documentos:
 
 ---
 
-### 3. [Agente de Revisión de Código](3_agente_revision_codigo)
+### 3. [Agente de Revisión de Código](./3_agente_revision_codigo/)
 **Nivel**: Avanzado | **Tiempo**: 4-5 horas
 
 Agente autónomo para revisar código:
@@ -62,7 +81,7 @@ Agente autónomo para revisar código:
 
 ---
 
-### 4. [Asistente de Investigación](4_asistente_investigacion)
+### 4. [Asistente de Investigación](./4_asistente_investigacion/)
 **Nivel**: Avanzado | **Tiempo**: 5-6 horas
 
 Sistema multi-agente para tareas de investigación:
@@ -81,9 +100,28 @@ Sistema multi-agente para tareas de investigación:
 
 ---
 
+### 5. Servidor MCP del Clima (planificado, aún no incluido)
+**Nivel**: Intermedio | **Tiempo**: 2-3 horas
+
+Servidor MCP personalizado para información meteorológica:
+- Integración con APIs REST
+- Múltiples fuentes de datos
+- Integración con Claude Desktop
+- Manejo de errores
+
+**Tecnologías**: MCP, Claude API, REST APIs
+
+**Características Clave**:
+- Datos meteorológicos en tiempo real
+- Información de pronóstico
+- Búsqueda de ubicaciones
+- Datos históricos
+
+---
+
 ## 📋 Estructura del Proyecto
 
-Cada proyecto incluye:
+Los esqueletos actualmente contienen `README.md`, `requirements.txt` y `main.py`. Un proyecto terminado crecería hasta esta estructura:
 
 ```
 project_name/
@@ -128,7 +166,7 @@ cp .env.example .env
 
 ### Paso 4: Ejecuta el Proyecto
 ```bash
-python src/main.py
+python main.py   # o python src/main.py cuando adoptes la estructura anterior
 ```
 
 ### Paso 5: Estudia y Modifica
@@ -146,7 +184,7 @@ python src/main.py
 4. Construye tu propia versión
 
 ### Para Desarrolladores Intermedios
-1. Empieza con Bot de Soporte
+1. Empieza con el Bot de Soporte al Cliente o el Servidor MCP del Clima
 2. Implementa todas las características
 3. Añade extensiones
 4. Despliega a producción
@@ -186,8 +224,11 @@ python src/main.py
 
 ### Patrón 1: Aplicación Conversacional
 ```python
+import anthropic
+
 # Inicializar conversación
 conversation = []
+client = anthropic.Anthropic()
 
 # Bucle
 while True:
@@ -195,7 +236,8 @@ while True:
     conversation.append({"role": "user", "content": user_input})
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
+        max_tokens=1024,
         messages=conversation
     )
 
@@ -209,19 +251,21 @@ tools = [define_tool_1(), define_tool_2()]
 
 # Bucle de agente
 while not done:
-    response = client.messages.create(tools=tools, ...)
+    response = client.messages.create(model="claude-sonnet-5-5", max_tokens=1024,
+                                      tools=tools, messages=messages)
 
     if response.stop_reason == "tool_use":
-        # Ejecutar herramienta
+        # Ejecuta cada bloque tool_use, añade el turno del asistente y un
+        # turno de usuario con bloques tool_result, y vuelve a iterar
         result = execute_tool(...)
-        # Continuar con resultado
     else:
         done = True
 ```
 
 ### Patrón 3: Sistema RAG
 ```python
-# Configuración
+# Configuración (los embeddings vienen de un proveedor de terceros como Voyage AI;
+# Anthropic no ofrece un endpoint de embeddings)
 vectordb = setup_vector_database()
 documents = load_documents()
 vectordb.add(documents)
@@ -233,6 +277,8 @@ def query(question):
 
     # Generar respuesta con contexto
     response = client.messages.create(
+        model="claude-sonnet-5-5",
+        max_tokens=1024,
         system=f"Usa estos documentos: {docs}",
         messages=[{"role": "user", "content": question}]
     )
@@ -246,15 +292,16 @@ def query(question):
 requests = [create_request(item) for item in items]
 
 # Enviar lote
-batch = client.batches.create(requests=requests)
+batch = client.messages.batches.create(requests=requests)
 
 # Monitorizar progreso
-while not batch.complete:
+while batch.processing_status != "ended":
     time.sleep(10)
-    batch = client.batches.retrieve(batch.id)
+    batch = client.messages.batches.retrieve(batch.id)
 
-# Procesar resultados
-results = batch.results
+# Procesar resultados (relaciona por custom_id; el orden no está garantizado)
+for entry in client.messages.batches.results(batch.id):
+    ...
 ```
 
 ## 📊 Comparación de Proyectos
@@ -265,6 +312,7 @@ results = batch.results
 | Q&A de Documentos | ⭐⭐⭐ | 4-6h | RAG, Caching | Recuperación de Información |
 | Revisión de Código | ⭐⭐⭐ | 4-5h | Agents, APIs | Sistemas Autónomos |
 | Asistente de Investigación | ⭐⭐⭐ | 5-6h | Multi-Agent | Flujos de Trabajo Complejos |
+| Servidor MCP del Clima | ⭐⭐ | 2-3h | MCP, APIs | Integración de Herramientas |
 
 ## 🎯 Lista de Verificación de Finalización
 
@@ -274,6 +322,7 @@ Rastrea tus finalizaciones de proyecto:
 - [ ] Proyecto 2: Sistema de Q&A de Documentos
 - [ ] Proyecto 3: Agente de Revisión de Código
 - [ ] Proyecto 4: Asistente de Investigación
+- [ ] Proyecto 5: Servidor MCP del Clima
 
 ### Logros Bonus
 - [ ] Completar todos los proyectos

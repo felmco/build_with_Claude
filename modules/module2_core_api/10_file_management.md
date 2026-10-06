@@ -1,71 +1,41 @@
 # 2.4 File Management Code Examples
 
-*Note: The Files API is in beta. You must use the appropriate beta headers.*
+*Note: The Files API is generally available: no beta header is needed, and the SDK exposes it as `client.files`. See the [Files API docs](https://platform.claude.com/docs/en/build-with-claude/files).*
 
 ## 1. Uploading a File
 
 ```python
-import httpx
+import anthropic
 
-api_key = "your-api-key"
-file_path = "large_document.pdf"
+client = anthropic.Anthropic()
 
-url = "https://api.anthropic.com/v1/files"
-headers = {
-    "x-api-key": api_key,
-    "anthropic-version": "2023-06-01",
-    "anthropic-beta": "files-api-2025-04-14" # Check documentation for latest beta string
-}
+with open("large_document.pdf", "rb") as f:
+    uploaded = client.files.upload(file=("large_document.pdf", f, "application/pdf"))
 
-files = {
-    "file": open(file_path, "rb")
-}
-data = {
-    "purpose": "assistants" # or appropriate purpose
-}
-
-response = httpx.post(url, headers=headers, files=files, data=data)
-file_id = response.json()["id"]
+file_id = uploaded.id
 print(f"Uploaded file ID: {file_id}")
 ```
 
 ## 2. Using a File in a Message
 
 ```python
-import anthropic
-
-client = anthropic.Anthropic(
-    api_key=api_key,
-)
-
-# Note: Beta support might require raw HTTP requests or specific client configuration
-# depending on SDK version support for the beta Files API.
-# Below implies SDK support or wrapping the call.
-
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {
             "role": "user",
             "content": [
-                {
-                    "type": "document",
-                    "source": {
-                        "type": "file",
-                        "file_id": file_id
-                    }
-                },
-                {
-                    "type": "text",
-                    "text": "Analyze this file."
-                }
-            ]
+                {"type": "document", "source": {"type": "file", "file_id": file_id}},
+                {"type": "text", "text": "Analyze this file."},
+            ],
         }
     ],
-    extra_headers={"anthropic-beta": "files-api-2025-04-14"}
 )
+print(message.content[0].text)
 ```
+
+The content block type must match the file: `document` for PDF/text, `image` for images.
 
 ## 3. Listing and Deleting
 
@@ -73,15 +43,26 @@ message = client.messages.create(
 ```bash
 curl https://api.anthropic.com/v1/files \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
-  -H "anthropic-beta: files-api-2025-04-14"
+  -H "anthropic-version: 2023-06-01"
 ```
 
 **Delete File:**
 ```bash
 curl -X DELETE https://api.anthropic.com/v1/files/file_id_here \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
-  -H "anthropic-beta: files-api-2025-04-14"
+  -H "anthropic-version: 2023-06-01"
 ```
+
+Or with the SDK:
+
+```python
+for f in client.files.list():  # auto-paginates
+    print(f.id, f.filename, f.size_bytes)
+
+client.files.delete(file_id)
+```
+
+Uploaded files stay in your organization's storage until you delete them.
 
 ## Next Steps
 - Move on to [Reliability and Error Handling](./11_error_handling.md).

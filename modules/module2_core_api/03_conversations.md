@@ -20,13 +20,13 @@ def chat_turn(user_input):
 
     # 2. Send history to API
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=conversation_history
     )
 
-    # 3. Get assistant response
-    assistant_reply = response.content[0].text
+    # 3. Get assistant response (join the text blocks; content can also hold thinking blocks)
+    assistant_reply = "".join(b.text for b in response.content if b.type == "text")
     print(f"Claude: {assistant_reply}")
 
     # 4. Add assistant response to history
@@ -39,7 +39,7 @@ chat_turn("What is my name?")
 
 ## Managing Context Window
 
-Claude has a large context window (200K tokens), but it's not infinite.
+Claude has a large context window (200K to 1M tokens depending on the model), but it's not infinite.
 
 ### Strategies for Long Conversations
 
@@ -52,10 +52,15 @@ Claude has a large context window (200K tokens), but it's not infinite.
 ```python
 MAX_HISTORY = 10  # Keep last 10 messages
 
-if len(conversation_history) > MAX_HISTORY:
-    # Keep the system prompt or first message if crucial?
-    # Here we just slice the last N messages
-    conversation_history = conversation_history[-MAX_HISTORY:]
+def truncate(history, max_messages=MAX_HISTORY):
+    """Keep the last N messages; the system prompt is a separate parameter, so it is unaffected."""
+    trimmed = history[-max_messages:]
+    # The list must start with a user message
+    while trimmed and trimmed[0]["role"] != "user":
+        trimmed = trimmed[1:]
+    return trimmed
+
+conversation_history = truncate(conversation_history)
 ```
 
 ## User vs. Assistant Roles
@@ -64,29 +69,40 @@ if len(conversation_history) > MAX_HISTORY:
 - **Assistant**: Claude's output.
 
 **Rules:**
-- Roles must alternate (User -> Assistant -> User).
+- Roles should alternate (User -> Assistant -> User).
 - The list must start with a `user` message.
 
-### Prefilling the Assistant Response
-You can "put words in Claude's mouth" by adding an `assistant` message as the last message in the list *without* a corresponding user message following it. This is useful for:
-- Forcing a specific format (e.g., `{`).
-- Guiding the tone.
+### Controlling the Output Format (Prefill Is Removed)
+Older tutorials "put words in Claude's mouth" by ending the list with an `assistant` message (for example `{`). **That prefill returns a 400 error on current models** (Fable 5.1, Opus 5.5, Sonnet 5.5, and the 4.6+ family). Use one of these instead:
 
-*Note: This feature is handled differently in the API. You supply the prefill as the last message with role `assistant`.*
+- **Structured outputs**: constrain the response to a JSON schema with `output_config.format`.
+- **Clear instructions** in the system prompt ("Respond with a single JSON object and nothing else").
 
 ```python
-messages = [
-    {"role": "user", "content": "Write a JSON object describing a car."},
-    {"role": "assistant", "content": "{"} # Prefill
-]
-
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
-    messages=messages
+    messages=[{"role": "user", "content": "Describe a car as JSON."}],
+    output_config={
+        "format": {
+            "type": "json_schema",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "make": {"type": "string"},
+                    "model": {"type": "string"},
+                    "year": {"type": "integer"},
+                },
+                "required": ["make", "model", "year"],
+                "additionalProperties": False,
+            },
+        }
+    },
 )
-# Claude continues from "{":  "make": "Toyota", ...
+print(response.content[0].text)  # valid JSON matching the schema (check stop_reason != "refusal" first)
 ```
+
+Check the [Structured outputs docs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) for the SDK helper `client.messages.parse()`.
 
 ## Next Steps
 - Learn about [Streaming Responses](./04_streaming_basics.md) for real-time feedback.

@@ -10,7 +10,7 @@ Al final de este módulo, serás capaz de:
 - Procesar peticiones en lotes (batches)
 - Trabajar con imágenes y contenido visual
 - Usar pensamiento extendido para razonamiento complejo
-- Integrar capacidades de Uso de Computadora (beta)
+- Integrar capacidades de Uso de Computadora (`computer_toolset_20260801`)
 
 ## Temas Cubiertos
 
@@ -39,7 +39,7 @@ Al final de este módulo, serás capaz de:
 - [Visión General del Pensamiento Extendido](14_pensamiento_extendido.md)
 - [Cuándo Usar Pensamiento Extendido](15_casos_uso_pensamiento.md)
 
-### 3.6 Uso de Computadora (Beta)
+### 3.6 Uso de Computadora
 - [Introducción al Uso de Computadora](16_uso_computadora.md)
 - [Automatización con Uso de Computadora](17_automatizacion_computadora.md)
 

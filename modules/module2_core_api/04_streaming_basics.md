@@ -16,6 +16,7 @@ Streaming allows you to receive Claude's response in real-time as it's generated
 - Long-form content generation
 - Real-time applications
 - Interactive tools
+- Any request with a large `max_tokens` (roughly above 16K): the SDK refuses long non-streaming requests because they risk HTTP timeouts, and Opus 5.5 and Fable 5.1 can think for minutes on hard tasks
 
 ### When NOT to Use Streaming
 - Batch processing
@@ -31,9 +32,9 @@ from anthropic import Anthropic
 
 client = Anthropic()
 
-# Enable streaming with stream=True
+# client.messages.stream() is a context manager that handles the SSE connection
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Tell me a short story about a robot"}
@@ -57,7 +58,7 @@ from anthropic import Anthropic
 client = Anthropic()
 
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Explain Python in 3 sentences"}
@@ -79,7 +80,7 @@ Streaming provides several event types:
 
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello"}]
 ) as stream:
@@ -110,7 +111,7 @@ from anthropic.types import (
 client = Anthropic()
 
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Count to 5"}]
 ) as stream:
@@ -144,7 +145,7 @@ Get only the text content:
 
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Write a haiku"}]
 ) as stream:
@@ -157,7 +158,7 @@ Access complete message after streaming:
 
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello"}]
 ) as stream:
@@ -176,7 +177,7 @@ Get complete text after streaming:
 
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Say hello"}]
 ) as stream:
@@ -198,7 +199,7 @@ import time
 def stream_with_typing_effect(prompt: str, delay: float = 0.01):
     """Stream with typing effect"""
     with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:
@@ -221,7 +222,7 @@ def stream_with_progress(prompt: str):
     char_count = 0
 
     with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:
@@ -242,7 +243,7 @@ def stream_and_collect(prompt: str) -> tuple[str, dict]:
     collected_text = []
 
     with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:
@@ -272,7 +273,7 @@ def stream_to_file(prompt: str, filename: str):
     """Stream response directly to file"""
     with open(filename, 'w') as f:
         with client.messages.stream(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=2048,
             messages=[{"role": "user", "content": prompt}]
         ) as stream:
@@ -295,7 +296,7 @@ def safe_stream(prompt: str):
     """Stream with comprehensive error handling"""
     try:
         with client.messages.stream(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             messages=[{"role": "user", "content": prompt}]
         ) as stream:
@@ -332,7 +333,7 @@ async def async_stream_example():
     client = AsyncAnthropic()
 
     async with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": "Count to 10"}]
     ) as stream:
@@ -356,7 +357,7 @@ async def stream_response(client, prompt: str, label: str):
     print("-" * 40)
 
     async with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=512,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:
@@ -399,7 +400,7 @@ class StreamingChatbot:
     def __init__(self):
         self.client = Anthropic()
         self.conversation: List[Dict] = []
-        self.model = "claude-sonnet-4-5-20250929"
+        self.model = "claude-sonnet-5-5"
 
     def chat(self, user_message: str):
         """Send message and stream response"""
@@ -422,7 +423,9 @@ class StreamingChatbot:
 
             # Get complete response
             final_message = stream.get_final_message()
-            assistant_message = final_message.content[0].text
+            assistant_message = "".join(
+                b.text for b in final_message.content if b.type == "text"
+            )
 
         # Add assistant response to conversation
         self.conversation.append({
@@ -471,10 +474,11 @@ def measure_streaming_performance(prompt: str):
     """Measure streaming performance metrics"""
     start_time = time.time()
     first_token_time = None
+    ttft = None
     token_count = 0
 
     with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:
@@ -520,7 +524,7 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Use emojis to describe weather"}]
 ) as stream:
@@ -534,7 +538,7 @@ def handle_interrupted_stream(prompt: str):
     """Handle stream interruption gracefully"""
     try:
         with client.messages.stream(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             messages=[{"role": "user", "content": prompt}]
         ) as stream:
@@ -547,7 +551,7 @@ def handle_interrupted_stream(prompt: str):
         try:
             partial = stream.get_final_text()
             print(f"Partial response: {partial}")
-        except:
+        except Exception:
             pass
 
 # Usage
@@ -569,7 +573,7 @@ handle_interrupted_stream("Write a long story")
 ```python
 # Basic streaming
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello"}]
 ) as stream:

@@ -32,12 +32,16 @@ tools = [{
     "input_schema": {
         "type": "object",
         "properties": {
-            "op": {"type": "string", "enum": ["add", "sub"]},
+            "op": {"type": "string", "enum": ["add", "sub", "mul", "div"]},
             "a": {"type": "number"},
             "b": {"type": "number"}
-        }
+        },
+        "required": ["op", "a", "b"]
     }
 }]
+
+# TODO: send "What is 50 + 20?" with tools=tools, check stop_reason,
+# run the calculation, and send a tool_result back to Claude.
 
 ```
 
@@ -66,7 +70,67 @@ Check `message.stop_reason == 'tool_use'`
 <summary>Click to view solution</summary>
 
 ```python
-# See Module 3 examples
+import anthropic
+
+client = anthropic.Anthropic()
+MODEL = "claude-sonnet-5-5"
+
+tools = [{
+    "name": "calculate",
+    "description": "Perform basic arithmetic on two numbers.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "op": {"type": "string", "enum": ["add", "sub", "mul", "div"]},
+            "a": {"type": "number"},
+            "b": {"type": "number"},
+        },
+        "required": ["op", "a", "b"],
+    },
+}]
+
+def run_calculate(op, a, b):
+    if op == "add":
+        return a + b
+    if op == "sub":
+        return a - b
+    if op == "mul":
+        return a * b
+    if op == "div":
+        if b == 0:
+            raise ZeroDivisionError("division by zero")
+        return a / b
+    raise ValueError(f"unknown op {op}")
+
+messages = [{"role": "user", "content": "What is 50 + 20?"}]
+
+while True:
+    response = client.messages.create(
+        model=MODEL, max_tokens=1024, tools=tools, messages=messages
+    )
+    if response.stop_reason != "tool_use":
+        break
+
+    # Keep the full assistant turn (including any thinking blocks) in the history
+    messages.append({"role": "assistant", "content": response.content})
+
+    tool_results = []
+    for block in response.content:
+        if block.type == "tool_use":
+            try:
+                result = str(run_calculate(**block.input))
+                is_error = False
+            except (ValueError, ZeroDivisionError) as e:
+                result, is_error = str(e), True
+            tool_results.append({
+                "type": "tool_result",
+                "tool_use_id": block.id,
+                "content": result,
+                "is_error": is_error,
+            })
+    messages.append({"role": "user", "content": tool_results})
+
+print("".join(b.text for b in response.content if b.type == "text"))
 ```
 </details>
 

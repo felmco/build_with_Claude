@@ -2,7 +2,7 @@
 
 ## Serverless (Lambda/Cloud Functions)
 - **Pros:** Barato para tráfico bajo.
-- **Contras:** "Arranques en frío" añaden latencia a la primera petición.
+- **Contras:** "Arranques en frío" añaden latencia a la primera petición, y los tiempos límite de las funciones pueden ser más cortos que una generación larga. Usa streaming y establece tiempos de espera del cliente por debajo del límite de la función.
 
 ## Contenedores de Larga Duración (Fargate/K8s)
 - **Pros:** Sin arranques en frío, mejor para conexiones de streaming (WebSockets).

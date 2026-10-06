@@ -3,46 +3,56 @@
 ## Introduction
 Claude offers multiple models, each optimized for different use cases. Understanding these models will help you choose the right one for your application.
 
-## Current Claude Models (2026)
+## Current Claude Models (October 2026)
 
-### Claude Opus 4.5
-**Model ID**: `claude-opus-4-5-20251101`
+> Verified against the [Models overview](https://platform.claude.com/docs/en/about-claude/models/overview). Model lineups change often, so check it (or call the Models API, see below) before you hard-code an ID.
+
+### Claude Fable 5.1
+**Model ID**: `claude-fable-5-1`
 
 **Best For**:
-- Complex reasoning tasks
-- Advanced code generation
-- Detailed analysis and research
-- Tasks requiring highest intelligence
+- The most demanding reasoning
+- Long-horizon, autonomous agentic work
+- Cases where your evals on Opus 5.5 at higher effort still fall short
 
 **Characteristics**:
-- Highest capability level
-- Most expensive option
-- Slower response times
-- Best for quality-critical applications
+- Most capable widely released model
+- Thinking is always on (steer it with `effort`)
+- Slowest and most expensive ($10 / $50 per MTok)
+
+### Claude Opus 5.5
+**Model ID**: `claude-opus-5-5`
+
+**Best For**:
+- Long-running agentic coding and knowledge work
+- Complex reasoning and analysis
+- A strong default when quality matters most
+
+**Characteristics**:
+- Adaptive thinking always on; default effort is `medium`
+- 1M-token context, 128K max output
+- $4 / $20 per MTok
 
 **Use Cases**:
 ```
 ✅ Complex software architecture design
-✅ Advanced mathematical problem solving
+✅ Multi-file refactors and long coding sessions
 ✅ Detailed legal or technical document analysis
-✅ Multi-step reasoning tasks
 ✅ Research and strategic planning
 ```
 
-### Claude Sonnet 4.5
-**Model ID**: `claude-sonnet-4-5-20250929`
+### Claude Sonnet 5.5
+**Model ID**: `claude-sonnet-5-5`
 
 **Best For**:
 - Most production applications
-- Balanced performance and speed
-- General-purpose tasks
-- Cost-effective solutions
+- The best combination of speed and intelligence
+- Cost-effective everyday coding, agent, and enterprise work
 
 **Characteristics**:
-- Excellent balance of capability and speed
-- Most popular choice for production
-- Moderate pricing
-- Fast response times
+- Fast, with adaptive thinking (default effort `high`)
+- 1M-token context, 128K max output
+- $2 / $10 per MTok
 
 **Use Cases**:
 ```
@@ -53,45 +63,47 @@ Claude offers multiple models, each optimized for different use cases. Understan
 ✅ Customer support automation
 ```
 
-### Claude Haiku 3.5
-**Model ID**: `claude-3-5-haiku-20241022`
+### Claude Haiku 4.5
+**Model ID**: `claude-haiku-4-5` (pinned snapshot: `claude-haiku-4-5-20251001`)
 
 **Best For**:
 - High-volume applications
 - Real-time responses
-- Simple tasks
+- Sub-agents and simple tasks
 - Budget-conscious projects
 
 **Characteristics**:
-- Fastest response times
-- Most cost-effective
-- Lower capability than Sonnet/Opus
-- Great for straightforward tasks
+- Fastest model with near-frontier intelligence
+- 200K-token context, 64K max output
+- Uses manual extended thinking (`budget_tokens`), no `effort` parameter
+- $1 / $5 per MTok
 
 **Use Cases**:
 ```
-✅ Simple classification tasks
+✅ Classification and extraction
 ✅ Quick Q&A systems
 ✅ Batch processing large datasets
 ✅ Real-time chat applications
-✅ Simple content moderation
+✅ Content moderation
 ```
+
+> **Legacy models** (still served): Claude Fable 5, Opus 5, Opus 4.8, Opus 4.7, Opus 4.6, Sonnet 5 and Sonnet 4.6. Older IDs that appear in tutorials online, such as `claude-3-5-haiku-20241022` or `claude-sonnet-4-5-20250929`, are on the deprecation path. See [Model deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations).
 
 ## Model Comparison Table
 
-| Feature | Haiku 3.5 | Sonnet 4.5 | Opus 4.5 |
-|---------|-----------|------------|----------|
-| Speed | ⚡⚡⚡ Fastest | ⚡⚡ Fast | ⚡ Moderate |
-| Intelligence | 🧠 Good | 🧠🧠 Excellent | 🧠🧠🧠 Best |
-| Cost | 💰 Lowest | 💰💰 Moderate | 💰💰💰 Highest |
-| Context Window | 200K tokens | 200K tokens | 200K tokens |
-| Best Use | High volume | Production | Complex tasks |
+| Feature | Haiku 4.5 | Sonnet 5.5 | Opus 5.5 | Fable 5.1 |
+|---------|-----------|------------|----------|-----------|
+| Speed | ⚡⚡⚡ Fastest | ⚡⚡ Fast | ⚡ Moderate | 🐢 Slower |
+| Intelligence | 🧠 Near-frontier | 🧠🧠 Excellent | 🧠🧠🧠 Best for most | 🧠🧠🧠🧠 Highest |
+| Price (in / out per MTok) | $1 / $5 | $2 / $10 | $4 / $20 | $10 / $50 |
+| Context Window | 200K tokens | 1M tokens | 1M tokens | 1M tokens |
+| Max Output | 64K tokens | 128K tokens | 128K tokens | 128K tokens |
+| Thinking | Extended (`budget_tokens`) | Adaptive | Adaptive (always on) | Adaptive (always on) |
+| Best Use | High volume | Production | Agentic coding | Hardest problems |
 
 ## Token Limits
 
-All Claude models support:
-- **Context Window**: 200,000 tokens (~150,000 words)
-- **Output Tokens**: Up to 8,192 tokens per request (configurable)
+Limits differ per model (table above). Do not assume them: query the **Models API** (`client.models.retrieve("claude-sonnet-5-5")`), which returns `max_input_tokens`, `max_tokens` and a `capabilities` object.
 
 ## Model Capabilities
 
@@ -99,27 +111,30 @@ All Claude models support:
 - ✅ Text generation and conversation
 - ✅ Code understanding and generation
 - ✅ Multi-language support (English, Spanish, French, German, etc.)
-- ✅ JSON mode for structured outputs
+- ✅ Structured outputs (`output_config.format`)
 - ✅ Function/tool calling
 - ✅ Vision (image understanding)
 - ✅ Long context processing
 
 ### Advanced Features (Model-Specific):
-- **Extended Thinking**: Available on select models for complex reasoning
-- **Computer Use**: Beta feature for desktop automation
+- **Adaptive Thinking + `effort`**: Claude decides how much to think; you steer depth with `output_config.effort`
+- **Computer Use**: Desktop automation through the `computer_toolset_20260801` tool
+- **Structured Outputs**: Constrain responses to a JSON schema with `output_config.format`
 
 ## Choosing Your Model: Quick Decision Tree
 
 ```
 Start Here
     |
-    ├─ Need highest quality reasoning? → Use Opus 4.5
+    ├─ Hardest reasoning / long autonomous runs? → Use Fable 5.1
     |
-    ├─ Need fastest responses? → Use Haiku 3.5
+    ├─ Need highest quality reasoning? → Use Opus 5.5
     |
-    ├─ Need best balance? → Use Sonnet 4.5 ⭐ (Recommended for most)
+    ├─ Need fastest responses? → Use Haiku 4.5
     |
-    └─ Not sure? → Start with Sonnet 4.5, optimize later
+    ├─ Need best balance? → Use Sonnet 5.5 ⭐ (Recommended for most)
+    |
+    └─ Not sure? → Start with Sonnet 5.5, optimize later
 ```
 
 ## Python Example: Checking Model Capabilities
@@ -131,9 +146,10 @@ client = Anthropic()
 
 # Dictionary of available models
 MODELS = {
-    "haiku": "claude-3-5-haiku-20241022",
-    "sonnet": "claude-sonnet-4-5-20250929",
-    "opus": "claude-opus-4-5-20251101"
+    "haiku": "claude-haiku-4-5",
+    "sonnet": "claude-sonnet-5-5",
+    "opus": "claude-opus-5-5",
+    "fable": "claude-fable-5-1",
 }
 
 def test_model(model_name: str, prompt: str):
@@ -162,19 +178,18 @@ print(test_model("opus", prompt))
 
 ## Best Practices
 
-1. **Start with Sonnet 4.5**: It offers the best balance for most applications
+1. **Start with Sonnet 5.5**: It offers the best balance for most applications
 2. **Prototype First**: Test with Sonnet before optimizing costs
 3. **Use Haiku for Scale**: Once your application works, consider Haiku for high-volume tasks
-4. **Reserve Opus for Complexity**: Use Opus only when Sonnet doesn't meet your quality needs
+4. **Reserve Opus and Fable for Complexity**: Move up only when Sonnet doesn't meet your quality needs
 5. **Monitor Performance**: Track quality, speed, and cost metrics to optimize
 
 ## Model Versions and Updates
 
-Claude models are versioned with release dates:
-- Example: `claude-sonnet-4-5-20250929` (released September 29, 2025)
-- Always use the latest stable version for production
-- Older versions may be deprecated over time
-- Check release notes for breaking changes
+Since the 4.6 generation, Claude model IDs are dateless and each one is a **pinned snapshot** (for example `claude-sonnet-5-5`). Do not append date suffixes to them.
+- Pick a current model for new work and plan for the retirement dates on the [Model deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations) page
+- Cloud platforms use their own ID formats: Amazon Bedrock `anthropic.claude-sonnet-5-5`, Google Cloud `claude-sonnet-5-5`
+- Re-run your evals when you migrate, because defaults such as `effort` and thinking behaviour change between generations (see the [Migration guide](https://platform.claude.com/docs/en/about-claude/models/migration-guide))
 
 ## Common Misconceptions
 
@@ -190,13 +205,13 @@ Claude models are versioned with release dates:
 def select_model(task_complexity: str, speed_priority: bool = False, budget_tight: bool = False):
     """Helper function to select appropriate model"""
     if budget_tight and task_complexity == "simple":
-        return "claude-3-5-haiku-20241022"
+        return "claude-haiku-4-5"
     elif speed_priority and task_complexity != "complex":
-        return "claude-3-5-haiku-20241022"
+        return "claude-haiku-4-5"
     elif task_complexity == "complex":
-        return "claude-opus-4-5-20251101"
+        return "claude-opus-5-5"  # use claude-fable-5-1 for the very hardest problems
     else:
-        return "claude-sonnet-4-5-20250929"  # Default choice
+        return "claude-sonnet-5-5"  # Default choice
 ```
 
 ## Next Steps
@@ -204,6 +219,9 @@ def select_model(task_complexity: str, speed_priority: bool = False, budget_tigh
 - Learn about [Model Pricing and Limits](./03_pricing_limits.md)
 
 ## Additional Resources
-- [Official Model Comparison](https://platform.claude.com/docs/en/models/overview)
-- [Anthropic Pricing Page](https://www.anthropic.com/pricing)
-- [Model Release Notes](https://platform.claude.com/docs/en/release-notes)
+- [Official Model Comparison](https://platform.claude.com/docs/en/about-claude/models/overview)
+- [Choosing a model](https://platform.claude.com/docs/en/about-claude/models/choosing-a-model)
+- [Pricing](https://platform.claude.com/docs/en/about-claude/pricing)
+- [Model deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations)
+- [Release notes](https://platform.claude.com/docs/en/release-notes/overview)
+- [Official references hub](../../REFERENCES.md)

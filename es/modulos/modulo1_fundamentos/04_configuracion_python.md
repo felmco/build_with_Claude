@@ -4,7 +4,7 @@ Antes de trabajar con la API de Claude, necesitas configurar un entorno de desar
 
 ## 1. Instalar Python
 
-Necesitas **Python 3.7 o superior**.
+Necesitas **Python 3.10 o superior** (el SDK actual de `anthropic` lo requiere).
 
 ### Comprobar si Python está instalado
 Abre tu terminal o símbolo del sistema y ejecuta:

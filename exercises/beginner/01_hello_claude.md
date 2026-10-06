@@ -7,7 +7,7 @@ Make your first API call to Claude and display a formatted response.
 15 minutes
 
 ## 📚 Prerequisites
-- Python 3.7+ installed
+- Python 3.10+ installed
 - Anthropic SDK installed
 - API key configured
 - Completed [Module 1: First API Call](../../modules/module1_foundation/07_first_api_call.md)
@@ -105,7 +105,7 @@ client = Anthropic()  # Uses ANTHROPIC_API_KEY env var
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Your message here"}
@@ -132,24 +132,33 @@ print(response_text)
 #!/usr/bin/env python3
 """Exercise 1: Hello Claude - Solution"""
 
-from anthropic import Anthropic
 import os
+
+import anthropic
+from anthropic import Anthropic
 
 def send_message(client, user_message: str):
     """Send a message to Claude and return response"""
-    message = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
-        max_tokens=1024,
-        messages=[
-            {"role": "user", "content": user_message}
-        ]
-    )
-    return message
+    try:
+        return client.messages.create(
+            model="claude-sonnet-5-5",
+            max_tokens=1024,
+            messages=[
+                {"role": "user", "content": user_message}
+            ]
+        )
+    except anthropic.APIError as e:
+        print(f"❌ API error: {e}")
+        return None
 
 def display_response(user_message: str, message):
     """Display formatted response"""
+    if message is None:
+        return
+    # Join text blocks (content may also hold non-text blocks on some models)
+    text = "".join(b.text for b in message.content if b.type == "text")
     print(f"\nYou: {user_message}\n")
-    print(f"Claude: {message.content[0].text}\n")
+    print(f"Claude: {text}\n")
     print("📊 Usage:")
     print(f"   Input tokens: {message.usage.input_tokens}")
     print(f"   Output tokens: {message.usage.output_tokens}")
@@ -262,7 +271,7 @@ pip install anthropic
 
 ## 🎉 Completion
 
-Congratulations! You've completed your first exercise. Move on to [Exercise 2: Temperature Experiments](./02_temperature.md)
+Congratulations! You've completed your first exercise. Move on to [Exercise 2: Simple Chatbot](./02_simple_chatbot.md)
 
 ---
 

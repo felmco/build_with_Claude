@@ -19,7 +19,19 @@ Refer to Module 4/5 materials to implement this advanced system.
 ## 💻 Starter Code
 
 ```python
-# Advanced implementation
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("my-server")
+
+@mcp.tool()
+def add(a: int, b: int) -> int:
+    """Add two numbers."""
+    return a + b
+
+# TODO: add your own tools
+
+if __name__ == "__main__":
+    mcp.run()
 ```
 
 ## ✅ Expected Output
@@ -34,7 +46,7 @@ Production tests
 
 ## 🎁 Hints
 
-Check the cookbook.
+Use the official `mcp` Python package: `from mcp.server.fastmcp import FastMCP`, create `mcp = FastMCP("name")`, decorate functions with `@mcp.tool()`, and run with `mcp.run()`. Test it with the MCP Inspector or Claude Desktop. See modelcontextprotocol.io for the current docs.
 
 ## ✨ Solution
 
@@ -42,7 +54,8 @@ Check the cookbook.
 <summary>Click to view solution</summary>
 
 ```python
-# See complex solution in projects folder
+# Reference outline: extend the FastMCP server above with tools that wrap a real API
+# (for example weather lookups), validate inputs, and return clear error messages.
 ```
 </details>
 

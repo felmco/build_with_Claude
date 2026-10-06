@@ -12,7 +12,7 @@ from anthropic import Anthropic
 client = Anthropic()
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Hello, Claude!"}
@@ -26,7 +26,7 @@ print(message.content[0].text)
 ```python
 message = client.messages.create(
     # Parámetros requeridos
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Explain quantum computing"}
@@ -34,10 +34,8 @@ message = client.messages.create(
 
     # Parámetros opcionales
     system="You are a physics professor explaining concepts simply.",
-    temperature=0.7,
-    top_p=0.9,
-    top_k=40,
-    metadata={"user_id": "user_123"},
+    # temperature / top_p / top_k: solo en Haiku 4.5 y modelos anteriores (ver "Inmersión Profunda en los Parámetros de la Petición")
+    metadata={"user_id": "user_123"},  # ID opaco, nunca un email ni un nombre
     stop_sequences=["Human:", "Assistant:"]
 )
 ```
@@ -78,10 +76,10 @@ messages = [
 
 ### Reglas para Roles de Mensajes
 1. ✅ Debe empezar con un mensaje de usuario
-2. ✅ Debe alternar entre usuario y asistente
-3. ✅ Debe terminar con un mensaje de usuario
-4. ❌ No puede tener dos mensajes de usuario consecutivos
-5. ❌ No puede tener dos mensajes de asistente consecutivos
+2. ✅ Debería alternar entre usuario y asistente (la API fusiona los turnos consecutivos del mismo rol, pero alternar mantiene tu intención explícita)
+3. ✅ Debe terminar con un mensaje de usuario (un último mensaje `assistant` es un prefill, que los modelos actuales rechazan con un 400)
+4. ❌ Evita dos mensajes de usuario consecutivos (pon varios bloques de contenido en un solo mensaje)
+5. ❌ Evita dos mensajes de asistente consecutivos
 
 **Válido**:
 ```python
@@ -167,7 +165,7 @@ Los prompts del sistema proporcionan instrucciones y contexto para el comportami
 ### Prompt del Sistema Básico
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system="You are a helpful coding assistant specializing in Python.",
     messages=[
@@ -199,7 +197,7 @@ CONSTRAINTS:
 """
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=2048,
     system=system_prompt,
     messages=[
@@ -216,21 +214,21 @@ Número máximo de tokens en la respuesta:
 ```python
 # Respuesta corta (50-100 tokens ≈ 40-75 palabras)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=100,
     messages=[{"role": "user", "content": "Summarize Python in one paragraph"}]
 )
 
 # Respuesta media (1000-2000 tokens ≈ 750-1500 palabras)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=2000,
     messages=[{"role": "user", "content": "Explain OOP in Python"}]
 )
 
 # Respuesta larga (4000+ tokens ≈ 3000+ palabras)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=4096,
     messages=[{"role": "user", "content": "Write a detailed tutorial on async Python"}]
 )
@@ -238,17 +236,19 @@ message = client.messages.create(
 
 **Directrices de Tokens**:
 - 1 token ≈ 0.75 palabras en inglés
-- Máximo: 8,192 tokens (varía según el modelo)
+- Máximo: hasta 128K tokens en los modelos actuales (64K en Haiku 4.5); varía según el modelo
 - Establecer basado en la longitud de respuesta esperada
 - Considerar el coste (cobrado por token de salida)
+
+> ⚠️ **Parámetros de muestreo en los modelos actuales.** Claude Fable 5.1, Opus 5.5 y Sonnet 5.5 no aceptan valores no predeterminados de `temperature`, `top_p` ni `top_k` (la petición devuelve 400). Guía el comportamiento con el prompt y con `output_config.effort`. Los ejemplos siguientes siguen funcionando en **Claude Haiku 4.5** (`claude-haiku-4-5`) y modelos anteriores, por eso lo usan.
 
 ### temperature
 Controla la aleatoriedad y creatividad (0.0 - 1.0):
 
 ```python
-# Respuestas deterministas (facuales, consistentes)
+# Respuestas deterministas (factuales, consistentes)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     temperature=0.0,  # Más determinista
     messages=[{"role": "user", "content": "What is 2 + 2?"}]
@@ -256,7 +256,7 @@ message = client.messages.create(
 
 # Respuestas equilibradas (comportamiento por defecto)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     temperature=0.7,  # Equilibrado
     messages=[{"role": "user", "content": "Explain machine learning"}]
@@ -264,7 +264,7 @@ message = client.messages.create(
 
 # Respuestas creativas (variadas, imaginativas)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     temperature=1.0,  # Más creativo
     messages=[{"role": "user", "content": "Write a creative story"}]
@@ -283,7 +283,7 @@ Alternativa a la temperatura para controlar la aleatoriedad:
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     top_p=0.9,  # Considerar el top 90% de masa de probabilidad
     messages=[{"role": "user", "content": "Generate ideas"}]
@@ -301,7 +301,7 @@ Limita el vocabulario a los top K tokens:
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     top_k=40,  # Considerar solo los top 40 tokens en cada paso
     messages=[{"role": "user", "content": "Tell me about AI"}]
@@ -313,7 +313,7 @@ Detener la generación cuando se encuentran ciertas secuencias:
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     stop_sequences=["</end>", "STOP", "\n\n---"],
     messages=[{"role": "user", "content": "List 5 programming languages"}]
@@ -331,13 +331,9 @@ Adjuntar metadatos personalizados para rastreo:
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
-    metadata={
-        "user_id": "user_12345",
-        "session_id": "session_abc",
-        "environment": "production"
-    },
+    metadata={"user_id": "user_12345"},  # el único campo soportado: un ID opaco, no datos personales
     messages=[{"role": "user", "content": "Hello"}]
 )
 ```
@@ -347,7 +343,7 @@ message = client.messages.create(
 ### Campos Básicos de la Respuesta
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello!"}]
 )
@@ -365,11 +361,12 @@ print(f"Usage: {message.usage}")              # Info de uso de tokens
 
 ### Bloques de Contenido
 ```python
-# Bloque de texto único (más común)
+# Una respuesta simple suele ser un único bloque de texto
 message.content[0].type  # "text"
 message.content[0].text  # El texto de respuesta real
 
-# Múltiples bloques de contenido (menos común)
+# Pero comprueba siempre el tipo: Opus 5.5 y Fable 5.1 siempre piensan, así que la
+# lista puede empezar con un bloque "thinking", y las llamadas a herramientas llegan como bloques "tool_use"
 for block in message.content:
     if block.type == "text":
         print(f"Text: {block.text}")
@@ -384,12 +381,12 @@ print(f"Tokens de entrada: {usage.input_tokens}")
 print(f"Tokens de salida: {usage.output_tokens}")
 print(f"Tokens totales: {usage.input_tokens + usage.output_tokens}")
 
-# Calcular coste aproximado (tarifas de ejemplo)
-INPUT_COST_PER_MTK = 0.003  # Por millón de tokens
-OUTPUT_COST_PER_MTK = 0.015  # Por millón de tokens
+# Calcular coste aproximado (precios de lista de Sonnet 5.5: consulta la página de precios)
+INPUT_COST_PER_MTOK = 2.00    # USD por millón de tokens de entrada
+OUTPUT_COST_PER_MTOK = 10.00  # USD por millón de tokens de salida
 
-input_cost = (usage.input_tokens / 1_000_000) * INPUT_COST_PER_MTK
-output_cost = (usage.output_tokens / 1_000_000) * OUTPUT_COST_PER_MTK
+input_cost = (usage.input_tokens / 1_000_000) * INPUT_COST_PER_MTOK
+output_cost = (usage.output_tokens / 1_000_000) * OUTPUT_COST_PER_MTOK
 total_cost = input_cost + output_cost
 
 print(f"Coste estimado: ${total_cost:.6f}")
@@ -404,6 +401,8 @@ stop_reason = message.stop_reason
 # - "max_tokens": Alcanzó límite de max_tokens
 # - "stop_sequence": Golpeó una secuencia de parada
 # - "tool_use": El modelo quiere usar una herramienta (característica avanzada)
+# - "pause_turn": Un bucle de herramientas del lado del servidor se pausó; reenvía la respuesta para continuar
+# - "refusal": La petición fue rechazada (content puede estar vacío)
 
 if stop_reason == "max_tokens":
     print("⚠️  Respuesta truncada - aumenta max_tokens")
@@ -411,6 +410,8 @@ elif stop_reason == "end_turn":
     print("✅ Respuesta completa")
 elif stop_reason == "stop_sequence":
     print(f"🛑 Parado en secuencia: {message.stop_sequence}")
+elif stop_reason == "refusal":
+    print("🚫 Petición rechazada")
 ```
 
 ## Ejemplo Completo: Llamada a la API Estructurada
@@ -429,14 +430,13 @@ class ClaudeClient:
 
     def __init__(self, api_key: Optional[str] = None):
         self.client = Anthropic(api_key=api_key or os.getenv("ANTHROPIC_API_KEY"))
-        self.model = "claude-sonnet-4-5-20250929"
+        self.model = "claude-sonnet-5-5"
 
     def send_message(
         self,
         prompt: str,
         system: Optional[str] = None,
         max_tokens: int = 1024,
-        temperature: float = 1.0,
         conversation_history: Optional[List[Dict]] = None
     ) -> Dict:
         """
@@ -446,21 +446,19 @@ class ClaudeClient:
             prompt: Mensaje del usuario
             system: Prompt del sistema (opcional)
             max_tokens: Tokens máximos de respuesta
-            temperature: Aleatoriedad de respuesta (0.0-1.0)
             conversation_history: Mensajes previos (opcional)
 
         Returns:
             Dict con texto de respuesta, uso y metadatos
         """
         # Construir lista de mensajes
-        messages = conversation_history or []
+        messages = list(conversation_history or [])
         messages.append({"role": "user", "content": prompt})
 
         # Crear petición a la API
         params = {
             "model": self.model,
             "max_tokens": max_tokens,
-            "temperature": temperature,
             "messages": messages
         }
 
@@ -472,7 +470,7 @@ class ClaudeClient:
 
         # Devolver respuesta estructurada
         return {
-            "text": message.content[0].text,
+            "text": "".join(b.text for b in message.content if b.type == "text"),
             "id": message.id,
             "model": message.model,
             "stop_reason": message.stop_reason,
@@ -507,21 +505,21 @@ if __name__ == "__main__":
 ```python
 # Empieza con valores por defecto
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": prompt}]
 )
 
 # Optimiza basado en necesidades
 # - Ajusta max_tokens para longitud de respuesta
-# - Establece temperature para creatividad deseada
+# - Ajusta output_config.effort para la profundidad de razonamiento
 # - Añade prompts del sistema para controlar el comportamiento
 ```
 
 ### 2. Maneja Siempre los Límites de Tokens
 ```python
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": prompt}]
 )
@@ -553,16 +551,16 @@ conversation = []
 # Turno 1
 conversation.append({"role": "user", "content": "What's Python?"})
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=conversation
 )
-conversation.append({"role": "assistant", "content": response.content[0].text})
+conversation.append({"role": "assistant", "content": response.content[0].text})  # respuesta solo de texto
 
 # Turno 2 (con contexto)
 conversation.append({"role": "user", "content": "What are its main uses?"})
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=conversation
 )

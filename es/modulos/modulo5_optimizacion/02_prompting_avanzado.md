@@ -5,6 +5,8 @@ Una vez que dominas lo básico, estas técnicas permiten resolver problemas comp
 ## 1. Cadena de Pensamiento (Chain of Thought - CoT)
 Pide a Claude que "Piense paso a paso" antes de responder. Esto mejora el razonamiento significativamente.
 
+> En los modelos actuales también puedes dejar que el modelo razone de forma nativa: define `thinking={"type": "adaptive"}` y ajusta `output_config={"effort": ...}` en lugar de (o además de) pedir pasos en el prompt. Consulta [Cadena de Pensamiento](04_cadena_pensamiento.md).
+
 ```
 Pregunta: Si tengo 3 manzanas y como una, luego compro dos más, ¿cuántas tengo?
 Respuesta: Pensemos paso a paso.

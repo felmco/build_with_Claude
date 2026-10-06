@@ -4,10 +4,10 @@
 2. **Resource vs Tool:**
    - Use **Resources** for passive data (logs, file content).
    - Use **Tools** for actions (queries, API calls).
-3. **Error Handling:** Return meaningful errors so the model can retry.
-4. **Stdio vs SSE:**
+3. **Error Handling:** Return meaningful errors so the model can retry (MCP tool results support an `isError` flag).
+4. **Stdio vs Streamable HTTP:**
    - **Stdio:** Best for local desktop apps.
-   - **SSE (Server-Sent Events):** Best for remote HTTP servers.
+   - **Streamable HTTP:** Best for remote servers. It replaces the older HTTP+SSE transport, which is deprecated.
 
 ## Next Steps
 - Move to [Production Patterns](./17_error_patterns.md).

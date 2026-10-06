@@ -4,7 +4,7 @@ Agents need memory to persist state across sessions.
 
 ## Short-term Memory
 - **Mechanism:** The `messages` list sent to the API.
-- **Limit:** Context window (200k tokens).
+- **Limit:** Context window (up to 1M tokens on current Opus/Sonnet/Fable models, 200K on Haiku 4.5).
 - **Strategy:** Summarization (See Module 2).
 
 ## Long-term Memory
