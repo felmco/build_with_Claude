@@ -12,18 +12,19 @@ The latest Claude models are:
 
 | Model | Best For | Key Characteristics |
 |-------|----------|---------------------|
+| **Claude Fable 5.1** | Hardest tasks | Most capable model |
+| **Claude Opus 5.5** | Complex reasoning | High intelligence for difficult tasks |
 | **Claude Sonnet 5.5** | Most applications | Best balance of speed and capability |
-| **Claude Opus 5.5** | Complex reasoning | Highest intelligence for difficult tasks |
-| **Claude 4** | Legacy support | Previous generation models |
+| **Claude Haiku 4.5** | High volume, simple tasks | Fastest and most cost-effective |
 
 ### Getting Started with Models
 
 To choose the right model:
 
 - 📊 Review the [model comparison chart](https://platform.claude.com/docs/en/models) to understand capabilities and differences
-- 🔄 Check the model migration checklist if upgrading from Claude 4
-- 📝 Follow Claude 4 prompting best practices for optimal results
-- 💰 Review pricing for Claude 4 to optimize costs
+- 🔄 Check the model migration guide if upgrading from an older model
+- 📝 Follow the current prompting best practices for optimal results
+- 💰 Review current model pricing to optimize costs
 
 ---
 
@@ -83,7 +84,7 @@ The Messages API is the fundamental interface for communicating with Claude:
 **Key Features**:
 - Support for different message roles (user, assistant)
 - Token counting for optimization
-- Temperature and other parameter controls
+- Parameter controls (note: sampling parameters such as `temperature` are rejected by Fable 5.1, Opus 5.5 and Sonnet 5.5; Haiku 4.5 still accepts them)
 - Streaming responses for better UX
 
 ### 3.2 Message Batches API
@@ -171,7 +172,7 @@ Improve Claude's ability to solve complex tasks:
 - ⚠️ Trade-off: longer response times and higher costs
 
 **Implementation**:
-- Use extended thinking models in your API calls
+- On Fable 5.1, Opus 5.5 and Sonnet 5.5 use `thinking={"type": "adaptive"}` with `output_config={"effort": ...}`; only Haiku 4.5 uses `budget_tokens`
 - Follow extended thinking best practices
 - Monitor token usage (thinking tokens are more expensive)
 
@@ -335,8 +336,8 @@ Choose the right model for your use case:
 
 | Use Case | Recommended Model | Reason |
 |----------|------------------|---------|
-| Most applications | Sonnet 5.5 | Fastest, balanced performance |
-| Complex reasoning | Opus 5.5 | Highest intelligence |
+| Most applications | Sonnet 5.5 | Balanced speed and capability |
+| Complex reasoning | Opus 5.5 / Fable 5.1 | Highest intelligence |
 | High volume, simple tasks | Haiku 4.5 | Most cost-effective |
 
 **Considerations**:
@@ -374,7 +375,7 @@ client = Anthropic()
 
 # 4. Make your first API call
 message = client.messages.create(
-    model="claude-opus-5-5",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Hello, Claude!"}
@@ -403,7 +404,7 @@ After your first successful call:
 
 | Resource | Description | Link |
 |----------|-------------|------|
-| **Full API Docs** | Complete API reference | [docs.anthropic.com](https://docs.anthropic.com) |
+| **Full API Docs** | Complete API reference | [platform.claude.com/docs](https://platform.claude.com/docs/en/home) |
 | **Anthropic Cookbook** | Code snippets and practical guides | [GitHub](https://github.com/anthropics/anthropic-cookbook) |
 | **Quickstarts** | Pre-built application examples | [GitHub](https://github.com/anthropics/anthropic-quickstarts) |
 | **Courses** | In-depth training on specific topics | [Anthropic Academy](https://www.anthropic.com/learn) |
@@ -472,9 +473,9 @@ After your first successful call:
 
 | Issue | Solution |
 |-------|----------|
-| **API Rate Limits** | Use batch processing for high volume |
+| **API Rate Limits** | Back off and retry (the SDK retries automatically), spread load, or use batch processing for non-urgent volume |
 | **High Token Costs** | Implement prompt caching and optimize prompts |
-| **Slow Responses** | Use Sonnet model, check temperature settings, stream responses |
+| **Slow Responses** | Use a smaller model (Haiku 4.5), lower `effort`, stream responses |
 | **Tool Calling Issues** | Ensure tool definitions are clear and JSON format is correct |
 | **Accuracy Problems** | Use extended thinking, improve prompts, add examples |
 | **Debugging** | Use the Claude Console to test prompts, check API documentation |
@@ -492,10 +493,10 @@ pip install anthropic
 ```python
 from anthropic import Anthropic
 
-client = Anthropic(api_key="your-key")
+client = Anthropic()  # reads ANTHROPIC_API_KEY from the environment
 
 message = client.messages.create(
-    model="claude-opus-5-5",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Your prompt"}]
 )
@@ -507,8 +508,8 @@ message = client.messages.create(
 |--------|-------------|
 | `messages.create()` | Send message and get response |
 | `messages.stream()` | Get streaming responses |
-| `beta.files.upload()` | Upload files |
-| `batches.create()` | Process multiple requests |
+| `files.upload()` | Upload files (Files API is GA, no beta header) |
+| `messages.batches.create()` | Process multiple requests |
 
 ---
 

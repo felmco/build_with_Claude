@@ -1,10 +1,10 @@
 # Sample Projects
 
-This directory contains complete, real-world projects that demonstrate how to build production-ready applications with Claude API.
+This directory contains project briefs and starter skeletons (each `main.py` is a minimal entry point to build on) for real-world applications with the Claude API. The feature lists below describe the target design for you to implement.
 
 ## 🚀 Available Projects
 
-### 1. [Customer Support Chatbot](./01_customer_support_bot/)
+### 1. [Customer Support Chatbot](./1_customer_support_bot/)
 **Level**: Intermediate | **Time**: 3-4 hours
 
 A production-ready customer support chatbot with:
@@ -24,7 +24,7 @@ A production-ready customer support chatbot with:
 
 ---
 
-### 2. [Document Q&A System](./02_document_qa/)
+### 2. [Document Q&A System](./2_document_qa_system/)
 **Level**: Advanced | **Time**: 4-6 hours
 
 RAG-based system for answering questions about documents:
@@ -43,7 +43,7 @@ RAG-based system for answering questions about documents:
 
 ---
 
-### 3. [Code Review Agent](./03_code_review_agent/)
+### 3. [Code Review Agent](./3_code_review_agent/)
 **Level**: Advanced | **Time**: 4-5 hours
 
 Autonomous agent for reviewing code:
@@ -62,7 +62,7 @@ Autonomous agent for reviewing code:
 
 ---
 
-### 4. [Research Assistant](./04_research_assistant/)
+### 4. [Research Assistant](./4_research_assistant/)
 **Level**: Advanced | **Time**: 5-6 hours
 
 Multi-agent system for research tasks:
@@ -81,7 +81,7 @@ Multi-agent system for research tasks:
 
 ---
 
-### 5. [MCP Weather Server](./05_mcp_weather/)
+### 5. MCP Weather Server (planned, not yet included)
 **Level**: Intermediate | **Time**: 2-3 hours
 
 Custom MCP server for weather information:
@@ -102,7 +102,7 @@ Custom MCP server for weather information:
 
 ## 📋 Project Structure
 
-Each project includes:
+The skeletons currently contain `README.md`, `requirements.txt` and `main.py`. A finished project would grow into this structure:
 
 ```
 project_name/
@@ -147,7 +147,7 @@ cp .env.example .env
 
 ### Step 4: Run the Project
 ```bash
-python src/main.py
+python main.py   # or python src/main.py once you adopt the structure above
 ```
 
 ### Step 5: Study and Modify
@@ -205,8 +205,11 @@ Want to build your own project? Here are some ideas:
 
 ### Pattern 1: Conversational Application
 ```python
+import anthropic
+
 # Initialize conversation
 conversation = []
+client = anthropic.Anthropic()
 
 # Loop
 while True:
@@ -215,6 +218,7 @@ while True:
 
     response = client.messages.create(
         model="claude-sonnet-5-5",
+        max_tokens=1024,
         messages=conversation
     )
 
@@ -228,19 +232,21 @@ tools = [define_tool_1(), define_tool_2()]
 
 # Agent loop
 while not done:
-    response = client.messages.create(tools=tools, ...)
+    response = client.messages.create(model="claude-sonnet-5-5", max_tokens=1024,
+                                      tools=tools, messages=messages)
 
     if response.stop_reason == "tool_use":
-        # Execute tool
+        # Execute each tool_use block, append the assistant turn and a
+        # user turn containing tool_result blocks, then loop again
         result = execute_tool(...)
-        # Continue with result
     else:
         done = True
 ```
 
 ### Pattern 3: RAG System
 ```python
-# Setup
+# Setup (embeddings come from a third-party provider such as Voyage AI;
+# Anthropic does not offer an embeddings endpoint)
 vectordb = setup_vector_database()
 documents = load_documents()
 vectordb.add(documents)
@@ -252,6 +258,8 @@ def query(question):
 
     # Generate answer with context
     response = client.messages.create(
+        model="claude-sonnet-5-5",
+        max_tokens=1024,
         system=f"Use these documents: {docs}",
         messages=[{"role": "user", "content": question}]
     )
@@ -265,15 +273,16 @@ def query(question):
 requests = [create_request(item) for item in items]
 
 # Submit batch
-batch = client.batches.create(requests=requests)
+batch = client.messages.batches.create(requests=requests)
 
 # Monitor progress
-while not batch.complete:
+while batch.processing_status != "ended":
     time.sleep(10)
-    batch = client.batches.retrieve(batch.id)
+    batch = client.messages.batches.retrieve(batch.id)
 
-# Process results
-results = batch.results
+# Process results (match by custom_id; order is not guaranteed)
+for entry in client.messages.batches.results(batch.id):
+    ...
 ```
 
 ## 📊 Project Comparison
@@ -345,4 +354,4 @@ Want to contribute a project?
 
 ---
 
-**Ready to build?** Start with [Project 1: Customer Support Chatbot](./01_customer_support_bot/README.md)
+**Ready to build?** Start with [Project 1: Customer Support Chatbot](./1_customer_support_bot/README.md)
