@@ -6,7 +6,7 @@ Four complete, runnable projects built on the Claude API. Each has a CLI, sample
 |---|---------|-------------|-------|
 | 1 | [Customer Support Bot](./1_customer_support_bot/) | `python main.py --dry-run` | 26 |
 | 2 | [Document Q&A (RAG)](./2_document_qa_system/) | `python main.py search "refund"` (retrieval only) | 27 |
-| 3 | [Code Review Agent](./3_code_review_agent/) | `python main.py --diff examples/sample.diff --dry-run` | 64 |
+| 3 | [Code Review Agent](./3_code_review_agent/) | `python main.py --diff examples/sample.diff --repo examples/sample_repo --dry-run` | 64 |
 | 4 | [Research Assistant](./4_research_assistant/) | `python main.py --offline-demo "your question"` | 31 |
 
 Quick start for any project:
