@@ -108,15 +108,16 @@ Set a `permission_policy` on the toolset `default_config` or on one tool in `con
 `auto` is not a human checkpoint: a call it judges safe runs before anyone looks. Put `always_ask` on tools a person must review, and answer paused calls with `deny` when nobody is watching.
 
 ```python
-elif (event.type == "agent.tool_use" or event.type == "agent.mcp_tool_use") and event.evaluated_permission == "ask":
-    client.beta.sessions.events.send(
-        session_id=session.id,
-        events=[{
-            "type": "user.tool_confirmation",
-            "tool_use_id": event.id,              # the event ID (sevt_...), not a toolu_ ID
-            "result": "allow" if approve(event) else "deny",   # approve() is your own policy
-        }],
-    )
+for event in stream:  # inside the stream loop from above
+    if (event.type == "agent.tool_use" or event.type == "agent.mcp_tool_use") and event.evaluated_permission == "ask":
+        client.beta.sessions.events.send(
+            session_id=session.id,
+            events=[{
+                "type": "user.tool_confirmation",
+                "tool_use_id": event.id,              # the event ID (sevt_...), not a toolu_ ID
+                "result": "allow" if approve(event) else "deny",   # approve() is your own policy
+            }],
+        )
 ```
 
 ## Vault Credentials
@@ -202,7 +203,6 @@ lead = client.beta.agents.create(
 )
 ```
 
-You can also roster cheaper worker agents by ID (for example on `claude-haiku-4-5`); each runs on its own model and is billed at its own rates. One level of delegation only.
 
 **Memory stores** (separate beta header `agent-memory-2026-07-22`, set by the SDK on `client.beta.memory_stores.*`) persist text files across sessions and mount at `/mnt/memory/<store-name>/`:
 
