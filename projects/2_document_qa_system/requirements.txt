@@ -1,2 +1,5 @@
 anthropic>=1.0.0
 python-dotenv>=1.0.0
+# Optional extras (the app works without them):
+#   pypdf>=4.0.0      PDF ingestion
+#   voyageai>=0.3.0   Voyage AI embeddings retriever (needs VOYAGE_API_KEY)
