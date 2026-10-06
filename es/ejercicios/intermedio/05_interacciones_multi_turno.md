@@ -48,8 +48,33 @@ Usa prompt del sistema para imponer reglas.
 <summary>Click para ver solución</summary>
 
 ```python
-N/A (Enfocado en lógica)
+import anthropic
+
+client = anthropic.Anthropic()
+system_prompt = (
+    "Estás organizando un juego de 20 preguntas. Elige en secreto un objeto (una tostadora). "
+    "Responde a cada pregunta solo con 'Sí', 'No' o 'A veces'. Nunca reveles el objeto "
+    "a menos que el jugador lo adivine o haya usado las 20 preguntas. Lleva la cuenta de las preguntas."
+)
+messages = []
+
+while True:
+    user_input = input("Tú: ")
+    if user_input.lower() in ("salir", "exit"):
+        break
+    messages.append({"role": "user", "content": user_input})
+    response = client.messages.create(
+        model="claude-sonnet-5-5",
+        max_tokens=300,
+        system=system_prompt,
+        messages=messages,
+    )
+    reply = "".join(b.text for b in response.content if b.type == "text")
+    messages.append({"role": "assistant", "content": reply})
+    print(f"Claude: {reply}")
 ```
+
+Nota: el objeto secreto vive solo en el prompt del sistema, así que el jugador nunca lo ve. Para tener un objeto distinto en cada partida, elige uno en tu propio código e insértalo en el prompt.
 </details>
 
 ## 🚀 Extensiones

@@ -164,7 +164,7 @@ Optimiza y despliega aplicaciones listas para producción:
 - Python 3.10 o superior (requerido por el SDK `anthropic` actual) instalado
 - Editor de texto o IDE (VS Code, PyCharm, etc.)
 - Familiaridad con la línea de comandos
-- Cuenta de la API de Anthropic ([regístrate aquí](https://console.anthropic.com))
+- Cuenta de la API de Anthropic ([regístrate aquí](https://platform.claude.com))
 
 ### Recomendado
 - Comprensión de APIs REST

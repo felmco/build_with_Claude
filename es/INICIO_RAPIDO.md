@@ -37,7 +37,7 @@ pip install anthropic python-dotenv
 echo "ANTHROPIC_API_KEY=tu-clave-api-aqui" > .env
 ```
 
-Obtén tu clave API en: https://console.anthropic.com
+Obtén tu clave API en: https://platform.claude.com
 
 ### Paso 3: Probar tu Configuración
 ```python

@@ -32,7 +32,7 @@ Al final de este módulo, serás capaz de:
 - Conocimiento básico de programación en Python
 - Python 3.10 o superior (requerido por el SDK actual de `anthropic`) instalado
 - Un editor de texto o IDE (VS Code, PyCharm, etc.)
-- Una cuenta de la API de Anthropic (regístrate en https://console.anthropic.com)
+- Una cuenta de la API de Anthropic (regístrate en https://platform.claude.com)
 
 ## Tiempo Estimado
 2-3 horas

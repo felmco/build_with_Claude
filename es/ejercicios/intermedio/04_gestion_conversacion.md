@@ -32,7 +32,7 @@ while True:
     user_input = input("Tú: ")
     messages.append({"role": "user", "content": user_input})
     
-    # TODO: Llamar API con `messages=messages`
+    # TODO: Llamar a la API con `messages=messages` (y un prompt del sistema)
     # TODO: Añadir respuesta a messages
 ```
 
@@ -56,10 +56,37 @@ Mantén siempre el orden correcto de la lista.
 <summary>Click para ver solución</summary>
 
 ```python
-response = client.messages.create(..., messages=messages)
-messages.append({"role": "assistant", "content": response.content[0].text})
-```
-</details>
+import anthropic
+
+client = anthropic.Anthropic()
+SYSTEM = "Eres un asistente amable que habla como un pirata."
+messages = []
+
+while True:
+    user_input = input("Tú: ")
+    if user_input.lower() in ("salir", "exit"):
+        break
+    if user_input.lower() == "limpiar":
+        messages = []
+        continue
+
+    messages.append({"role": "user", "content": user_input})
+    try:
+        response = client.messages.create(
+            model="claude-sonnet-5-5",
+            max_tokens=1024,
+            system=SYSTEM,
+            messages=messages,
+        )
+    except anthropic.APIError as e:
+        print(f"Error: {e}")
+        messages.pop()  # descarta el turno de usuario sin respuesta
+        continue
+
+    reply = "".join(b.text for b in response.content if b.type == "text")
+    messages.append({"role": "assistant", "content": reply})
+    print(f"Claude: {reply}")
+```</details>
 
 ## 🚀 Extensiones
 
