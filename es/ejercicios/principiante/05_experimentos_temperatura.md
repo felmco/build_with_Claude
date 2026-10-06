@@ -25,8 +25,12 @@ Envía el mismo prompt 3 veces con `temperature=1.0`. Observa las diferencias.
 ## 💻 Código de Inicio
 
 ```python
+import anthropic
+
+client = anthropic.Anthropic()
+
 def obtener_completado(temp):
-    # TODO: Llamar API con temperature=temp
+    # TODO: Llamar a la API con temperature=temp (usa model="claude-haiku-4-5")
     pass
 
 print("Temp 0.0:")
@@ -41,7 +45,7 @@ for _ in range(3):
 ## ✅ Salida Esperada
 
 ```
-Temp 0 debería ser idéntico. Temp 1 debería variar.
+Temp 0.0 debería dar respuestas idénticas o casi idénticas (una temperatura baja no garantiza determinismo estricto). Temp 1.0 debería variar más.
 ```
 
 ## 🧪 Casos de Prueba
@@ -63,7 +67,32 @@ Pasa `temperature=x` a `client.messages.create`.
 <summary>Click para ver solución</summary>
 
 ```python
-# Ver lógica del código de inicio
+import anthropic
+
+client = anthropic.Anthropic()
+
+def obtener_completado(temp, model="claude-haiku-4-5"):
+    response = client.messages.create(
+        model=model,
+        max_tokens=50,
+        temperature=temp,
+        messages=[{"role": "user", "content": "Nombra un color ficticio. Responde solo con el nombre."}],
+    )
+    return response.content[0].text
+
+print("Temp 0.0:")
+for _ in range(3):
+    print(" ", obtener_completado(0.0))
+
+print("Temp 1.0:")
+for _ in range(3):
+    print(" ", obtener_completado(1.0))
+
+# Extra: Sonnet 5.5 rechaza una temperatura no predeterminada con un error 400
+try:
+    obtener_completado(0.0, model="claude-sonnet-5-5")
+except anthropic.BadRequestError as e:
+    print("Como se esperaba:", e)
 ```
 </details>
 

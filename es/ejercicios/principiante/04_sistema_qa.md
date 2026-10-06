@@ -23,12 +23,12 @@ Construye un prompt que inyecte este contexto e instruya a Claude a responder pr
 ## 💻 Código de Inicio
 
 ```python
-contexto = """
+context = """
 La política de devoluciones permite devoluciones dentro de los 30 días. 
 Se requiere recibo. Los reembolsos tardan 5-7 días hábiles.
 """
 
-pregunta = "¿Puedo devolver sin recibo?"
+question = "¿Puedo devolver sin recibo?"
 
 # TODO: Construir prompt con contexto y pregunta
 ```
@@ -58,16 +58,34 @@ Usa etiquetas <context> para delimitar el texto.
 <summary>Click para ver solución</summary>
 
 ```python
+import anthropic
+
+client = anthropic.Anthropic()
+
+context = """
+La política de devoluciones permite devoluciones dentro de los 30 días.
+Se requiere recibo. Los reembolsos tardan 5-7 días hábiles.
+"""
+question = "¿Puedo devolver sin recibo?"
+
 prompt = f"""
 Responde a la pregunta basándote solo en el siguiente contexto:
 
 <context>
-{contexto}
+{context}
 </context>
 
-Pregunta: {pregunta}
+Pregunta: {question}
+
+Si el contexto no contiene la respuesta, di "No lo sé."
 """
 
+message = client.messages.create(
+    model="claude-sonnet-5-5",
+    max_tokens=300,
+    messages=[{"role": "user", "content": prompt}],
+)
+print(message.content[0].text)
 ```
 </details>
 
