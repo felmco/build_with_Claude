@@ -15,6 +15,7 @@ import voyageai
 
 vo = voyageai.Client()
 text = "Hello world"
+# Model names change: check the Voyage AI docs for the current recommended model
 vector = vo.embed([text], model="voyage-3-large").embeddings[0]
 print(vector[:5]) # [0.012, -0.04, ...]
 ```

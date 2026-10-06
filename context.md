@@ -40,7 +40,7 @@ The Python SDK is the primary tool for Python developers. Start by:
    ```
 
 2. **Generating API keys from the Anthropic Console**
-   - Visit [console.anthropic.com](https://console.anthropic.com)
+   - Visit [platform.claude.com](https://platform.claude.com)
    - Navigate to API Keys section
    - Create and securely store your key
 
@@ -407,7 +407,7 @@ After your first successful call:
 | **Full API Docs** | Complete API reference | [platform.claude.com/docs](https://platform.claude.com/docs/en/home) |
 | **Anthropic Cookbook** | Code snippets and practical guides | [GitHub](https://github.com/anthropics/anthropic-cookbook) |
 | **Quickstarts** | Pre-built application examples | [GitHub](https://github.com/anthropics/anthropic-quickstarts) |
-| **Courses** | In-depth training on specific topics | [Anthropic Academy](https://www.anthropic.com/learn) |
+| **Courses** | In-depth training on specific topics | [Claude Academy](https://academy.claude.com/courses) |
 
 ### Community & Support
 

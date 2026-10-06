@@ -164,7 +164,7 @@ Optimize and deploy production-ready applications:
 - Python 3.10 or higher (required by the current `anthropic` SDK) installed
 - Text editor or IDE (VS Code, PyCharm, etc.)
 - Command line familiarity
-- Anthropic API account ([sign up here](https://console.anthropic.com))
+- Anthropic API account ([sign up here](https://platform.claude.com))
 
 ### Recommended
 - Understanding of REST APIs

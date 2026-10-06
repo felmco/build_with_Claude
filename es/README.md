@@ -69,8 +69,8 @@ Explora las capacidades avanzadas de la API de Claude:
 - Uso de herramientas y llamadas a funciones
 - Almacenamiento en caché de prompts para optimización de costes
 - Procesamiento por lotes (Batch processing)
-- Pensamiento extendido (Extended thinking) para razonamiento complejo
-- Uso de computadora (beta)
+- Pensamiento adaptativo (adaptive thinking) y `effort` para razonamiento complejo
+- Uso de computadora (`computer_toolset_20260801`)
 
 **Temas Clave**:
 - [Fundamentos de Uso de Herramientas](modulos/modulo3_caracteristicas_avanzadas/01_conceptos_basicos_uso_herramientas.md)
@@ -161,7 +161,7 @@ Optimiza y despliega aplicaciones listas para producción:
 
 ### Requerido
 - Conocimiento básico de programación en Python (variables, funciones, clases)
-- Python 3.7 o superior instalado
+- Python 3.10 o superior (requerido por el SDK `anthropic` actual) instalado
 - Editor de texto o IDE (VS Code, PyCharm, etc.)
 - Familiaridad con la línea de comandos
 - Cuenta de la API de Anthropic ([regístrate aquí](https://console.anthropic.com))
@@ -298,6 +298,7 @@ Mapa completo de documentación y lecciones: **[REFERENCIAS.md](./REFERENCIAS.md
 
 ### Herramientas
 - [Consola de Claude](https://platform.claude.com)
+- [Generador de Prompts](https://platform.claude.com/dashboard)
 - [Claude Desktop](https://claude.ai/download)
 
 ## 💡 Consejos para el Éxito

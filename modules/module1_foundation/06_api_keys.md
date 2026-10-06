@@ -6,7 +6,7 @@ API keys are your credentials for accessing Claude's API. Proper management of A
 ## Getting Your API Key
 
 ### Step 1: Create an Anthropic Account
-1. Visit [console.anthropic.com](https://console.anthropic.com)
+1. Visit [platform.claude.com](https://platform.claude.com)
 2. Sign up or log in
 3. Complete any required verification
 
@@ -387,7 +387,7 @@ client = Anthropic()
 # This is a placeholder for when the API supports it
 def check_usage():
     """Check API usage (via Console currently)"""
-    print("Check usage at: https://console.anthropic.com/settings/usage")
+    print("Check usage at: https://platform.claude.com/settings/usage")
 ```
 
 ### Set Up Alerts
@@ -517,6 +517,6 @@ client = Anthropic(api_key=api_key)
 - Learn about [Request and Response Handling](./08_request_response.md)
 
 ## Additional Resources
-- [Anthropic Console](https://console.anthropic.com)
+- [Anthropic Console](https://platform.claude.com)
 - [API Key Best Practices](https://platform.claude.com/docs/en/security/api-keys)
 - [python-dotenv Documentation](https://pypi.org/project/python-dotenv/)
