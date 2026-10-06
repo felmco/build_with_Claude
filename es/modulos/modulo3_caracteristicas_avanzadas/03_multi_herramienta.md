@@ -18,7 +18,7 @@ response = client.messages.create(
 
 ## Uso Paralelo de Herramientas
 
-Claude podría intentar llamar a múltiples herramientas a la vez (ej. obteniendo el precio de acciones para AAPL y GOOGL simultáneamente).
+Claude puede llamar a múltiples herramientas independientes a la vez (ej. obteniendo el precio de acciones para AAPL y GOOGL simultáneamente).
 
 La API devuelve una lista de bloques `content`. Podrías ver múltiples bloques `tool_use`.
 
@@ -44,10 +44,14 @@ messages.append({"role": "assistant", "content": response.content})
 messages.append({"role": "user", "content": tool_results})
 ```
 
+Añade `"disable_parallel_tool_use": true` a `tool_choice` (`{"type": "auto", "disable_parallel_tool_use": True}`) si quieres como máximo una llamada a herramienta por turno.
+
+Si una herramienta falla, devuelve su `tool_result` con `"is_error": True` y un mensaje de error para que Claude pueda recuperarse. Cada bloque `tool_use` necesita un `tool_result` correspondiente en el siguiente mensaje de usuario.
+
 ## Orquestación Secuencial (Encadenamiento)
 
 A veces la herramienta B necesita la salida de la herramienta A.
-- ¡Claude maneja esto automáticamente!
+- Claude maneja esto automáticamente, siempre que sigas iterando: llama a la API, ejecuta las herramientas solicitadas, devuelve los resultados y repite hasta que `stop_reason` deje de ser `"tool_use"`. Limita el número de iteraciones.
 - Llama a la Herramienta A.
 - Devuelves el resultado.
 - Claude ve el resultado, luego llama a la Herramienta B.

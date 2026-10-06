@@ -4,7 +4,7 @@
 Esta guía te acompaña en la realización de tu primera llamada a la API de Claude. ¡Al final, habrás enviado un mensaje a Claude y recibido una respuesta!
 
 ## Requisitos Previos
-- ✅ Python 3.7+ instalado
+- ✅ Python 3.10+ instalado
 - ✅ SDK de Anthropic instalado (`pip install anthropic`)
 - ✅ Clave API configurada (ver [Gestión de Claves API](06_claves_api.md))
 
@@ -41,6 +41,8 @@ I'm Claude, an AI assistant created by Anthropic to be helpful, harmless, and ho
 ```
 
 🎉 ¡Felicidades! ¡Acabas de hacer tu primera llamada a la API de Claude!
+
+> **Nota:** `message.content[0].text` es la forma abreviada que se usa en todo el curso. Funciona para respuestas de texto simple, pero `content` también puede empezar con un bloque `thinking` (Opus 5.5 y Fable 5.1 siempre piensan) o estar vacío cuando `stop_reason` es `"refusal"`. En código de producción, elige el bloque de texto: `next(b.text for b in message.content if b.type == "text")`.
 
 ## Entendiendo el Código
 
@@ -218,6 +220,24 @@ Ejecútalo:
 python interactive_claude.py
 ```
 
+Interacción de ejemplo:
+```
+Chat Interactivo con Claude
+Escribe 'quit' para salir
+──────────────────────────────────────────────────
+
+Tú: What's 25 * 4?
+
+Claude: 25 * 4 = 100
+
+Tú: Explain how photosynthesis works
+
+Claude: Photosynthesis is the process by which plants convert light energy...
+
+Tú: quit
+¡Adiós!
+```
+
 ## Entendiendo la Estructura de la Respuesta
 
 El objeto `Message` contiene varios campos importantes:
@@ -248,6 +268,18 @@ print(f"Razón parada: {stop_reason}")
 print(f"\nRespuesta:\n{text}")
 ```
 
+**Salida**:
+```
+ID Mensaje: msg_01ABC123XYZ...
+Modelo: claude-sonnet-5-5
+Tokens entrada: 15
+Tokens salida: 25
+Razón parada: end_turn
+
+Respuesta:
+I'm Claude, an AI assistant created by Anthropic.
+```
+
 ## Parámetros Comunes
 
 ### max_tokens
@@ -272,6 +304,7 @@ message = client.messages.create(
 **Directrices**:
 - Mínimo: 1 token
 - Máximo: hasta 128K tokens en los modelos actuales (64K en Haiku 4.5); específico del modelo
+- Usa streaming para valores grandes (aproximadamente por encima de 16K) para que la petición no agote el tiempo de espera
 - 1 token ≈ 0.75 palabras en inglés
 - Establecer basado en la longitud de respuesta esperada
 
@@ -279,7 +312,6 @@ message = client.messages.create(
 Controla la aleatoriedad (0.0 a 1.0).
 
 > ⚠️ **Modelos actuales:** Claude Fable 5.1, Opus 5.5 y Sonnet 5.5 rechazan `temperature`/`top_p`/`top_k` no predeterminados con un 400. Allí usa el prompt y `effort`. Los ejemplos siguientes usan **Claude Haiku 4.5** y modelos anteriores.
-
 
 ```python
 # Más enfocado y determinista

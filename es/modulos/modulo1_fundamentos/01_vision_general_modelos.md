@@ -33,13 +33,21 @@ Claude ofrece múltiples modelos, cada uno optimizado para diferentes casos de u
 - Contexto de 1M tokens, salida máxima de 128K
 - $4 / $20 por MTok
 
+**Casos de uso**:
+```
+✅ Diseño de arquitectura de software compleja
+✅ Refactorizaciones de varios archivos y sesiones largas de programación
+✅ Análisis detallado de documentos legales o técnicos
+✅ Investigación y planificación estratégica
+```
+
 ### Claude Sonnet 5.5
 **ID del modelo**: `claude-sonnet-5-5`
 
 **Ideal para**:
 - La mayoría de las aplicaciones en producción
 - La mejor combinación de velocidad e inteligencia
-- Programación, agentes y trabajo empresarial del día a día
+- Programación, agentes y trabajo empresarial del día a día con buena relación coste-beneficio
 
 **Características**:
 - Rápido, con pensamiento adaptativo (`effort` por defecto: `high`)
@@ -70,6 +78,15 @@ Claude ofrece múltiples modelos, cada uno optimizado para diferentes casos de u
 - Usa pensamiento extendido manual (`budget_tokens`), sin parámetro `effort`
 - $1 / $5 por MTok
 
+**Casos de uso**:
+```
+✅ Clasificación y extracción
+✅ Sistemas rápidos de preguntas y respuestas
+✅ Procesamiento por lotes de grandes conjuntos de datos
+✅ Aplicaciones de chat en tiempo real
+✅ Moderación de contenido
+```
+
 > **Modelos heredados** (aún disponibles): Claude Fable 5, Opus 5, Opus 4.8, Opus 4.7, Opus 4.6, Sonnet 5 y Sonnet 4.6. Los IDs antiguos que aparecen en tutoriales, como `claude-3-5-haiku-20241022` o `claude-sonnet-4-5-20250929`, están en camino de retirada. Consulta [Deprecaciones de modelos](https://platform.claude.com/docs/en/about-claude/model-deprecations).
 
 ## Tabla de Comparación de Modelos
@@ -77,6 +94,7 @@ Claude ofrece múltiples modelos, cada uno optimizado para diferentes casos de u
 | Característica | Haiku 4.5 | Sonnet 5.5 | Opus 5.5 | Fable 5.1 |
 |----------------|-----------|------------|----------|-----------|
 | Velocidad | ⚡⚡⚡ La más rápida | ⚡⚡ Rápida | ⚡ Moderada | 🐢 Más lenta |
+| Inteligencia | 🧠 Casi de frontera | 🧠🧠 Excelente | 🧠🧠🧠 La mejor para la mayoría | 🧠🧠🧠🧠 La más alta |
 | Precio (entrada / salida por MTok) | $1 / $5 | $2 / $10 | $4 / $20 | $10 / $50 |
 | Ventana de contexto | 200K tokens | 1M tokens | 1M tokens | 1M tokens |
 | Salida máxima | 64K tokens | 128K tokens | 128K tokens | 128K tokens |
@@ -93,19 +111,22 @@ Los límites varían según el modelo (tabla anterior). No los des por sentados:
 - ✅ Generación de texto y conversación
 - ✅ Comprensión y generación de código
 - ✅ Soporte multi-idioma (Inglés, Español, Francés, Alemán, etc.)
-- ✅ Modo JSON para salidas estructuradas
+- ✅ Salidas estructuradas (`output_config.format`)
 - ✅ Llamada a funciones/herramientas
 - ✅ Visión (comprensión de imágenes)
 - ✅ Procesamiento de contexto largo
 
 ### Características Avanzadas (Específicas del Modelo):
 - **Pensamiento adaptativo + `effort`**: Claude decide cuánto pensar; tú controlas la profundidad con `output_config.effort`
-- **Uso de Computadora**: Característica beta para automatización de escritorio
+- **Uso de Computadora**: Automatización de escritorio mediante la herramienta `computer_toolset_20260801`
+- **Salidas Estructuradas**: Restringen las respuestas a un esquema JSON con `output_config.format`
 
 ## Eligiendo Tu Modelo: Árbol de Decisión Rápida
 
 ```
 Comienza Aquí
+    |
+    ├─ ¿Razonamiento más difícil / ejecuciones autónomas largas? → Usa Fable 5.1
     |
     ├─ ¿Necesitas el razonamiento de más alta calidad? → Usa Opus 5.5
     |
@@ -160,7 +181,7 @@ print(test_model("opus", prompt))
 1. **Empieza con Sonnet 5.5**: Ofrece el mejor equilibrio para la mayoría de las aplicaciones
 2. **Prototipa Primero**: Prueba con Sonnet antes de optimizar costes
 3. **Usa Haiku para Escalar**: Una vez que tu aplicación funcione, considera Haiku para tareas de alto volumen
-4. **Reserva Opus para Complejidad**: Usa Opus solo cuando Sonnet no cumpla con tus necesidades de calidad
+4. **Reserva Opus y Fable para Complejidad**: Sube de nivel solo cuando Sonnet no cumpla con tus necesidades de calidad
 5. **Monitoriza el Rendimiento**: Rastrea métricas de calidad, velocidad y coste para optimizar
 
 ## Versiones y Actualizaciones de Modelos
@@ -188,7 +209,7 @@ def select_model(task_complexity: str, speed_priority: bool = False, budget_tigh
     elif speed_priority and task_complexity != "complex":
         return "claude-haiku-4-5"
     elif task_complexity == "complex":
-        return "claude-opus-5-5"
+        return "claude-opus-5-5"  # usa claude-fable-5-1 para los problemas más difíciles
     else:
         return "claude-sonnet-5-5"  # Elección por defecto
 ```

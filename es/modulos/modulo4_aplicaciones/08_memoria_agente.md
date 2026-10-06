@@ -4,7 +4,7 @@ Los agentes necesitan memoria para persistir el estado a través de sesiones.
 
 ## Memoria a Corto Plazo
 - **Mecanismo:** La lista `messages` enviada a la API.
-- **Límite:** Ventana de contexto (200k tokens).
+- **Límite:** Ventana de contexto (hasta 1M de tokens en los modelos Opus/Sonnet/Fable actuales, 200K en Haiku 4.5).
 - **Estrategia:** Resumir (Ver Módulo 2).
 
 ## Memoria a Largo Plazo

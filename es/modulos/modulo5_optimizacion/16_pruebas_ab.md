@@ -4,7 +4,15 @@ En producción, puedes probar mejoras con tráfico real.
 
 ## Configuración
 1. **Config:** Almacena prompts en una DB o sistema de feature flags.
-2. **Enrutador:** Asigna 50% de tráfico al Prompt A, 50% al Prompt B.
+2. **Enrutador:** Asigna 50% de tráfico al Prompt A, 50% al Prompt B. Asigna mediante un hash estable del ID de usuario para que cada usuario vea siempre la misma variante:
+
+```python
+import hashlib
+
+def pick_variant(user_id: str, split: float = 0.5) -> str:
+    bucket = int(hashlib.sha256(user_id.encode()).hexdigest(), 16) % 100
+    return "A" if bucket < split * 100 else "B"
+```
 3. **Rastreo:** Registra qué prompt se usó para cada ID de petición.
 
 ## Métrica de Éxito
@@ -12,6 +20,9 @@ En producción, puedes probar mejoras con tráfico real.
 - **Retroalimentación de Usuario:** Pulgar arriba/abajo.
 - **Conversión:** ¿Copió el usuario el código? ¿Compró el artículo?
 - **Retención:** ¿Volvió?
+
+## Antes de declarar un ganador
+Ejecuta ambas variantes con la misma versión del modelo y suficiente tráfico para alcanzar significancia estadística. La salida del modelo no es determinista, así que las diferencias pequeñas en unos pocos cientos de muestras suelen ser ruido. Pasa primero el prompt por tu conjunto de evaluación offline ([Evaluación](14_evaluacion.md)) para que el tráfico de producción solo pruebe candidatos que ya lo superan.
 
 ## Próximos Pasos
 - [Métricas de Calidad](17_metricas_calidad.md).

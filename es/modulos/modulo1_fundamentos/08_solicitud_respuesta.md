@@ -23,9 +23,9 @@ Cuando llamas a `client.messages.create()`, estás creando un **Mensaje** (Messa
 - `max_tokens`: (Requerido) La longitud máxima de salida.
 - `messages`: (Requerido) Una lista de objetos de mensaje (`role` y `content`).
 - `system`: (Opcional) Instrucciones a nivel de sistema.
-- `temperature`: (Opcional, solo Haiku 4.5 y modelos anteriores) Controla la aleatoriedad (0.0 a 1.0). Los modelos 5.x actuales rechazan valores no predeterminados.
+- `temperature`: (Opcional, solo Haiku 4.5 y modelos anteriores) Controla la aleatoriedad (0.0 a 1.0). Fable 5.1, Opus 5.5 y Sonnet 5.5 rechazan `temperature`, `top_p` y `top_k` no predeterminados con un 400.
 - `output_config`: (Opcional) `effort` (`low` a `max`) y `format` (salidas estructuradas).
-- `thinking`: (Opcional) `{"type": "adaptive"}` en los modelos actuales.
+- `thinking`: (Opcional) `{"type": "adaptive"}` en los modelos 5.x; `{"type": "enabled", "budget_tokens": N}` solo en Haiku 4.5.
 
 ### Estructura de Respuesta (Salida)
 
@@ -54,11 +54,13 @@ La API devuelve un objeto `Message`. Aquí se representa su estructura JSON:
 
 **Campos Clave:**
 - `id`: Identificador único para la solicitud.
-- `content`: Una lista de bloques de contenido. Usualmente contiene un bloque de texto.
+- `content`: Una lista de bloques de contenido. Las respuestas simples tienen un bloque `text`, pero la lista también puede contener bloques `thinking` o `tool_use`, así que revisa el `type` de cada bloque.
 - `role`: Siempre "assistant" para respuestas.
 - `stop_reason`: Por qué se detuvo la generación.
   - `"end_turn"`: Completitud natural.
   - `"max_tokens"`: Alcanzó el límite.
+  - `"tool_use"`: Claude quiere llamar a una herramienta.
+  - `"refusal"`: La solicitud fue rechazada. `content` puede estar vacío, así que comprueba `stop_reason` antes de leerlo.
 - `usage`: Conteos de tokens para facturación.
 
 ## Accediendo a Datos de Respuesta en Python
@@ -68,8 +70,8 @@ El SDK de Python envuelve este JSON en un objeto.
 ```python
 response = client.messages.create(...)
 
-# Obtener el contenido de texto
-text = response.content[0].text
+# Obtener el contenido de texto (omitiendo los bloques de pensamiento)
+text = "".join(b.text for b in response.content if b.type == "text")
 
 # Obtener el ID
 msg_id = response.id

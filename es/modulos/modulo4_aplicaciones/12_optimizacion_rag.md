@@ -9,7 +9,7 @@ Combina **Búsqueda por Palabras Clave** (BM25) con **Búsqueda Semántica** (Em
 
 ## 2. Re-clasificación (Reranking)
 1. Recupera los top 50 resultados (rápido).
-2. Usa un modelo **Reranker** (Cohere Rerank) para ordenarlos por relevancia a la consulta.
+2. Usa un modelo **Reranker** (p. ej. Cohere Rerank o el rerank de Voyage AI) para ordenarlos por relevancia a la consulta.
 3. Pasa los top 5 a Claude.
 
 ## 3. Expansión de Consulta
@@ -20,7 +20,7 @@ Pide a Claude que genere sinónimos o sub-preguntas.
 ## 4. Recuperación Contextual
 En lugar de incrustar solo un fragmento crudo, pide a Claude que añada contexto *antes* de incrustar.
 - **Fragmento:** "Costaba 50 dólares." (Ambiguo)
-- **Fragmento Enriquecido:** "El precio del Widget X mencionado en el informe de 2024 era de 50 dólares." (Incrusta esto).
+- **Fragmento Enriquecido:** "El precio del Widget X mencionado en el informe de 2024 era de 50 dólares." (Incrusta esto). Esta es la técnica de "Contextual Retrieval" de Anthropic; el prompt caching mantiene bajo el costo por fragmento porque el documento completo se reutiliza entre llamadas.
 
 ## Próximos Pasos
 - Introducción a [MCP](13_intro_mcp.md).

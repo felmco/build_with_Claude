@@ -108,4 +108,5 @@ def generate_response(prompt, task_type="general"):
 ```
 
 ## Próximos Pasos
+- Confirma siempre los IDs y límites en la [Visión general de modelos](https://platform.claude.com/docs/en/about-claude/models/overview).
 - Aprende sobre [Precios y Límites del Modelo](03_precios_limites.md) para calcular costes.

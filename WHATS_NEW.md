@@ -29,6 +29,6 @@ Model IDs are now dateless pinned snapshots. Do not add date suffixes.
 - [MODS.md](./MODS.md) and [`mods/consumo`](./mods/consumo): a live usage pane for Claude Code (tokens, spend, context, tools, session time).
 - Spanish mirrors: `es/REFERENCIAS.md`, `es/NOVEDADES.md`, `es/MODS.md`.
 
-## Not yet covered (candidates for the next revision)
+## Open items
 
-Managed Agents, the Claude Agent SDK, server-side tools such as web search/fetch and code execution, refusal fallbacks, task budgets and Admin API. See [REFERENCES.md](./REFERENCES.md) for their official docs.
+Nothing major is open. Module 6 now covers server tools, refusals and fallbacks, task budgets, compaction, Skills, MCP, the Agent SDK, Managed Agents and the Admin API. The four projects remain skeletons.

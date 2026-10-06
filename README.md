@@ -136,6 +136,19 @@ Optimize and deploy production-ready applications:
 
 ---
 
+### [Module 6: Latest Platform Features](./modules/module6_platform_features/README.md)
+**Duration**: 6-8 hours | **Level**: Advanced
+
+Newer platform capabilities used by modern Claude applications:
+- Server-side tools (web search, web fetch, code execution, tool search)
+- Structured outputs, refusals and fallbacks
+- Task budgets, compaction and context editing
+- Agent Skills and the MCP connector
+- The Claude Agent SDK and Managed Agents
+- Admin API, usage and cost reporting
+
+---
+
 ## 🎓 Learning Path
 
 ### For Beginners
@@ -372,5 +385,6 @@ Begin your journey with [Module 1: Foundation & Setup](./modules/module1_foundat
 - [Module 3: Advanced Features](./modules/module3_advanced_features/README.md)
 - [Module 4: Applications](./modules/module4_applications/README.md)
 - [Module 5: Optimization](./modules/module5_optimization/README.md)
+- [Module 6: Latest Platform Features](./modules/module6_platform_features/README.md)
 - [Exercises](./exercises/)
 - [Projects](./projects/)

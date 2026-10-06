@@ -1,380 +1,381 @@
-# Comprehensive Guide: Getting Started with Claude API Development in Python
+# Guía Completa: Primeros Pasos con el Desarrollo de la API de Claude en Python
 
-> Based on the "Build with Claude" page from Anthropic Academy, this guide helps you start developing Claude-powered applications using Python.
-
----
-
-## 1. Foundation: Understanding Claude Models
-
-### Available Models
-
-The latest Claude models are:
-
-| Model | Best For | Key Characteristics |
-|-------|----------|---------------------|
-| **Claude Sonnet 5.5** | Most applications | Best balance of speed and capability |
-| **Claude Opus 5.5** | Complex reasoning | Highest intelligence for difficult tasks |
-| **Claude 4** | Legacy support | Previous generation models |
-
-### Getting Started with Models
-
-To choose the right model:
-
-- 📊 Review the [model comparison chart](https://platform.claude.com/docs/en/models) to understand capabilities and differences
-- 🔄 Check the model migration checklist if upgrading from Claude 4
-- 📝 Follow Claude 4 prompting best practices for optimal results
-- 💰 Review pricing for Claude 4 to optimize costs
+> Basada en la página "Build with Claude" de Anthropic Academy, esta guía te ayuda a empezar a desarrollar aplicaciones impulsadas por Claude usando Python.
 
 ---
 
-## 2. Setup & Installation: Python SDK
+## 1. Fundamentos: Entender los Modelos de Claude
 
-### Installing the Python SDK
+### Modelos Disponibles
 
-The Python SDK is the primary tool for Python developers. Start by:
+Los modelos más recientes de Claude son:
 
-1. **Installing the Anthropic Python SDK via pip**
+| Modelo | Ideal Para | Características Clave |
+|--------|------------|------------------------|
+| **Claude Fable 5.1** | Las tareas más difíciles | El modelo más capaz |
+| **Claude Opus 5.5** | Razonamiento complejo | Alta inteligencia para tareas difíciles |
+| **Claude Sonnet 5.5** | La mayoría de las aplicaciones | Mejor equilibrio entre velocidad y capacidad |
+| **Claude Haiku 4.5** | Alto volumen, tareas simples | El más rápido y rentable |
+
+### Primeros Pasos con los Modelos
+
+Para elegir el modelo adecuado:
+
+- 📊 Revisa el [cuadro comparativo de modelos](https://platform.claude.com/docs/en/models) para entender las capacidades y diferencias
+- 🔄 Consulta la guía de migración de modelos si actualizas desde un modelo anterior
+- 📝 Sigue las mejores prácticas de prompting vigentes para obtener resultados óptimos
+- 💰 Revisa los precios actuales de los modelos para optimizar costes
+
+---
+
+## 2. Configuración e Instalación: SDK de Python
+
+### Instalación del SDK de Python
+
+El SDK de Python es la herramienta principal para los desarrolladores de Python. Empieza así:
+
+1. **Instala el SDK de Python de Anthropic con pip**
    ```bash
    pip install anthropic
    ```
 
-2. **Generating API keys from the Anthropic Console**
-   - Visit [console.anthropic.com](https://console.anthropic.com)
-   - Navigate to API Keys section
-   - Create and securely store your key
+2. **Genera claves API desde la Consola de Anthropic**
+   - Visita [platform.claude.com](https://platform.claude.com)
+   - Ve a la sección de claves API
+   - Crea y guarda tu clave de forma segura
 
-3. **Setting up environment variables with your API key**
+3. **Configura las variables de entorno con tu clave API**
    ```bash
-   export ANTHROPIC_API_KEY='your-api-key-here'
+   export ANTHROPIC_API_KEY='tu-clave-api-aqui'
    ```
 
-### Key Components
+### Componentes Clave
 
-The Python SDK includes:
+El SDK de Python incluye:
 
-- ✅ Full support for the Messages API
-- ⚡ Async/await capabilities for efficient concurrent requests
-- 🔍 Type hints for better IDE support and error checking
-- 🛡️ Built-in error handling and retry logic
+- ✅ Soporte completo para la API de Mensajes
+- ⚡ Capacidades async/await para peticiones concurrentes eficientes
+- 🔍 Anotaciones de tipos para un mejor soporte del IDE y comprobación de errores
+- 🛡️ Manejo de errores y lógica de reintentos integrados
 
-### Alternative SDKs Available
+### Otros SDK Disponibles
 
-If needed, Anthropic also provides:
+Si lo necesitas, Anthropic también ofrece:
 
-- **TypeScript SDK** (JavaScript/Node.js)
-- **Java SDK**
-- **Go SDK**
-- **Ruby SDK**
-
----
-
-## 3. Core APIs & Features for Python Development
-
-### 3.1 Messages API (Primary API)
-
-The Messages API is the fundamental interface for communicating with Claude:
-
-**Core Capabilities**:
-- 💬 Send text messages and receive responses
-- 🌊 Stream responses for real-time output
-- 🔄 Handle multiple conversation turns
-- 📚 Manage conversation history efficiently
-
-**Key Features**:
-- Support for different message roles (user, assistant)
-- Token counting for optimization
-- Temperature and other parameter controls
-- Streaming responses for better UX
-
-### 3.2 Message Batches API
-
-For processing multiple requests efficiently:
-
-- 📦 Submit multiple API requests at once
-- 💰 Reduce costs by processing in batches
-- 🎯 Ideal for batch processing jobs, evaluations, and large-scale analysis
-- ⏱️ Asynchronous processing for non-time-critical tasks
-
-### 3.3 Files API
-
-Manage files for extended context and data handling:
-
-- 📁 Upload and manage files for use with Claude
-- 📄 Include PDFs, documents, and other file types
-- ♻️ Reuse uploaded files across multiple API calls
-- 🔍 Support for text extraction and document analysis
-
-### 3.4 PDF Support
-
-Extract and understand visual content from PDFs:
-
-- 📖 Extract text from PDF documents
-- 📊 Analyze charts, graphs, and visual information
-- 🖼️ Process mixed text and image content
-- 🎯 Useful for document analysis applications
-
-### 3.5 Admin API
-
-Manage permissions and workspace settings:
-
-- 👥 Control user access and permissions
-- ⚙️ Manage workspace configurations
-- 🏢 Scale enterprise deployments
-- 🔐 Handle team-based access control
+- **SDK de TypeScript** (JavaScript/Node.js)
+- **SDK de Java**
+- **SDK de Go**
+- **SDK de Ruby**
 
 ---
 
-## 4. Advanced Features for Python Developers
+## 3. APIs y Características Principales para el Desarrollo en Python
 
-### 4.1 Prompt Caching
+### 3.1 API de Mensajes (API Principal)
 
-Optimize performance and reduce API costs:
+La API de Mensajes es la interfaz fundamental para comunicarte con Claude:
 
-- 🔄 Reuse cached prompts across multiple requests
-- 💰 Significant cost reduction for repeated contexts (up to 90%)
-- ⚡ Faster response times for recurring patterns
-- 🛠️ Implementation: Use `cache_control` parameters in API calls
+**Capacidades Principales**:
+- 💬 Enviar mensajes de texto y recibir respuestas
+- 🌊 Transmitir respuestas en streaming para obtener salida en tiempo real
+- 🔄 Gestionar múltiples turnos de conversación
+- 📚 Administrar el historial de conversación de forma eficiente
 
-**When to Use**:
-- Long system prompts repeated across requests
-- Standard instruction sets used multiple times
-- Knowledge bases accessed repeatedly
-- Recurring document analysis tasks
+**Características Clave**:
+- Soporte para distintos roles de mensaje (user, assistant)
+- Conteo de tokens para optimización
+- Controles de parámetros (nota: Fable 5.1, Opus 5.5 y Sonnet 5.5 rechazan los parámetros de muestreo como `temperature`; Haiku 4.5 aún los acepta)
+- Respuestas en streaming para una mejor experiencia de usuario
 
-### 4.2 Vision Capabilities
+### 3.2 API de Lotes de Mensajes (Message Batches)
 
-Harness Claude's image understanding:
+Para procesar múltiples peticiones de forma eficiente:
 
-- 🖼️ Analyze images and visual information
-- 📝 Extract text from images (OCR)
-- 📊 Analyze charts and graphs
-- 🎨 Describe visual content
-- 🔗 Support for base64-encoded images and URLs
+- 📦 Enviar varias peticiones a la API a la vez
+- 💰 Reducir costes procesando por lotes
+- 🎯 Ideal para trabajos por lotes, evaluaciones y análisis a gran escala
+- ⏱️ Procesamiento asíncrono para tareas que no son urgentes
 
-### 4.3 Computer Use
+### 3.3 API de Archivos (Files)
 
-Interact with desktop environments programmatically:
+Gestiona archivos para ampliar el contexto y el manejo de datos:
 
-- 🖱️ Automate desktop interactions
-- 📸 Take screenshots and analyze them
-- ⌨️ Click, type, and control mouse
-- 🔌 Integration with existing APIs
-- 🔒 Learn how Computer Use handles data privacy
+- 📁 Subir y administrar archivos para usarlos con Claude
+- 📄 Incluir PDFs, documentos y otros tipos de archivo
+- ♻️ Reutilizar archivos subidos en múltiples llamadas a la API
+- 🔍 Soporte para extracción de texto y análisis de documentos
 
-### 4.4 Extended Thinking
+### 3.4 Soporte de PDF
 
-Improve Claude's ability to solve complex tasks:
+Extrae y comprende el contenido visual de los PDFs:
 
-- 🧠 Enable longer, more thoughtful reasoning
-- 📈 Better performance on difficult problems
-- 💻 Useful for coding, math, and complex analysis
-- ⚠️ Trade-off: longer response times and higher costs
+- 📖 Extraer texto de documentos PDF
+- 📊 Analizar gráficos, diagramas e información visual
+- 🖼️ Procesar contenido mixto de texto e imágenes
+- 🎯 Útil para aplicaciones de análisis de documentos
 
-**Implementation**:
-- Use extended thinking models in your API calls
-- Follow extended thinking best practices
-- Monitor token usage (thinking tokens are more expensive)
+### 3.5 API de Administración (Admin)
 
----
+Gestiona permisos y ajustes del espacio de trabajo:
 
-## 5. Building Applications: Patterns & Techniques
-
-### 5.1 Tool Use (Function Calling)
-
-Extend Claude's capabilities by connecting to external tools:
-
-**Core Concepts**:
-- 🛠️ Define tools/functions that Claude can call
-- 🤖 Claude decides when and how to use tools
-- 📚 Supports multiple tool definitions
-- 🔌 Implement tool use with the Anthropic API
-
-**Common Use Cases**:
-- 🗄️ Database queries
-- 🌐 API calls to external services
-- ⚙️ Code execution
-- 🧮 Calculator functions
-- 🔍 Web searches
-
-**Available Tools**:
-- Code execution tool
-- Text editor tool
-- Web search tool
-- Custom tools defined by your application
-
-### 5.2 Agents & Agentic Systems
-
-Build autonomous systems that understand, plan, and execute tasks:
-
-**Architecture**:
-- 🎯 Design agent patterns using Claude
-- 📋 Implement JSON outputs for reliable control
-- 🔗 Use the Model Context Protocol (MCP)
-- 🔄 Loop-based architecture: perceive → plan → act
-- 📖 Reference Anthropic Cookbook for agent patterns
-
-**Key Components**:
-- Agent loops: continuous perception and action
-- Tool integration for external actions
-- State management
-- Decision-making logic
-
-### 5.3 Skills
-
-Provide detailed instructions for specific tasks:
-
-- 📝 Define skill descriptions with examples
-- 📈 Use skills to improve task-specific performance
-- ✅ Best practices for skill creation
-- 🔌 Implement skills in API calls
-
-### 5.4 Retrieval Augmented Generation (RAG)
-
-Build systems that enhance Claude's knowledge with external data:
-
-**Core Process**:
-1. 📚 Retrieve relevant information from documents
-2. 🤝 Combine retrieved context with Claude's reasoning
-3. 🎯 Implement customer support agents with RAG
-4. 🔌 Integration options: LlamaIndex, MongoDB, etc.
-
-**Technology Stack Options**:
-- **Voyage AI** for embeddings
-- **LlamaIndex** for RAG orchestration
-- **MongoDB** for vector storage
-- **Custom implementations**
-
-### 5.5 Model Context Protocol (MCP)
-
-Build advanced applications with standardized tool integration:
-
-**Setup Options**:
-- 🖥️ Set up MCP in Claude Desktop for local development
-- 📦 Use Anthropic's ready-made MCP servers
-- 💻 Integrate with Claude Code for IDE support
-- ☁️ Set up remote MCP servers
-- 🔌 Connect remote MCP from Messages API
-
-**Features**:
-- Standardized tool definitions
-- Easy server setup and configuration
-- Git-based community contributions
-- Advanced MCP concepts for complex applications
+- 👥 Controlar el acceso y los permisos de los usuarios
+- ⚙️ Administrar las configuraciones del espacio de trabajo
+- 🏢 Escalar despliegues empresariales
+- 🔐 Gestionar el control de acceso por equipos
 
 ---
 
-## 6. Development Tools & Environments
+## 4. Características Avanzadas para Desarrolladores de Python
+
+### 4.1 Almacenamiento en Caché de Prompts (Prompt Caching)
+
+Optimiza el rendimiento y reduce los costes de la API:
+
+- 🔄 Reutilizar prompts en caché entre múltiples peticiones
+- 💰 Reducción significativa de costes en contextos repetidos (hasta un 90%)
+- ⚡ Tiempos de respuesta más rápidos en patrones recurrentes
+- 🛠️ Implementación: usa parámetros `cache_control` en las llamadas a la API
+
+**Cuándo Usarlo**:
+- Prompts de sistema largos repetidos en varias peticiones
+- Conjuntos de instrucciones estándar usados varias veces
+- Bases de conocimiento consultadas repetidamente
+- Tareas recurrentes de análisis de documentos
+
+### 4.2 Capacidades de Visión
+
+Aprovecha la comprensión de imágenes de Claude:
+
+- 🖼️ Analizar imágenes e información visual
+- 📝 Extraer texto de imágenes (OCR)
+- 📊 Analizar gráficos y diagramas
+- 🎨 Describir contenido visual
+- 🔗 Soporte para imágenes codificadas en base64 y URLs
+
+### 4.3 Uso de Computadora (Computer Use)
+
+Interactúa con entornos de escritorio de forma programática:
+
+- 🖱️ Automatizar interacciones de escritorio
+- 📸 Tomar capturas de pantalla y analizarlas
+- ⌨️ Hacer clic, escribir y controlar el ratón
+- 🔌 Integración con APIs existentes
+- 🔒 Conocer cómo Computer Use gestiona la privacidad de los datos
+
+### 4.4 Pensamiento Extendido (Extended Thinking)
+
+Mejora la capacidad de Claude para resolver tareas complejas:
+
+- 🧠 Habilitar un razonamiento más largo y meditado
+- 📈 Mejor rendimiento en problemas difíciles
+- 💻 Útil para programación, matemáticas y análisis complejo
+- ⚠️ Contrapartida: tiempos de respuesta más largos y costes más altos
+
+**Implementación**:
+- En Fable 5.1, Opus 5.5 y Sonnet 5.5 usa `thinking={"type": "adaptive"}` con `output_config={"effort": ...}`; solo Haiku 4.5 usa `budget_tokens`
+- Sigue las mejores prácticas de pensamiento extendido
+- Monitoriza el uso de tokens (los tokens de pensamiento son más caros)
+
+---
+
+## 5. Construcción de Aplicaciones: Patrones y Técnicas
+
+### 5.1 Uso de Herramientas (Llamadas a Funciones)
+
+Amplía las capacidades de Claude conectándolo con herramientas externas:
+
+**Conceptos Fundamentales**:
+- 🛠️ Definir herramientas/funciones que Claude puede llamar
+- 🤖 Claude decide cuándo y cómo usar las herramientas
+- 📚 Soporta múltiples definiciones de herramientas
+- 🔌 Implementar el uso de herramientas con la API de Anthropic
+
+**Casos de Uso Comunes**:
+- 🗄️ Consultas a bases de datos
+- 🌐 Llamadas a APIs de servicios externos
+- ⚙️ Ejecución de código
+- 🧮 Funciones de calculadora
+- 🔍 Búsquedas web
+
+**Herramientas Disponibles**:
+- Herramienta de ejecución de código
+- Herramienta de editor de texto
+- Herramienta de búsqueda web
+- Herramientas personalizadas definidas por tu aplicación
+
+### 5.2 Agentes y Sistemas Agénticos
+
+Construye sistemas autónomos que entienden, planifican y ejecutan tareas:
+
+**Arquitectura**:
+- 🎯 Diseñar patrones de agentes con Claude
+- 📋 Implementar salidas JSON para un control fiable
+- 🔗 Usar el Protocolo de Contexto de Modelo (MCP)
+- 🔄 Arquitectura basada en bucles: percibir → planificar → actuar
+- 📖 Consultar el Anthropic Cookbook para patrones de agentes
+
+**Componentes Clave**:
+- Bucles de agente: percepción y acción continuas
+- Integración de herramientas para acciones externas
+- Gestión de estado
+- Lógica de toma de decisiones
+
+### 5.3 Skills (Habilidades)
+
+Proporciona instrucciones detalladas para tareas específicas:
+
+- 📝 Definir descripciones de skills con ejemplos
+- 📈 Usar skills para mejorar el rendimiento en tareas concretas
+- ✅ Mejores prácticas para crear skills
+- 🔌 Implementar skills en las llamadas a la API
+
+### 5.4 Generación Aumentada por Recuperación (RAG)
+
+Construye sistemas que enriquecen el conocimiento de Claude con datos externos:
+
+**Proceso Principal**:
+1. 📚 Recuperar información relevante de los documentos
+2. 🤝 Combinar el contexto recuperado con el razonamiento de Claude
+3. 🎯 Implementar agentes de soporte al cliente con RAG
+4. 🔌 Opciones de integración: LlamaIndex, MongoDB, etc.
+
+**Opciones de Stack Tecnológico**:
+- **Voyage AI** para embeddings
+- **LlamaIndex** para la orquestación de RAG
+- **MongoDB** para almacenamiento vectorial
+- **Implementaciones personalizadas**
+
+### 5.5 Protocolo de Contexto de Modelo (MCP)
+
+Construye aplicaciones avanzadas con integración estandarizada de herramientas:
+
+**Opciones de Configuración**:
+- 🖥️ Configurar MCP en Claude Desktop para desarrollo local
+- 📦 Usar los servidores MCP listos para usar de Anthropic
+- 💻 Integrar con Claude Code para soporte en el IDE
+- ☁️ Configurar servidores MCP remotos
+- 🔌 Conectar MCP remoto desde la API de Mensajes
+
+**Características**:
+- Definiciones de herramientas estandarizadas
+- Configuración sencilla de servidores
+- Contribuciones de la comunidad basadas en Git
+- Conceptos avanzados de MCP para aplicaciones complejas
+
+---
+
+## 6. Herramientas y Entornos de Desarrollo
 
 ### 6.1 Claude Code
 
-Accelerate development with AI-assisted coding:
+Acelera el desarrollo con programación asistida por IA:
 
-- 📥 Install Claude Code locally
-- 🔌 Integrate with your IDE
-- ☁️ Connect to Google Vertex AI or Amazon Bedrock
-- 📖 Browse common workflows and patterns
-- 🆘 Access documentation and troubleshooting guides
+- 📥 Instalar Claude Code localmente
+- 🔌 Integrarlo con tu IDE
+- ☁️ Conectarlo con Google Vertex AI o Amazon Bedrock
+- 📖 Explorar flujos de trabajo y patrones comunes
+- 🆘 Acceder a la documentación y guías de solución de problemas
 
 ### 6.2 Claude Desktop
 
-Development environment for testing and prototyping:
+Entorno de desarrollo para pruebas y prototipos:
 
-- 🧪 Local testing before production deployment
-- 🔗 MCP integration for tool testing
-- ⚡ Real-time feedback on responses
+- 🧪 Pruebas locales antes del despliegue en producción
+- 🔗 Integración MCP para probar herramientas
+- ⚡ Comentarios en tiempo real sobre las respuestas
 
-### 6.3 Anthropic Console
+### 6.3 Consola de Anthropic
 
-Web-based interface for:
+Interfaz web para:
 
-- 🔑 API key management
-- ⚙️ Workspace configuration
-- 📊 Usage monitoring
-- 🛠️ Developer settings
-
----
-
-## 7. Optimization & Best Practices
-
-### 7.1 Prompt Engineering
-
-Create effective prompts that maximize Claude's performance:
-
-**Learning Resources**:
-- 🎓 Take interactive tutorials on prompt engineering
-- 💪 Practice with real-world scenarios
-- 🛠️ Use the prompt generator tool
-- 📖 Follow established best practices
-
-**Key Principles**:
-1. ✅ Be clear and specific
-2. 📝 Provide examples when helpful
-3. 🏗️ Use structured formats
-4. 📋 Specify output format
-5. 🎯 Include relevant context
-
-### 7.2 Evaluations
-
-Test and improve your Claude implementation:
-
-**Framework**:
-- 🏗️ Build strong evaluation frameworks
-- 🤖 Create automated evaluation systems
-- 🛠️ Use the Eval Tool on Claude Console
-- 📈 Measure performance improvements
-
-**Evaluation Types**:
-- ✅ Output quality assessment
-- 💰 Cost-efficiency analysis
-- ⚡ Latency measurements
-- 😊 User satisfaction metrics
-
-### 7.3 Model Selection
-
-Choose the right model for your use case:
-
-| Use Case | Recommended Model | Reason |
-|----------|------------------|---------|
-| Most applications | Sonnet 5.5 | Fastest, balanced performance |
-| Complex reasoning | Opus 5.5 | Highest intelligence |
-| High volume, simple tasks | Haiku 4.5 | Most cost-effective |
-
-**Considerations**:
-- Token limits and costs
-- Use model comparison chart for detailed specs
-- Balance performance vs. cost
-
-### 7.4 Cost Optimization
-
-Reduce API costs while maintaining quality:
-
-1. 💾 **Implement prompt caching** for repeated contexts
-2. 📦 **Use Message Batches API** for non-urgent requests
-3. 📊 **Monitor token usage**
-4. ✂️ **Optimize prompt length and structure**
-5. 🎯 **Use appropriate models** for each task
+- 🔑 Gestión de claves API
+- ⚙️ Configuración del espacio de trabajo
+- 📊 Monitorización del uso
+- 🛠️ Ajustes para desarrolladores
 
 ---
 
-## 8. Getting Your First Python Application Running
+## 7. Optimización y Mejores Prácticas
 
-### Step-by-Step Setup
+### 7.1 Ingeniería de Prompts
+
+Crea prompts eficaces que maximicen el rendimiento de Claude:
+
+**Recursos de Aprendizaje**:
+- 🎓 Sigue tutoriales interactivos de ingeniería de prompts
+- 💪 Practica con escenarios del mundo real
+- 🛠️ Usa la herramienta generadora de prompts
+- 📖 Sigue las mejores prácticas establecidas
+
+**Principios Clave**:
+1. ✅ Sé claro y específico
+2. 📝 Proporciona ejemplos cuando ayuden
+3. 🏗️ Usa formatos estructurados
+4. 📋 Especifica el formato de salida
+5. 🎯 Incluye el contexto relevante
+
+### 7.2 Evaluaciones
+
+Prueba y mejora tu implementación con Claude:
+
+**Marco de Trabajo**:
+- 🏗️ Construir marcos de evaluación sólidos
+- 🤖 Crear sistemas de evaluación automatizados
+- 🛠️ Usar la herramienta Eval de la Consola de Claude
+- 📈 Medir las mejoras de rendimiento
+
+**Tipos de Evaluación**:
+- ✅ Evaluación de la calidad de la salida
+- 💰 Análisis de eficiencia de costes
+- ⚡ Mediciones de latencia
+- 😊 Métricas de satisfacción del usuario
+
+### 7.3 Selección de Modelo
+
+Elige el modelo adecuado para tu caso de uso:
+
+| Caso de Uso | Modelo Recomendado | Motivo |
+|-------------|--------------------|--------|
+| La mayoría de las aplicaciones | Sonnet 5.5 | Velocidad y capacidad equilibradas |
+| Razonamiento complejo | Opus 5.5 / Fable 5.1 | Máxima inteligencia |
+| Alto volumen, tareas simples | Haiku 4.5 | Más rentable |
+
+**Consideraciones**:
+- Límites de tokens y costes
+- Usa el cuadro comparativo de modelos para ver las especificaciones detalladas
+- Equilibra rendimiento y coste
+
+### 7.4 Optimización de Costes
+
+Reduce los costes de la API manteniendo la calidad:
+
+1. 💾 **Implementa el almacenamiento en caché de prompts** para contextos repetidos
+2. 📦 **Usa la API de Lotes de Mensajes** para peticiones no urgentes
+3. 📊 **Monitoriza el uso de tokens**
+4. ✂️ **Optimiza la longitud y la estructura de los prompts**
+5. 🎯 **Usa los modelos adecuados** para cada tarea
+
+---
+
+## 8. Poner en Marcha tu Primera Aplicación en Python
+
+### Configuración Paso a Paso
 
 ```python
-# 1. Install the SDK
+# 1. Instala el SDK
 # pip install anthropic
 
-# 2. Set up your API key
-# export ANTHROPIC_API_KEY='your-api-key'
+# 2. Configura tu clave API
+# export ANTHROPIC_API_KEY='tu-clave-api'
 
-# 3. Create a basic application
+# 3. Crea una aplicación básica
 from anthropic import Anthropic
 
 client = Anthropic()
 
-# 4. Make your first API call
+# 4. Haz tu primera llamada a la API
 message = client.messages.create(
-    model="claude-opus-5-5",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Hello, Claude!"}
@@ -384,154 +385,154 @@ message = client.messages.create(
 print(message.content[0].text)
 ```
 
-### Next Steps
+### Próximos Pasos
 
-After your first successful call:
+Después de tu primera llamada exitosa:
 
-1. 📖 Review the full API documentation
-2. 🍳 Explore the Anthropic Cookbook for code examples
-3. 🚀 Try the Anthropic Quickstarts repository
-4. 🛠️ Build a prototype application
-5. 🧪 Test with different models and parameters
-6. ⚡ Optimize based on your use case
-
----
-
-## 9. Advanced Resources
-
-### Documentation & Learning
-
-| Resource | Description | Link |
-|----------|-------------|------|
-| **Full API Docs** | Complete API reference | [docs.anthropic.com](https://docs.anthropic.com) |
-| **Anthropic Cookbook** | Code snippets and practical guides | [GitHub](https://github.com/anthropics/anthropic-cookbook) |
-| **Quickstarts** | Pre-built application examples | [GitHub](https://github.com/anthropics/anthropic-quickstarts) |
-| **Courses** | In-depth training on specific topics | [Anthropic Academy](https://www.anthropic.com/learn) |
-
-### Community & Support
-
-- 🎉 Hackathon resources if you're participating in events
-- 📊 Workshop slides and training materials
-- 👥 Developer community for questions and ideas
-- 🐙 GitHub repositories for MCP and other projects
-
-### Cloud Platform Integration
-
-| Platform | Description |
-|----------|-------------|
-| **Amazon Bedrock** | Run Claude through AWS |
-| **Google Cloud Vertex AI** | Run Claude on GCP |
-| **Direct API** | Access through Anthropic Console |
+1. 📖 Revisa la documentación completa de la API
+2. 🍳 Explora el Anthropic Cookbook para ver ejemplos de código
+3. 🚀 Prueba el repositorio Anthropic Quickstarts
+4. 🛠️ Construye una aplicación prototipo
+5. 🧪 Prueba con diferentes modelos y parámetros
+6. ⚡ Optimiza según tu caso de uso
 
 ---
 
-## 10. Common Development Patterns
+## 9. Recursos Avanzados
 
-### Pattern 1: Simple Chat Application
+### Documentación y Aprendizaje
+
+| Recurso | Descripción | Enlace |
+|---------|-------------|--------|
+| **Documentación completa de la API** | Referencia completa de la API | [platform.claude.com/docs](https://platform.claude.com/docs/en/home) |
+| **Anthropic Cookbook** | Fragmentos de código y guías prácticas | [GitHub](https://github.com/anthropics/anthropic-cookbook) |
+| **Quickstarts** | Ejemplos de aplicaciones prediseñadas | [GitHub](https://github.com/anthropics/anthropic-quickstarts) |
+| **Cursos** | Formación en profundidad sobre temas específicos | [Claude Academy](https://academy.claude.com/courses) |
+
+### Comunidad y Soporte
+
+- 🎉 Recursos para hackathones si participas en eventos
+- 📊 Diapositivas de talleres y materiales de formación
+- 👥 Comunidad de desarrolladores para preguntas e ideas
+- 🐙 Repositorios de GitHub para MCP y otros proyectos
+
+### Integración con Plataformas en la Nube
+
+| Plataforma | Descripción |
+|------------|-------------|
+| **Amazon Bedrock** | Ejecuta Claude a través de AWS |
+| **Google Cloud Vertex AI** | Ejecuta Claude en GCP |
+| **API directa** | Acceso a través de la Consola de Anthropic |
+
+---
+
+## 10. Patrones Comunes de Desarrollo
+
+### Patrón 1: Aplicación de Chat Simple
 
 ```
-1. Initialize client with API key
-2. Implement message loop
-3. Handle conversation history
-4. Stream responses for better UX
+1. Inicializar el cliente con la clave API
+2. Implementar el bucle de mensajes
+3. Gestionar el historial de la conversación
+4. Transmitir respuestas en streaming para una mejor UX
 ```
 
-### Pattern 2: Tool-Using Agent
+### Patrón 2: Agente que Usa Herramientas
 
 ```
-1. Define available tools
-2. Create agent loop
-3. Handle tool calls from Claude
-4. Execute tools and return results
-5. Continue agent loop until completion
+1. Definir las herramientas disponibles
+2. Crear el bucle del agente
+3. Gestionar las llamadas a herramientas de Claude
+4. Ejecutar las herramientas y devolver los resultados
+5. Continuar el bucle del agente hasta completar la tarea
 ```
 
-### Pattern 3: RAG System
+### Patrón 3: Sistema RAG
 
 ```
-1. Load and embed documents
-2. Create vector store
-3. Implement retrieval function
-4. Build prompts with retrieved context
-5. Execute Claude API with enhanced prompts
+1. Cargar y generar embeddings de los documentos
+2. Crear el almacén vectorial
+3. Implementar la función de recuperación
+4. Construir prompts con el contexto recuperado
+5. Ejecutar la API de Claude con los prompts enriquecidos
 ```
 
-### Pattern 4: Batch Processing
+### Patrón 4: Procesamiento por Lotes
 
 ```
-1. Prepare multiple requests
-2. Submit via Message Batches API
-3. Monitor batch status
-4. Process results asynchronously
-5. Handle errors and retries
+1. Preparar múltiples peticiones
+2. Enviarlas mediante la API de Lotes de Mensajes
+3. Monitorizar el estado del lote
+4. Procesar los resultados de forma asíncrona
+5. Gestionar errores y reintentos
 ```
 
 ---
 
-## 11. Troubleshooting & Tips
+## 11. Solución de Problemas y Consejos
 
-| Issue | Solution |
-|-------|----------|
-| **API Rate Limits** | Use batch processing for high volume |
-| **High Token Costs** | Implement prompt caching and optimize prompts |
-| **Slow Responses** | Use Sonnet model, check temperature settings, stream responses |
-| **Tool Calling Issues** | Ensure tool definitions are clear and JSON format is correct |
-| **Accuracy Problems** | Use extended thinking, improve prompts, add examples |
-| **Debugging** | Use the Claude Console to test prompts, check API documentation |
+| Problema | Solución |
+|----------|----------|
+| **Límites de tasa de la API** | Espera y reintenta (el SDK reintenta automáticamente), reparte la carga o usa el procesamiento por lotes para el volumen no urgente |
+| **Costes altos de tokens** | Implementa el caché de prompts y optimiza los prompts |
+| **Respuestas lentas** | Usa un modelo más pequeño (Haiku 4.5), reduce `effort`, transmite las respuestas en streaming |
+| **Problemas al llamar herramientas** | Asegúrate de que las definiciones de herramientas sean claras y el formato JSON sea correcto |
+| **Problemas de precisión** | Usa pensamiento extendido, mejora los prompts, añade ejemplos |
+| **Depuración** | Usa la Consola de Claude para probar prompts y consulta la documentación de la API |
 
 ---
 
-## Quick Reference: Python SDK Essentials
+## Referencia Rápida: Lo Esencial del SDK de Python
 
-### Installation
+### Instalación
 ```bash
 pip install anthropic
 ```
 
-### Basic Usage
+### Uso Básico
 ```python
 from anthropic import Anthropic
 
-client = Anthropic(api_key="your-key")
+client = Anthropic()  # lee ANTHROPIC_API_KEY del entorno
 
 message = client.messages.create(
-    model="claude-opus-5-5",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Your prompt"}]
 )
 ```
 
-### Key Methods
+### Métodos Clave
 
-| Method | Description |
+| Método | Descripción |
 |--------|-------------|
-| `messages.create()` | Send message and get response |
-| `messages.stream()` | Get streaming responses |
-| `beta.files.upload()` | Upload files |
-| `batches.create()` | Process multiple requests |
+| `messages.create()` | Enviar un mensaje y obtener la respuesta |
+| `messages.stream()` | Obtener respuestas en streaming |
+| `files.upload()` | Subir archivos (la API de Archivos es GA, sin cabecera beta) |
+| `messages.batches.create()` | Procesar múltiples peticiones |
 
 ---
 
-## 🚀 Start Building
+## 🚀 Empieza a Construir
 
-Visit [platform.claude.com](https://platform.claude.com) to get started with your first application!
+¡Visita [platform.claude.com](https://platform.claude.com) para comenzar con tu primera aplicación!
 
-This comprehensive guide covers everything you need to begin developing Claude-powered applications in Python, from basic setup to advanced patterns and optimization techniques.
-
----
-
-## Additional Resources
-
-- 📚 [Complete Training Course](README.md)
-- 🚀 [Quick Start Guide](INICIO_RAPIDO.md)
-- 💻 [Code Examples](modulos)
-- 🎯 [Hands-On Exercises](ejercicios)
-- 🏗️ [Sample Projects](proyectos)
+Esta guía completa cubre todo lo que necesitas para empezar a desarrollar aplicaciones impulsadas por Claude en Python, desde la configuración básica hasta patrones avanzados y técnicas de optimización.
 
 ---
 
-## 🙏 Credits
+## Recursos Adicionales
 
-**Created by [Future Tales](https://futuretales.ai)** - Empowering developers to build the future with AI.
+- 📚 [Curso de Formación Completo](README.md)
+- 🚀 [Guía de Inicio Rápido](INICIO_RAPIDO.md)
+- 💻 [Ejemplos de Código](modulos)
+- 🎯 [Ejercicios Prácticos](ejercicios)
+- 🏗️ [Proyectos de Muestra](proyectos)
 
-This comprehensive guide was developed based on official Anthropic documentation and industry best practices.
+---
+
+## 🙏 Créditos
+
+**Creado por [Future Tales](https://futuretales.ai)** - Empoderando a los desarrolladores para construir el futuro con IA.
+
+Esta guía integral fue desarrollada a partir de la documentación oficial de Anthropic y las mejores prácticas de la industria.

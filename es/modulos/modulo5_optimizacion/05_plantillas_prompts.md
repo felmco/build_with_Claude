@@ -5,18 +5,25 @@ En código, no deberías codificar los prompts directamente. Usa plantillas.
 ## Ejemplo Python (f-strings)
 
 ```python
-def classify_email(email_text):
-    prompt = f"""
-    You are a customer service classifier.
+import anthropic
 
-    Classify the following email:
-    <email>
-    {email_text}
-    </email>
+client = anthropic.Anthropic()
 
-    Return one of: [Billing, Support, Feature Request].
-    """
-    return call_claude(prompt)
+def classify_email(email_text: str) -> str:
+    prompt = f"""You are a customer service classifier.
+
+Classify the following email:
+<email>
+{email_text}
+</email>
+
+Return exactly one of: Billing, Support, Feature Request."""
+    response = client.messages.create(
+        model="claude-sonnet-5-5",
+        max_tokens=20,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return response.content[0].text.strip()
 ```
 
 ## Librerías

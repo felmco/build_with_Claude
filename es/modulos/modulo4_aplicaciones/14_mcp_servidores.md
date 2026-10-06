@@ -5,8 +5,10 @@ Un Servidor MCP expone "Recursos" (datos de solo lectura), "Prompts" (plantillas
 ## SDK de Python (`mcp`)
 
 ```bash
-pip install mcp
+pip install "mcp<2"
 ```
+
+Los ejemplos de abajo usan la API FastMCP del paquete `mcp` 1.x. En `mcp` 2.x, `FastMCP` pasó a llamarse `MCPServer` (`from mcp.server.mcpserver import MCPServer`); el decorador `@mcp.tool()` y `run()` funcionan igual. Consulta la [documentación del SDK de Python de MCP](https://py.sdk.modelcontextprotocol.io/).
 
 ## Ejemplo Mínimo (FastMCP)
 
@@ -25,7 +27,7 @@ if __name__ == "__main__":
 ```
 
 ## Ejecutándolo
-Esto se ejecuta sobre Stdio (Entrada/Salida Estándar) por defecto, adecuado para conexiones locales.
+Esto se ejecuta sobre Stdio (Entrada/Salida Estándar) por defecto, adecuado para conexiones locales. Nunca uses `print()` hacia stdout en un servidor stdio (corrompe el flujo del protocolo); escribe los logs en stderr. Para servidores remotos usa `mcp.run(transport="streamable-http")`.
 
 ## Próximos Pasos
 - [Clientes MCP](15_mcp_clientes.md).

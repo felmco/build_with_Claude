@@ -66,7 +66,7 @@ cost = (estimated_tokens / 1_000_000) * 2.00  # Precio de entrada de Sonnet 5.5
 Siempre establece un límite de `max_tokens` en tus llamadas a la API para prevenir salidas grandes inesperadas (y costes) si el modelo entra en bucle o genera demasiado texto.
 
 ### 3. Usa Caché para Contextos Largos
-Si envías el mismo documento largo múltiples veces, usa Caché de Prompts para ahorrar hasta un 90% en costes de entrada.
+Si envías el mismo documento largo múltiples veces, usa Caché de Prompts para ahorrar un 90% o más en costes de entrada.
 
 ## Próximos Pasos
 - Configura tu entorno en [Instalando Python y Dependencias](04_configuracion_python.md).

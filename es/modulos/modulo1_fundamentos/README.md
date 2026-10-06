@@ -30,7 +30,7 @@ Al final de este módulo, serás capaz de:
 
 ## Requisitos Previos
 - Conocimiento básico de programación en Python
-- Python 3.7 o superior instalado
+- Python 3.10 o superior (requerido por el SDK actual de `anthropic`) instalado
 - Un editor de texto o IDE (VS Code, PyCharm, etc.)
 - Una cuenta de la API de Anthropic (regístrate en https://console.anthropic.com)
 

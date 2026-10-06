@@ -6,7 +6,7 @@ Las claves API son tus credenciales para acceder a la API de Claude. La gestión
 ## Obteniendo Tu Clave API
 
 ### Paso 1: Crear una Cuenta de Anthropic
-1. Visita [console.anthropic.com](https://console.anthropic.com)
+1. Visita [platform.claude.com](https://platform.claude.com)
 2. Regístrate o inicia sesión
 3. Completa cualquier verificación requerida
 
@@ -112,7 +112,6 @@ ANTHROPIC_MODEL=claude-sonnet-5-5
 
 # Configuraciones opcionales
 MAX_TOKENS=1024
-TEMPERATURE=1.0
 ```
 
 ### Paso 3: Añadir .env a .gitignore
@@ -195,7 +194,6 @@ class Config:
 
     # Valores predeterminados de la petición
     MAX_TOKENS = int(os.getenv("MAX_TOKENS", "1024"))
-    TEMPERATURE = float(os.getenv("TEMPERATURE", "1.0"))
 
     # Configuraciones de la aplicación
     DEBUG = os.getenv("DEBUG", "False").lower() == "true"
@@ -389,7 +387,7 @@ client = Anthropic()
 # Este es un marcador de posición para cuando la API lo soporte
 def check_usage():
     """Comprobar uso de API (vía Consola actualmente)"""
-    print("Comprobar uso en: https://console.anthropic.com/settings/usage")
+    print("Comprobar uso en: https://platform.claude.com/settings/usage")
 ```
 
 ### Configurar Alertas
@@ -427,7 +425,7 @@ class MonitoredClient:
 ### Error: Clave API Inválida
 
 ```python
-from anthropic import APIError, AuthenticationError
+from anthropic import Anthropic, AuthenticationError
 
 try:
     client = Anthropic(api_key="invalid-key")
@@ -519,6 +517,6 @@ client = Anthropic(api_key=api_key)
 - Aprende sobre [Manejo de Peticiones y Respuestas](08_solicitud_respuesta.md)
 
 ## Recursos Adicionales
-- [Consola de Anthropic](https://console.anthropic.com)
+- [Consola de Anthropic](https://platform.claude.com)
 - [Mejores Prácticas de Claves API](https://platform.claude.com/docs/en/security/api-keys)
 - [Documentación de python-dotenv](https://pypi.org/project/python-dotenv/)
