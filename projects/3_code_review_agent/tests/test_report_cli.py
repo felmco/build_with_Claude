@@ -97,7 +97,7 @@ def test_cli_dry_run_makes_no_call(capsys):
 def test_cli_errors(capsys, monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     assert run_cli(base_args(), None, capsys)[0] == 2                       # no key
-    assert run_cli(["--git-range", "--output=x"], FakeClient(), capsys)[0] == 2
+    assert run_cli(["--git-range=--output=x"], FakeClient(), capsys)[0] == 2
     assert run_cli(["--diff", "/nonexistent.diff"], FakeClient(), capsys)[0] == 2
     assert run_cli(base_args("--post"), FakeClient(), capsys)[0] == 2       # --post needs --pr
     from conftest import stop_resp
