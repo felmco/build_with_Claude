@@ -4,7 +4,7 @@ The **Files API** (beta) allows you to upload files once and reuse them across m
 
 ## Supported Models
 - **Images:** All Claude 3+ models.
-- **PDFs:** All Claude 3.5+ models.
+- **PDFs:** All current Claude models.
 - **CSV/Text:** Supported for specific tools (Code Execution), generally use text blocks for these in standard messages.
 
 ## Usage Flow

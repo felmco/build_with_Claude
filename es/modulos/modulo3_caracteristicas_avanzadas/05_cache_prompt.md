@@ -55,7 +55,7 @@ from anthropic import Anthropic
 client = Anthropic()
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {
@@ -125,7 +125,7 @@ def ask_with_caching(question: str):
     """Preguntar con base de conocimiento cacheada"""
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         system=[
             {
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 ### Prompt del Sistema Único
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {
@@ -202,7 +202,7 @@ message = client.messages.create(
 ### Múltiples Bloques del Sistema
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {
@@ -257,7 +257,7 @@ def chat_with_caching(messages: list, new_message: str):
     cached_messages.append(messages[-1])
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=cached_messages
     )

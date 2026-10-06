@@ -9,7 +9,7 @@ When working with APIs, things can go wrong. The Anthropic SDK provides specific
 | 400 | `BadRequestError` | Invalid JSON, malformed parameters | Check your request structure and parameters. |
 | 401 | `AuthenticationError` | Invalid or missing API key | Verify your `ANTHROPIC_API_KEY` environment variable. |
 | 403 | `PermissionError` | Key doesn't have access to resource | Check account permissions. |
-| 404 | `NotFoundError` | Model or resource not found | Check your model name spelling (e.g. `claude-sonnet-4-5...`). |
+| 404 | `NotFoundError` | Model or resource not found | Check your model name spelling (e.g. `claude-sonnet-5-5`). |
 | 413 | `RequestTooLarge` | Request too big | Reduce input size (e.g. fewer images or text). Max is ~32MB. |
 | 429 | `RateLimitError` | Too many requests or tokens | Implement retries with backoff. Request a limit increase. |
 | 500 | `APIError` | Internal server error | Retry the request later. |
@@ -27,7 +27,7 @@ client = anthropic.Anthropic()
 
 try:
     message = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": "Hello"}]
     )

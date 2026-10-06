@@ -108,7 +108,7 @@ pip install python-dotenv
 ```bash
 # Configuración de la API de Anthropic
 ANTHROPIC_API_KEY=tu-clave-api-aqui
-ANTHROPIC_MODEL=claude-sonnet-4-5-20250929
+ANTHROPIC_MODEL=claude-sonnet-5-5
 
 # Configuraciones opcionales
 MAX_TOKENS=1024
@@ -143,7 +143,7 @@ load_dotenv()
 client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 # Usar otras variables de entorno
-model = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-5-20250929")
+model = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5")
 max_tokens = int(os.getenv("MAX_TOKENS", "1024"))
 ```
 
@@ -155,9 +155,8 @@ max_tokens = int(os.getenv("MAX_TOKENS", "1024"))
 ```json
 {
     "api_key": "tu-clave-api-aqui",
-    "model": "claude-sonnet-4-5-20250929",
-    "max_tokens": 1024,
-    "temperature": 1.0
+    "model": "claude-sonnet-5-5",
+    "max_tokens": 1024
 }
 ```
 
@@ -192,7 +191,7 @@ class Config:
 
     # Configuración de la API
     API_KEY = os.getenv("ANTHROPIC_API_KEY")
-    MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-5-20250929")
+    MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5-5")
 
     # Valores predeterminados de la petición
     MAX_TOKENS = int(os.getenv("MAX_TOKENS", "1024"))
@@ -433,7 +432,7 @@ from anthropic import APIError, AuthenticationError
 try:
     client = Anthropic(api_key="invalid-key")
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": "Hello"}]
     )
@@ -489,7 +488,7 @@ def validate_api_key() -> str:
     try:
         client = Anthropic(api_key=api_key)
         client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=10,
             messages=[{"role": "user", "content": "test"}]
         )

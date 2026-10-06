@@ -10,7 +10,7 @@ Al final de este módulo, serás capaz de:
 - Procesar peticiones en lotes (batches)
 - Trabajar con imágenes y contenido visual
 - Usar pensamiento extendido para razonamiento complejo
-- Integrar capacidades de Uso de Computadora (beta)
+- Integrar capacidades de Uso de Computadora (`computer_toolset_20260801`)
 
 ## Temas Cubiertos
 

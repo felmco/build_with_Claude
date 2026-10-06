@@ -26,7 +26,7 @@ image_data = base64.b64encode(httpx.get(image_url).content).decode("utf-8")
 client = anthropic.Anthropic()
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {

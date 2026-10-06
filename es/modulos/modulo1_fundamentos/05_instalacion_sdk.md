@@ -147,7 +147,7 @@ from anthropic import Anthropic
 
 client = Anthropic(api_key="tu-clave-api")
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "¡Hola!"}]
 )
@@ -161,7 +161,7 @@ from anthropic import AsyncAnthropic
 async def main():
     client = AsyncAnthropic(api_key="tu-clave-api")
     message = await client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": "¡Hola!"}]
     )
@@ -173,7 +173,7 @@ asyncio.run(main())
 ### 3. Soporte de Streaming
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Cuéntame una historia"}]
 ) as stream:
@@ -191,7 +191,7 @@ messages: list[MessageParam] = [
 ]
 
 response: Message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=messages
 )
@@ -378,7 +378,7 @@ client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 def main():
     """Función principal"""
     message = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[
             {"role": "user", "content": "¡Hola, Claude!"}

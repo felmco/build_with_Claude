@@ -12,7 +12,7 @@ from anthropic import Anthropic
 client = Anthropic()
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Hello, Claude!"}
@@ -26,7 +26,7 @@ print(message.content[0].text)
 ```python
 message = client.messages.create(
     # Parámetros requeridos
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Explain quantum computing"}
@@ -34,9 +34,7 @@ message = client.messages.create(
 
     # Parámetros opcionales
     system="You are a physics professor explaining concepts simply.",
-    temperature=0.7,
-    top_p=0.9,
-    top_k=40,
+    # temperature / top_p / top_k: solo en Haiku 4.5 y modelos anteriores
     metadata={"user_id": "user_123"},
     stop_sequences=["Human:", "Assistant:"]
 )
@@ -167,7 +165,7 @@ Los prompts del sistema proporcionan instrucciones y contexto para el comportami
 ### Prompt del Sistema Básico
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system="You are a helpful coding assistant specializing in Python.",
     messages=[
@@ -199,7 +197,7 @@ CONSTRAINTS:
 """
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=2048,
     system=system_prompt,
     messages=[
@@ -216,21 +214,21 @@ Número máximo de tokens en la respuesta:
 ```python
 # Respuesta corta (50-100 tokens ≈ 40-75 palabras)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=100,
     messages=[{"role": "user", "content": "Summarize Python in one paragraph"}]
 )
 
 # Respuesta media (1000-2000 tokens ≈ 750-1500 palabras)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=2000,
     messages=[{"role": "user", "content": "Explain OOP in Python"}]
 )
 
 # Respuesta larga (4000+ tokens ≈ 3000+ palabras)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=4096,
     messages=[{"role": "user", "content": "Write a detailed tutorial on async Python"}]
 )
@@ -238,9 +236,11 @@ message = client.messages.create(
 
 **Directrices de Tokens**:
 - 1 token ≈ 0.75 palabras en inglés
-- Máximo: 8,192 tokens (varía según el modelo)
+- Máximo: hasta 128K tokens en los modelos actuales (64K en Haiku 4.5); varía según el modelo
 - Establecer basado en la longitud de respuesta esperada
 - Considerar el coste (cobrado por token de salida)
+
+> ⚠️ **Parámetros de muestreo en los modelos actuales.** Claude Fable 5.1, Opus 5.5 y Sonnet 5.5 no aceptan valores no predeterminados de `temperature`, `top_p` ni `top_k` (la petición devuelve 400). Guía el comportamiento con el prompt y con `output_config.effort`. Los ejemplos siguientes siguen funcionando en **Claude Haiku 4.5** (`claude-haiku-4-5`) y modelos anteriores, por eso lo usan.
 
 ### temperature
 Controla la aleatoriedad y creatividad (0.0 - 1.0):
@@ -248,7 +248,7 @@ Controla la aleatoriedad y creatividad (0.0 - 1.0):
 ```python
 # Respuestas deterministas (facuales, consistentes)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     temperature=0.0,  # Más determinista
     messages=[{"role": "user", "content": "What is 2 + 2?"}]
@@ -256,7 +256,7 @@ message = client.messages.create(
 
 # Respuestas equilibradas (comportamiento por defecto)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     temperature=0.7,  # Equilibrado
     messages=[{"role": "user", "content": "Explain machine learning"}]
@@ -264,7 +264,7 @@ message = client.messages.create(
 
 # Respuestas creativas (variadas, imaginativas)
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     temperature=1.0,  # Más creativo
     messages=[{"role": "user", "content": "Write a creative story"}]
@@ -283,7 +283,7 @@ Alternativa a la temperatura para controlar la aleatoriedad:
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     top_p=0.9,  # Considerar el top 90% de masa de probabilidad
     messages=[{"role": "user", "content": "Generate ideas"}]
@@ -301,7 +301,7 @@ Limita el vocabulario a los top K tokens:
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     top_k=40,  # Considerar solo los top 40 tokens en cada paso
     messages=[{"role": "user", "content": "Tell me about AI"}]
@@ -313,7 +313,7 @@ Detener la generación cuando se encuentran ciertas secuencias:
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     stop_sequences=["</end>", "STOP", "\n\n---"],
     messages=[{"role": "user", "content": "List 5 programming languages"}]
@@ -331,7 +331,7 @@ Adjuntar metadatos personalizados para rastreo:
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     metadata={
         "user_id": "user_12345",
@@ -347,7 +347,7 @@ message = client.messages.create(
 ### Campos Básicos de la Respuesta
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello!"}]
 )
@@ -429,7 +429,7 @@ class ClaudeClient:
 
     def __init__(self, api_key: Optional[str] = None):
         self.client = Anthropic(api_key=api_key or os.getenv("ANTHROPIC_API_KEY"))
-        self.model = "claude-sonnet-4-5-20250929"
+        self.model = "claude-sonnet-5-5"
 
     def send_message(
         self,
@@ -507,7 +507,7 @@ if __name__ == "__main__":
 ```python
 # Empieza con valores por defecto
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": prompt}]
 )
@@ -521,7 +521,7 @@ message = client.messages.create(
 ### 2. Maneja Siempre los Límites de Tokens
 ```python
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": prompt}]
 )
@@ -553,7 +553,7 @@ conversation = []
 # Turno 1
 conversation.append({"role": "user", "content": "What's Python?"})
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=conversation
 )
@@ -562,7 +562,7 @@ conversation.append({"role": "assistant", "content": response.content[0].text})
 # Turno 2 (con contexto)
 conversation.append({"role": "user", "content": "What are its main uses?"})
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=conversation
 )

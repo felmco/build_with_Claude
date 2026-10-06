@@ -14,8 +14,8 @@ The Message Batches API allows you to send a large group of requests at once.
 Create a list of requests.
 
 ```json
-{"custom_id": "req1", "params": {"model": "claude-sonnet-4-5-20250929", "max_tokens": 1024, "messages": [...]}}
-{"custom_id": "req2", "params": {"model": "claude-sonnet-4-5-20250929", "max_tokens": 1024, "messages": [...]}}
+{"custom_id": "req1", "params": {"model": "claude-sonnet-5-5", "max_tokens": 1024, "messages": [...]}}
+{"custom_id": "req2", "params": {"model": "claude-sonnet-5-5", "max_tokens": 1024, "messages": [...]}}
 ```
 
 **2. Submit Batch**
@@ -30,7 +30,7 @@ batch = client.messages.batches.create(
         {
             "custom_id": "my-first-request",
             "params": {
-                "model": "claude-sonnet-4-5-20250929",
+                "model": "claude-sonnet-5-5",
                 "max_tokens": 1024,
                 "messages": [{"role": "user", "content": "Hello world"}]
             }

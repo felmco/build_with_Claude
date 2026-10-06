@@ -26,7 +26,7 @@ with open("report.pdf", "rb") as f:
     pdf_data = base64.b64encode(f.read()).decode("utf-8")
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {

@@ -12,6 +12,8 @@ None
 ## 🎓 Difficulty Level
 ⭐ Beginner
 
+> ⚠️ **Model note:** Claude Fable 5.1, Opus 5.5 and Sonnet 5.5 reject non-default `temperature`. Run this exercise with `model="claude-haiku-4-5"`. As a bonus, repeat it on `claude-sonnet-5-5` and see the 400 error for yourself, then compare how different `effort` levels change the answer.
+
 ## 📝 Instructions
 
 ### Part 1: Deterministic (Temp 0)

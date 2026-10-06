@@ -69,8 +69,8 @@ Explore advanced Claude API capabilities:
 - Tool use and function calling
 - Prompt caching for cost optimization
 - Batch processing
-- Extended thinking for complex reasoning
-- Computer use (beta)
+- Adaptive thinking and `effort` for complex reasoning
+- Computer use (`computer_toolset_20260801`)
 
 **Key Topics**:
 - [Tool Use Basics](./modules/module3_advanced_features/01_tool_use_basics.md)
@@ -275,15 +275,21 @@ python -c "import anthropic; print('Setup successful!')"
 ## 📚 Additional Resources
 
 ### Official Documentation
-- [Anthropic Documentation](https://platform.claude.com/docs/en/home)
+Full mapping of docs to lessons: **[REFERENCES.md](./REFERENCES.md)**
+- [Claude Developer Platform docs](https://platform.claude.com/docs/en/home)
+- [Models overview](https://platform.claude.com/docs/en/about-claude/models/overview)
 - [API Reference](https://platform.claude.com/docs/en/api/overview)
+- [Claude Code docs](https://code.claude.com/docs/en/overview) and [Agent SDK](https://code.claude.com/docs/en/agent-sdk)
 - [Python SDK GitHub](https://github.com/anthropics/anthropic-sdk-python)
 - [Anthropic Cookbook](https://github.com/anthropics/anthropic-cookbook)
 
 ### Learning Resources
-- [Build with Claude Academy](https://www.anthropic.com/learn/build-with-claude)
+- [Claude Academy (free courses)](https://academy.claude.com/courses): Claude 101, Building with the Claude API, Introduction to MCP, Claude Code in Action, Introduction to Agent Skills
 - [Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro)
-- [Prompt Engineering Guide](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
+- [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
+
+### Bonus: Claude Code Mod
+- [MODS.md](./MODS.md): add a live **Consumo** pane (tokens, spend, context, tools, session time) to Claude Code. Source in [`mods/consumo`](./mods/consumo).
 
 ### Community
 - [Anthropic Discord](https://discord.gg/anthropic)
@@ -291,8 +297,8 @@ python -c "import anthropic; print('Setup successful!')"
 - [Twitter/X](https://twitter.com/AnthropicAI)
 
 ### Tools
-- [Anthropic Console](https://console.anthropic.com)
-- [Prompt Generator](https://console.anthropic.com/prompt-generator)
+- [Claude Console](https://platform.claude.com)
+- [Prompt Generator](https://platform.claude.com/dashboard)
 - [Claude Desktop](https://claude.ai/download)
 
 ## 💡 Tips for Success
@@ -313,8 +319,8 @@ This course is regularly updated to reflect:
 - Best practice updates
 - Community feedback
 
-**Last Updated**: January 2026
-**Claude Models**: Opus 4.5, Sonnet 4.5, Haiku 3.5
+**Last Updated**: October 2026 (see [WHATS_NEW.md](./WHATS_NEW.md))
+**Claude Models**: Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 4.5
 
 ## 📝 Course Completion
 

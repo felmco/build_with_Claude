@@ -20,7 +20,7 @@ def chat_turn(user_input):
 
     # 2. Enviar historial a la API
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=conversation_history
     )
@@ -39,7 +39,7 @@ chat_turn("What is my name?")
 
 ## Gestionando la Ventana de Contexto
 
-Claude tiene una gran ventana de contexto (200K tokens), pero no es infinita.
+Claude tiene una gran ventana de contexto (de 200K a 1M tokens según el modelo), pero no es infinita.
 
 ### Estrategias para Conversaciones Largas
 
@@ -67,26 +67,37 @@ if len(conversation_history) > MAX_HISTORY:
 - Los roles deben alternarse (Usuario -> Asistente -> Usuario).
 - La lista debe empezar con un mensaje de `user`.
 
-### Pre-rellenar la Respuesta del Asistente
-Puedes "poner palabras en la boca de Claude" añadiendo un mensaje `assistant` como el último mensaje en la lista *sin* un mensaje de usuario correspondiente siguiéndolo. Esto es útil para:
-- Forzar un formato específico (ej. `{`).
-- Guiar el tono.
+### Controlar el Formato de Salida (el Prefill Ya No Existe)
+Los tutoriales antiguos "ponían palabras en boca de Claude" terminando la lista con un mensaje `assistant` (por ejemplo `{`). **Ese prefill devuelve un error 400 en los modelos actuales** (Fable 5.1, Opus 5.5, Sonnet 5.5 y la familia 4.6+). Usa en su lugar:
 
-*Nota: Esta característica se maneja de forma diferente en la API. Suministras el pre-relleno como el último mensaje con rol `assistant`.*
+- **Salidas estructuradas**: restringe la respuesta a un esquema JSON con `output_config.format`.
+- **Instrucciones claras** en el prompt de sistema ("Responde con un único objeto JSON y nada más").
 
 ```python
-messages = [
-    {"role": "user", "content": "Write a JSON object describing a car."},
-    {"role": "assistant", "content": "{"} # Pre-relleno
-]
-
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
-    messages=messages
+    messages=[{"role": "user", "content": "Describe un coche como JSON."}],
+    output_config={
+        "format": {
+            "type": "json_schema",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "make": {"type": "string"},
+                    "model": {"type": "string"},
+                    "year": {"type": "integer"},
+                },
+                "required": ["make", "model", "year"],
+                "additionalProperties": False,
+            },
+        }
+    },
 )
-# Claude continúa desde "{":  "make": "Toyota", ...
+print(response.content[0].text)  # JSON válido que cumple el esquema
 ```
+
+Consulta la [documentación de salidas estructuradas](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) para el helper `client.messages.parse()`.
 
 ## Próximos Pasos
 - Aprende sobre [Respuestas en Streaming](04_conceptos_basicos_streaming.md) para retroalimentación en tiempo real.

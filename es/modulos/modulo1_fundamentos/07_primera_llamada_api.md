@@ -19,7 +19,7 @@ client = Anthropic()  # Usa la variable de entorno ANTHROPIC_API_KEY
 
 # Haz tu primera llamada a la API
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Hello, Claude! Introduce yourself in one sentence."}
@@ -63,7 +63,7 @@ El cliente `Anthropic()`:
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",  # Qué modelo usar
+    model="claude-sonnet-5-5",  # Qué modelo usar
     max_tokens=1024,                      # Longitud máxima de respuesta
     messages=[                            # Historial de conversación
         {"role": "user", "content": "Hello, Claude!"}
@@ -72,7 +72,7 @@ message = client.messages.create(
 ```
 
 **Parámetros explicados**:
-- `model`: Qué modelo de Claude usar (Sonnet 4.5 recomendado)
+- `model`: Qué modelo de Claude usar (Sonnet 5.5 recomendado)
 - `max_tokens`: Tokens máximos en la respuesta (1 token ≈ 0.75 palabras)
 - `messages`: Lista de mensajes en la conversación
 
@@ -115,7 +115,7 @@ def make_api_call():
         # Hacer llamada a la API
         print("📤 Enviando mensaje a Claude...")
         message = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             messages=[
                 {
@@ -196,7 +196,7 @@ def main():
         try:
             # Hacer llamada a la API
             message = client.messages.create(
-                model="claude-sonnet-4-5-20250929",
+                model="claude-sonnet-5-5",
                 max_tokens=1024,
                 messages=[
                     {"role": "user", "content": user_input}
@@ -256,14 +256,14 @@ Controla la longitud máxima de la respuesta:
 ```python
 # Respuesta corta
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=50,  # Muy corta
     messages=[{"role": "user", "content": "Write a story"}]
 )
 
 # Respuesta larga
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=4096,  # Mucho más larga
     messages=[{"role": "user", "content": "Write a detailed story"}]
 )
@@ -271,17 +271,20 @@ message = client.messages.create(
 
 **Directrices**:
 - Mínimo: 1 token
-- Máximo: 8,192 tokens (específico del modelo)
+- Máximo: hasta 128K tokens en los modelos actuales (64K en Haiku 4.5); específico del modelo
 - 1 token ≈ 0.75 palabras en inglés
 - Establecer basado en la longitud de respuesta esperada
 
 ### temperature
-Controla la aleatoriedad (0.0 a 1.0):
+Controla la aleatoriedad (0.0 a 1.0).
+
+> ⚠️ **Modelos actuales:** Claude Fable 5.1, Opus 5.5 y Sonnet 5.5 rechazan `temperature`/`top_p`/`top_k` no predeterminados con un 400. Allí usa el prompt y `effort`. Los ejemplos siguientes usan **Claude Haiku 4.5** y modelos anteriores.
+
 
 ```python
 # Más enfocado y determinista
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     temperature=0.0,  # Más determinista
     messages=[{"role": "user", "content": "What is 2+2?"}]
@@ -289,7 +292,7 @@ message = client.messages.create(
 
 # Más creativo y variado
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-haiku-4-5",
     max_tokens=1024,
     temperature=1.0,  # Más creativo
     messages=[{"role": "user", "content": "Write a creative story"}]
@@ -308,7 +311,7 @@ Proporcionar instrucciones a Claude:
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system="You are a helpful Python tutor. Explain concepts simply with examples.",
     messages=[
@@ -327,9 +330,9 @@ client = Anthropic()
 prompt = "Explain quantum computing in one sentence."
 
 models = {
-    "Haiku 3.5": "claude-3-5-haiku-20241022",
-    "Sonnet 4.5": "claude-sonnet-4-5-20250929",
-    "Opus 4.5": "claude-opus-4-5-20251101"
+    "Haiku 4.5": "claude-haiku-4-5",
+    "Sonnet 5.5": "claude-sonnet-5-5",
+    "Opus 5.5": "claude-opus-5-5"
 }
 
 print("Comparing Models")
@@ -378,7 +381,7 @@ def send_message(client, prompt: str, system: str = None):
     """Enviar un mensaje a Claude y devolver respuesta"""
     try:
         params = {
-            "model": "claude-sonnet-4-5-20250929",
+            "model": "claude-sonnet-5-5",
             "max_tokens": 1024,
             "messages": [{"role": "user", "content": prompt}]
         }
@@ -455,7 +458,7 @@ from anthropic import Anthropic
 
 client = Anthropic()
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello!"}]
 )

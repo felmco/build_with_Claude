@@ -195,7 +195,7 @@ while True:
     conversation.append({"role": "user", "content": user_input})
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         messages=conversation
     )
 

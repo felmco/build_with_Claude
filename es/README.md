@@ -275,15 +275,21 @@ python -c "import anthropic; print('¡Configuración exitosa!')"
 ## 📚 Recursos Adicionales
 
 ### Documentación Oficial
-- [Documentación de Anthropic](https://platform.claude.com/docs/en/home)
+Mapa completo de documentación y lecciones: **[REFERENCIAS.md](./REFERENCIAS.md)**
+- [Documentación de la plataforma Claude](https://platform.claude.com/docs/en/home)
+- [Visión general de modelos](https://platform.claude.com/docs/en/about-claude/models/overview)
 - [Referencia de la API](https://platform.claude.com/docs/en/api/overview)
+- [Documentación de Claude Code](https://code.claude.com/docs/en/overview) y [Agent SDK](https://code.claude.com/docs/en/agent-sdk)
 - [GitHub del SDK de Python](https://github.com/anthropics/anthropic-sdk-python)
 - [Libro de Recetas (Cookbook) de Anthropic](https://github.com/anthropics/anthropic-cookbook)
 
 ### Recursos de Aprendizaje
-- [Academia Build with Claude](https://www.anthropic.com/learn/build-with-claude)
+- [Claude Academy (cursos gratuitos)](https://academy.claude.com/courses): Claude 101, Building with the Claude API, Introduction to MCP, Claude Code in Action, Introduction to Agent Skills
 - [Protocolo de Contexto de Modelo (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro)
-- [Guía de Ingeniería de Prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
+- [Mejores prácticas de prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
+
+### Extra: Mod de Claude Code
+- [MODS.md](./MODS.md): añade un panel de **Consumo** en vivo (tokens, gasto, contexto, herramientas, sesión) a Claude Code. Código en [`../mods/consumo`](../mods/consumo).
 
 ### Comunidad
 - [Discord de Anthropic](https://discord.gg/anthropic)
@@ -291,8 +297,7 @@ python -c "import anthropic; print('¡Configuración exitosa!')"
 - [Twitter/X](https://twitter.com/AnthropicAI)
 
 ### Herramientas
-- [Consola de Anthropic](https://console.anthropic.com)
-- [Generador de Prompts](https://console.anthropic.com/prompt-generator)
+- [Consola de Claude](https://platform.claude.com)
 - [Claude Desktop](https://claude.ai/download)
 
 ## 💡 Consejos para el Éxito
@@ -313,8 +318,8 @@ Este curso se actualiza regularmente para reflejar:
 - Actualizaciones de mejores prácticas
 - Comentarios de la comunidad
 
-**Última Actualización**: Enero 2026
-**Modelos Claude**: Opus 4.5, Sonnet 4.5, Haiku 3.5
+**Última Actualización**: Octubre 2026 (ver [NOVEDADES.md](./NOVEDADES.md))
+**Modelos Claude**: Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 4.5
 
 ## 📝 Finalización del Curso
 

@@ -4,7 +4,7 @@
 
 ```python
 while True:
-    response = client.beta.messages.create(...)
+    response = client.messages.create(...)
 
     if response.stop_reason == "tool_use":
         # Execute action (click, type, screenshot)

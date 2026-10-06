@@ -1,0 +1,1 @@
+{ "name": "consumo", "version": "0.1.0", "description": "Live pane showing tokens, spend, context, tool count and session time", "types": "./types/index.d.ts" }

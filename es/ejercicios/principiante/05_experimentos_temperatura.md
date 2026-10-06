@@ -12,6 +12,8 @@ Ninguno
 ## 🎓 Nivel de Dificultad
 ⭐ Principiante
 
+> ⚠️ **Nota de modelo:** Claude Fable 5.1, Opus 5.5 y Sonnet 5.5 rechazan `temperature` no predeterminada. Ejecuta este ejercicio con `model="claude-haiku-4-5"`. Como extra, repítelo con `claude-sonnet-5-5` para ver el error 400, y compara cómo cambian las respuestas con distintos niveles de `effort`.
+
 ## 📝 Instrucciones
 
 ### Parte 1: Determinista (Temp 0)

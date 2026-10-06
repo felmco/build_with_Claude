@@ -10,7 +10,7 @@ By the end of this module, you will be able to:
 - Process requests in batches
 - Work with images and visual content
 - Use extended thinking for complex reasoning
-- Integrate Computer Use capabilities (beta)
+- Integrate Computer Use capabilities (`computer_toolset_20260801`)
 
 ## Topics Covered
 

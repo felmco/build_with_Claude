@@ -88,7 +88,7 @@ tools = [
 user_message = "What is 125 multiplied by 8?"
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     tools=tools,
     messages=[
@@ -164,7 +164,7 @@ messages = [
 
 # Get final response
 final_response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     tools=tools,
     messages=messages
@@ -229,7 +229,7 @@ def use_tool(user_message: str) -> str:
     messages = [{"role": "user", "content": user_message}]
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         tools=tools,
         messages=messages
@@ -268,7 +268,7 @@ def use_tool(user_message: str) -> str:
 
         # Get final response
         final_response = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             tools=tools,
             messages=messages
@@ -366,7 +366,7 @@ def weather_assistant(user_message: str) -> str:
 
     # Initial request
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         tools=tools,
         messages=messages
@@ -400,7 +400,7 @@ def weather_assistant(user_message: str) -> str:
         ]
 
         final_response = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             tools=tools,
             messages=messages
@@ -592,7 +592,7 @@ tools = [{
 
 # 2. Make request with tools
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     tools=tools,
     messages=[{"role": "user", "content": "..."}]
@@ -616,7 +616,7 @@ if response.stop_reason == "tool_use":
 
     # 5. Get final response
     final = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         tools=tools,
         messages=messages

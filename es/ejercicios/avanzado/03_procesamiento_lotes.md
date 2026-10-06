@@ -32,8 +32,8 @@ Descarga los resultados cuando estén listos.
 ```python
 # 1. Preparar datos
 solicitudes = [
-    {"custom_id": "req1", "params": {"model": "claude-haiku-3.5", "max_tokens": 100, "messages": [...]}},
-    {"custom_id": "req2", "params": {"model": "claude-haiku-3.5", "max_tokens": 100, "messages": [...]}}
+    {"custom_id": "req1", "params": {"model": "claude-haiku-4-5", "max_tokens": 100, "messages": [...]}},
+    {"custom_id": "req2", "params": {"model": "claude-haiku-4-5", "max_tokens": 100, "messages": [...]}}
 ]
 
 # TODO: Escribir a batch.jsonl

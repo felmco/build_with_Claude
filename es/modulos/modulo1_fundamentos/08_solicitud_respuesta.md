@@ -10,7 +10,7 @@ Cuando llamas a `client.messages.create()`, estás creando un **Mensaje** (Messa
 
 ```python
 {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-5-5",
     "max_tokens": 1024,
     "messages": [
         {"role": "user", "content": "¡Hola, Claude!"}
@@ -23,7 +23,9 @@ Cuando llamas a `client.messages.create()`, estás creando un **Mensaje** (Messa
 - `max_tokens`: (Requerido) La longitud máxima de salida.
 - `messages`: (Requerido) Una lista de objetos de mensaje (`role` y `content`).
 - `system`: (Opcional) Instrucciones a nivel de sistema.
-- `temperature`: (Opcional) Controla la aleatoriedad (0.0 a 1.0).
+- `temperature`: (Opcional, solo Haiku 4.5 y modelos anteriores) Controla la aleatoriedad (0.0 a 1.0). Los modelos 5.x actuales rechazan valores no predeterminados.
+- `output_config`: (Opcional) `effort` (`low` a `max`) y `format` (salidas estructuradas).
+- `thinking`: (Opcional) `{"type": "adaptive"}` en los modelos actuales.
 
 ### Estructura de Respuesta (Salida)
 
@@ -40,7 +42,7 @@ La API devuelve un objeto `Message`. Aquí se representa su estructura JSON:
       "text": "¡Hola! ¿Cómo puedo ayudarte hoy?"
     }
   ],
-  "model": "claude-sonnet-4-5-20250929",
+  "model": "claude-sonnet-5-5",
   "stop_reason": "end_turn",
   "stop_sequence": null,
   "usage": {

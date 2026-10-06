@@ -12,8 +12,8 @@ The latest Claude models are:
 
 | Model | Best For | Key Characteristics |
 |-------|----------|---------------------|
-| **Claude Sonnet 4.5** | Most applications | Best balance of speed and capability |
-| **Claude Opus 4.5** | Complex reasoning | Highest intelligence for difficult tasks |
+| **Claude Sonnet 5.5** | Most applications | Best balance of speed and capability |
+| **Claude Opus 5.5** | Complex reasoning | Highest intelligence for difficult tasks |
 | **Claude 4** | Legacy support | Previous generation models |
 
 ### Getting Started with Models
@@ -335,9 +335,9 @@ Choose the right model for your use case:
 
 | Use Case | Recommended Model | Reason |
 |----------|------------------|---------|
-| Most applications | Sonnet 4.5 | Fastest, balanced performance |
-| Complex reasoning | Opus 4.5 | Highest intelligence |
-| High volume, simple tasks | Haiku 3.5 | Most cost-effective |
+| Most applications | Sonnet 5.5 | Fastest, balanced performance |
+| Complex reasoning | Opus 5.5 | Highest intelligence |
+| High volume, simple tasks | Haiku 4.5 | Most cost-effective |
 
 **Considerations**:
 - Token limits and costs
@@ -374,7 +374,7 @@ client = Anthropic()
 
 # 4. Make your first API call
 message = client.messages.create(
-    model="claude-opus-4-1-20250805",
+    model="claude-opus-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Hello, Claude!"}
@@ -495,7 +495,7 @@ from anthropic import Anthropic
 client = Anthropic(api_key="your-key")
 
 message = client.messages.create(
-    model="claude-opus-4-1-20250805",
+    model="claude-opus-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Your prompt"}]
 )

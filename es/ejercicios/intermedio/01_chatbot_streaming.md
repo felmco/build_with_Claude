@@ -155,7 +155,7 @@ Tú: /guardar
 
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=conversation
 ) as stream:
@@ -219,7 +219,7 @@ class StreamingChatbot:
     def __init__(self):
         self.client = Anthropic()
         self.conversation: List[Dict] = []
-        self.model = "claude-sonnet-4-5-20250929"
+        self.model = "claude-sonnet-5-5"
         self.turn_count = 0
 
     def chat(self, user_message: str) -> bool:

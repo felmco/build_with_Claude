@@ -33,7 +33,7 @@ client = Anthropic()
 
 # Habilitar streaming con stream=True
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Tell me a short story about a robot"}
@@ -57,7 +57,7 @@ from anthropic import Anthropic
 client = Anthropic()
 
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Explain Python in 3 sentences"}
@@ -79,7 +79,7 @@ El streaming proporciona varios tipos de eventos:
 
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello"}]
 ) as stream:
@@ -110,7 +110,7 @@ from anthropic.types import (
 client = Anthropic()
 
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Count to 5"}]
 ) as stream:
@@ -144,7 +144,7 @@ Obtener solo el contenido de texto:
 
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Write a haiku"}]
 ) as stream:
@@ -157,7 +157,7 @@ Acceder al mensaje completo después del streaming:
 
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello"}]
 ) as stream:
@@ -176,7 +176,7 @@ Obtener texto completo después del streaming:
 
 ```python
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Say hello"}]
 ) as stream:
@@ -198,7 +198,7 @@ import time
 def stream_with_typing_effect(prompt: str, delay: float = 0.01):
     """Streaming con efecto de escritura"""
     with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:
@@ -221,7 +221,7 @@ def stream_with_progress(prompt: str):
     char_count = 0
 
     with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:
@@ -242,7 +242,7 @@ def stream_and_collect(prompt: str) -> tuple[str, dict]:
     collected_text = []
 
     with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:
@@ -272,7 +272,7 @@ def stream_to_file(prompt: str, filename: str):
     """Transmitir respuesta directamente a archivo"""
     with open(filename, 'w') as f:
         with client.messages.stream(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=2048,
             messages=[{"role": "user", "content": prompt}]
         ) as stream:
@@ -295,7 +295,7 @@ def safe_stream(prompt: str):
     """Streaming con manejo de errores completo"""
     try:
         with client.messages.stream(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             messages=[{"role": "user", "content": prompt}]
         ) as stream:
@@ -332,7 +332,7 @@ async def async_stream_example():
     client = AsyncAnthropic()
 
     async with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": "Count to 10"}]
     ) as stream:
@@ -356,7 +356,7 @@ async def stream_response(client, prompt: str, label: str):
     print("-" * 40)
 
     async with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=512,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:
@@ -399,7 +399,7 @@ class StreamingChatbot:
     def __init__(self):
         self.client = Anthropic()
         self.conversation: List[Dict] = []
-        self.model = "claude-sonnet-4-5-20250929"
+        self.model = "claude-sonnet-5-5"
 
     def chat(self, user_message: str):
         """Enviar mensaje y transmitir respuesta"""
@@ -474,7 +474,7 @@ def measure_streaming_performance(prompt: str):
     token_count = 0
 
     with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:
@@ -520,7 +520,7 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Use emojis to describe weather"}]
 ) as stream:
@@ -534,7 +534,7 @@ def handle_interrupted_stream(prompt: str):
     """Manejar interrupción del stream con elegancia"""
     try:
         with client.messages.stream(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             messages=[{"role": "user", "content": prompt}]
         ) as stream:
@@ -569,7 +569,7 @@ handle_interrupted_stream("Write a long story")
 ```python
 # Streaming básico
 with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello"}]
 ) as stream:

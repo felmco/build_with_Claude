@@ -105,7 +105,7 @@ client = Anthropic()  # Usa var de entorno ANTHROPIC_API_KEY
 
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Tu mensaje aquí"}
@@ -138,7 +138,7 @@ import os
 def send_message(client, user_message: str):
     """Enviar un mensaje a Claude y devolver respuesta"""
     message = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[
             {"role": "user", "content": user_message}

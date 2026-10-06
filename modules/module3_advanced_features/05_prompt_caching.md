@@ -55,7 +55,7 @@ from anthropic import Anthropic
 client = Anthropic()
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {
@@ -125,7 +125,7 @@ def ask_with_caching(question: str):
     """Ask question with cached knowledge base"""
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         system=[
             {
@@ -203,7 +203,7 @@ Request #2: Explain Python functions
 ### Single System Prompt
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {
@@ -219,7 +219,7 @@ message = client.messages.create(
 ### Multiple System Blocks
 ```python
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {
@@ -274,7 +274,7 @@ def chat_with_caching(messages: list, new_message: str):
     cached_messages.append(messages[-1])
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=cached_messages
     )
@@ -321,7 +321,7 @@ def query_with_tools_cached(question: str):
     """Query with cached tool definitions"""
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         tools=TOOLS,
         system=[
@@ -456,7 +456,7 @@ def multi_level_cache(project_id: str, user_query: str):
     user_context = f"Current query: {user_query}"
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         system=[
             {
@@ -492,7 +492,7 @@ with open("diagram.png", "rb") as f:
     image_data = base64.b64encode(f.read()).decode("utf-8")
 
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     messages=[
         {
@@ -561,7 +561,7 @@ class CachedRAG:
             })
 
         response = self.client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-5-5",
             max_tokens=1024,
             system=system_parts,
             messages=[
@@ -629,7 +629,7 @@ if __name__ == "__main__":
 ```python
 # Cache system prompt
 message = client.messages.create(
-    model="claude-sonnet-4-5-20250929",
+    model="claude-sonnet-5-5",
     max_tokens=1024,
     system=[
         {

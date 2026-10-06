@@ -18,7 +18,7 @@ async def stream_chat():
     client = AsyncAnthropic()
 
     async with client.messages.stream(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": "Tell me a joke"}]
     ) as stream:

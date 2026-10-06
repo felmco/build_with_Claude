@@ -14,8 +14,8 @@ La API de Lotes de Mensajes te permite enviar un grupo grande de peticiones a la
 Crea una lista de peticiones.
 
 ```json
-{"custom_id": "req1", "params": {"model": "claude-sonnet-4-5-20250929", "max_tokens": 1024, "messages": [...]}}
-{"custom_id": "req2", "params": {"model": "claude-sonnet-4-5-20250929", "max_tokens": 1024, "messages": [...]}}
+{"custom_id": "req1", "params": {"model": "claude-sonnet-5-5", "max_tokens": 1024, "messages": [...]}}
+{"custom_id": "req2", "params": {"model": "claude-sonnet-5-5", "max_tokens": 1024, "messages": [...]}}
 ```
 
 **2. Enviar Lote**
@@ -30,7 +30,7 @@ batch = client.messages.batches.create(
         {
             "custom_id": "my-first-request",
             "params": {
-                "model": "claude-sonnet-4-5-20250929",
+                "model": "claude-sonnet-5-5",
                 "max_tokens": 1024,
                 "messages": [{"role": "user", "content": "Hello world"}]
             }
