@@ -1,0 +1,55 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs:
+    name: docs (python blocks parse, links resolve)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/check_docs.py
+
+  projects:
+    name: ${{ matrix.project }} (py${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.12"]
+        project:
+          - projects/1_customer_support_bot
+          - projects/2_document_qa_system
+          - projects/3_code_review_agent
+          - projects/4_research_assistant
+          - es/proyectos/1_bot_soporte_cliente
+          - es/proyectos/2_sistema_qa_documentos
+          - es/proyectos/3_agente_revision_codigo
+          - es/proyectos/4_asistente_investigacion
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: ${{ matrix.project }}/requirements*.txt
+      - run: pip install -r requirements-dev.txt
+      # Offline: the tests use a fake client, so no API key or network is needed.
+      - run: python -m pytest -q
+      - run: python main.py --help
