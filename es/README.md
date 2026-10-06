@@ -136,6 +136,19 @@ Optimiza y despliega aplicaciones listas para producción:
 
 ---
 
+### [Módulo 6: Características Más Recientes de la Plataforma](modulos/modulo6_caracteristicas_plataforma/README.md)
+**Duración**: 6-8 horas | **Nivel**: Avanzado
+
+Capacidades más nuevas de la plataforma que usan las aplicaciones modernas de Claude:
+- Herramientas del lado del servidor (búsqueda web, web fetch, ejecución de código, tool search)
+- Salidas estructuradas, rechazos y alternativas
+- Presupuestos de tarea, compactación y edición de contexto
+- Agent Skills y el conector MCP
+- El Claude Agent SDK y Managed Agents
+- Admin API, informes de uso y coste
+
+---
+
 ## 🎓 Ruta de Aprendizaje
 
 ### Para Principiantes
@@ -372,5 +385,6 @@ Comienza tu viaje con el [Módulo 1: Fundamentos y Configuración](modulos/modul
 - [Módulo 3: Características Avanzadas](modulos/modulo3_caracteristicas_avanzadas/README.md)
 - [Módulo 4: Aplicaciones](modulos/modulo4_aplicaciones/README.md)
 - [Módulo 5: Optimización](modulos/modulo5_optimizacion/README.md)
+- [Módulo 6: Características Más Recientes de la Plataforma](modulos/modulo6_caracteristicas_plataforma/README.md)
 - [Ejercicios](ejercicios)
 - [Proyectos](proyectos)

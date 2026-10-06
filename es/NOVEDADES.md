@@ -27,4 +27,4 @@ Los IDs ahora no llevan fecha y son snapshots fijos: no les añadas sufijos de f
 
 ## Pendiente para la próxima revisión
 
-Managed Agents, Claude Agent SDK, herramientas de servidor (búsqueda web, ejecución de código), fallbacks por rechazo, presupuestos de tarea y Admin API.
+Nada importante pendiente. El [Módulo 6](./modulos/modulo6_caracteristicas_plataforma/README.md) cubre Managed Agents, Claude Agent SDK, herramientas de servidor (búsqueda web, ejecución de código), fallbacks por rechazo, presupuestos de tarea y Admin API. Los cuatro proyectos siguen siendo esqueletos.

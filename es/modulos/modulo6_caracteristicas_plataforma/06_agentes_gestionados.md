@@ -1,20 +1,20 @@
 # 6.6 Managed Agents (Beta)
 
-Managed Agents is a hosted agent harness. You define a persistent **agent** (model, system prompt, tools), an **environment** (a cloud container template), and then start **sessions**. The agent loop runs on Anthropic's orchestration layer; the container is where its tools (bash, files, code) execute. You send events in and stream events out.
+Managed Agents es un arnés de agentes alojado. Defines un **agente** persistente (modelo, prompt de sistema, herramientas), un **entorno** (una plantilla de contenedor en la nube) y luego inicias **sesiones**. El bucle del agente se ejecuta en la capa de orquestación de Anthropic; el contenedor es donde se ejecutan sus herramientas (bash, archivos, código). Tú envías eventos y recibes eventos en streaming.
 
-## When to Choose It
+## Cuándo Elegirlo
 
-| Situation | Better fit |
+| Situación | Mejor opción |
 |---|---|
-| Short request/response, a few tools you control | Messages API loop ([4.6](../module4_applications/06_agent_loops.md)) |
-| Agent needs files and a shell on your own machines | [Agent SDK](./05_agent_sdk.md) |
-| Long-running, multi-step work in a sandbox you do not want to operate; scheduled runs; graded deliverables | **Managed Agents** |
+| Petición/respuesta corta, unas pocas herramientas que controlas | Bucle de la Messages API ([4.6](../modulo4_aplicaciones/06_bucles_agente.md)) |
+| El agente necesita archivos y un shell en tus propias máquinas | [Agent SDK](./05_agent_sdk.md) |
+| Trabajo largo de varios pasos en un entorno aislado que no quieres operar; ejecuciones programadas; entregables evaluados | **Managed Agents** |
 
-You trade control of the loop for not having to host it: no container fleet, no loop code, built-in compaction and prompt caching.
+Cambias el control del bucle por no tener que alojarlo: sin flota de contenedores, sin código de bucle, con compactación y caché de prompts integradas.
 
-## The Flow: Agent (once) -> Environment -> Session (every run)
+## El Flujo: Agente (una vez) -> Entorno -> Sesión (cada ejecución)
 
-Managed Agents is in beta. The SDK sets the `managed-agents-2026-04-01` beta header for you on `client.beta.{agents,environments,sessions,vaults,deployments}.*` calls. Do not add it by hand.
+Managed Agents está en beta. El SDK establece por ti la cabecera beta `managed-agents-2026-04-01` en las llamadas `client.beta.{agents,environments,sessions,vaults,deployments}.*`. No la añadas a mano.
 
 ```python
 import anthropic
@@ -54,11 +54,11 @@ session = client.beta.sessions.create(
 print(session.id, session.status)
 ```
 
-Updating an agent creates a new immutable version; running sessions keep the version they pinned. Do not call `agents.create()` on every request.
+Actualizar un agente crea una nueva versión inmutable; las sesiones en curso conservan la versión que fijaron. No llames a `agents.create()` en cada petición.
 
-## Events: Send and Stream
+## Eventos: Enviar y Recibir en Streaming
 
-Open the stream first, then send, so you do not miss early events.
+Abre primero el stream y luego envía, para no perder los primeros eventos.
 
 ```python
 with client.beta.sessions.events.stream(session_id=session.id) as stream:
@@ -78,11 +78,11 @@ with client.beta.sessions.events.stream(session_id=session.id) as stream:
             break
 ```
 
-If the stream drops while a tool call awaits your answer, the session stalls. On reconnect, list events (`client.beta.sessions.events.list(session_id=...)`), de-duplicate by event ID, then resume streaming.
+Si el stream se corta mientras una llamada a herramienta espera tu respuesta, la sesión se queda atascada. Al reconectar, lista los eventos (`client.beta.sessions.events.list(session_id=...)`), elimina duplicados por ID de evento y reanuda el streaming.
 
-## Custom Tools
+## Herramientas Propias
 
-Declare a `{"type": "custom", ...}` tool on the agent. When the agent calls it you get an `agent.custom_tool_use` event and answer with `user.custom_tool_result`:
+Declara en el agente una herramienta `{"type": "custom", ...}`. Cuando el agente la llama recibes un evento `agent.custom_tool_use` y respondes con `user.custom_tool_result`:
 
 ```python
 client.beta.sessions.events.send(
@@ -95,17 +95,17 @@ client.beta.sessions.events.send(
 )
 ```
 
-## Permission Policies
+## Políticas de Permisos
 
-Set a `permission_policy` on the toolset `default_config` or on one tool in `configs`:
+Establece un `permission_policy` en el `default_config` del toolset o en una herramienta concreta de `configs`:
 
-| Policy | Behavior |
+| Política | Comportamiento |
 |---|---|
-| `always_allow` | Runs automatically (default for the agent toolset) |
-| `always_ask` | Pauses with `requires_action` until you send `user.tool_confirmation` (default for MCP toolsets) |
-| `auto` | The server decides per call: run, deny, or pause for you |
+| `always_allow` | Se ejecuta automáticamente (por defecto en el toolset del agente) |
+| `always_ask` | Se pausa con `requires_action` hasta que envíes `user.tool_confirmation` (por defecto en los toolsets MCP) |
+| `auto` | El servidor decide en cada llamada: ejecutar, denegar o pausar para ti |
 
-`auto` is not a human checkpoint: a call it judges safe runs before anyone looks. Put `always_ask` on tools a person must review, and answer paused calls with `deny` when nobody is watching.
+`auto` no es un punto de control humano: una llamada que considera segura se ejecuta antes de que nadie la mire. Pon `always_ask` en las herramientas que una persona deba revisar, y responde `deny` a las llamadas en pausa cuando nadie esté pendiente.
 
 ```python
 for event in stream:  # inside the stream loop from above
@@ -120,9 +120,9 @@ for event in stream:  # inside the stream loop from above
         )
 ```
 
-## Vault Credentials
+## Credenciales en Vault
 
-The agent's `mcp_servers` entry holds only `{type, name, url}`. Secrets live in a **vault** attached to the session at creation (`vault_ids` cannot be added later). MCP OAuth credentials auto-refresh; `environment_variable` credentials are substituted at egress, so the sandbox only sees a placeholder.
+La entrada `mcp_servers` del agente contiene solo `{type, name, url}`. Los secretos viven en un **vault** asociado a la sesión al crearla (`vault_ids` no se puede añadir después). Las credenciales OAuth de MCP se renuevan automáticamente; las credenciales `environment_variable` se sustituyen en la salida de red, de modo que el entorno aislado solo ve un marcador de posición.
 
 ```python
 agent = client.beta.agents.create(
@@ -143,11 +143,11 @@ session = client.beta.sessions.create(
 )
 ```
 
-Credential shapes (`mcp_oauth`, `static_bearer`, `environment_variable`) are in the vaults section of the managed-agents tools docs. Keep credentials minimal in scope and never put them in memory stores or prompts.
+Las formas de credencial (`mcp_oauth`, `static_bearer`, `environment_variable`) están en la sección de vaults de la documentación de herramientas de managed-agents. Mantén las credenciales con el alcance mínimo y nunca las pongas en almacenes de memoria ni en prompts.
 
-## Outcomes: Grade Against a Rubric
+## Outcomes: Evaluar contra una Rúbrica
 
-For work with a checkable deliverable, start with `user.define_outcome` instead of `user.message` (never both). A separate grader scores each iteration against your rubric and the agent revises until it passes or hits `max_iterations`.
+Para trabajo con un entregable verificable, empieza con `user.define_outcome` en lugar de `user.message` (nunca ambos). Un evaluador independiente puntúa cada iteración contra tu rúbrica y el agente revisa hasta que la supera o alcanza `max_iterations`.
 
 ```python
 RUBRIC = """# Report rubric (starter, tune the criteria)
@@ -168,11 +168,11 @@ client.beta.sessions.events.send(
 )
 ```
 
-The stream carries `span.outcome_evaluation_end` events with a `result` of `satisfied`, `needs_revision`, `max_iterations_reached`, `failed` or `interrupted`. Write explicit, independently gradeable criteria; vague ones make noisy loops. The example needs `web_search` and `web_fetch` enabled on the agent.
+El stream incluye eventos `span.outcome_evaluation_end` con un `result` de `satisfied`, `needs_revision`, `max_iterations_reached`, `failed` o `interrupted`. Escribe criterios explícitos y evaluables de forma independiente; los vagos producen bucles ruidosos. El ejemplo necesita `web_search` y `web_fetch` activados en el agente.
 
-## Scheduled Deployments
+## Despliegues Programados
 
-A deployment fires a session on a cron schedule. It needs an agent, an environment, `initial_events` and a `schedule`.
+Un deployment lanza una sesión según un calendario cron. Necesita un agente, un entorno, `initial_events` y un `schedule`.
 
 ```python
 deployment = client.beta.deployments.create(
@@ -187,11 +187,11 @@ for run in client.beta.deployment_runs.list(deployment_id=deployment.id, has_err
     print(run.created_at, run.error.type, run.error.message)
 ```
 
-Runs can fire up to a few minutes late (jitter), no client is attached when they fire, and paused tool calls wait until answered (use webhooks, or avoid `always_ask`). Pause with `client.beta.deployments.pause(id)`.
+Las ejecuciones pueden lanzarse con unos minutos de retraso (jitter), no hay ningún cliente conectado cuando se disparan y las llamadas a herramientas en pausa esperan hasta que se respondan (usa webhooks, o evita `always_ask`). Pausa con `client.beta.deployments.pause(id)`.
 
-## Multiagent and Memory Stores
+## Multiagente y Almacenes de Memoria
 
-**Multiagent:** add a top-level `multiagent` block on the agent. Each delegated piece runs in its own thread with a fresh context, in parallel, in the same container. Start with the agent itself on the roster:
+**Multiagente:** añade un bloque `multiagent` de nivel superior en el agente. Cada parte delegada se ejecuta en su propio hilo con un contexto limpio, en paralelo, en el mismo contenedor. Empieza con el propio agente en la lista:
 
 ```python
 lead = client.beta.agents.create(
@@ -204,7 +204,7 @@ lead = client.beta.agents.create(
 ```
 
 
-**Memory stores** (separate beta header `agent-memory-2026-07-22`, set by the SDK on `client.beta.memory_stores.*`) persist text files across sessions and mount at `/mnt/memory/<store-name>/`:
+Los **almacenes de memoria** (cabecera beta aparte `agent-memory-2026-07-22`, establecida por el SDK en `client.beta.memory_stores.*`) persisten archivos de texto entre sesiones y se montan en `/mnt/memory/<store-name>/`:
 
 ```python
 store = client.beta.memory_stores.create(
@@ -223,18 +223,18 @@ session = client.beta.sessions.create(
 )
 ```
 
-## Common Pitfalls
+## Errores Comunes
 
-- **Putting `model`, `system` or `tools` on `sessions.create()`.** They belong to the agent.
-- **Creating a new agent per run.** It orphans agents; store the ID and update instead.
-- **Answering `allow` to every paused call.** Unattended runs should answer `deny`.
-- **Forgetting the network layers.** A secret needs the host allowed on the credential and in the environment.
-- **Archiving as cleanup.** Archive is permanent and has no undo.
+- **Poner `model`, `system` o `tools` en `sessions.create()`.** Pertenecen al agente.
+- **Crear un agente nuevo en cada ejecución.** Deja agentes huérfanos; guarda el ID y actualiza en su lugar.
+- **Responder `allow` a todas las llamadas en pausa.** Las ejecuciones desatendidas deben responder `deny`.
+- **Olvidar las capas de red.** Un secreto necesita que el host esté permitido en la credencial y en el entorno.
+- **Archivar como limpieza.** Archivar es permanente y no se puede deshacer.
 
-## Next Steps
-- Track what sessions cost in [Admin API, Usage and Cost](./07_admin_usage_and_cost.md); each session also exposes `usage` and `list_cost`.
+## Próximos Pasos
+- Sigue lo que cuestan las sesiones en [Admin API, Uso y Coste](./07_admin_uso_costes.md); cada sesión también expone `usage` y `list_cost`.
 
-## Additional Resources
+## Recursos Adicionales
 - [Managed Agents overview](https://platform.claude.com/docs/en/managed-agents/overview)
 - [Multiagent orchestration](https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration)
 - [Self-hosted sandboxes](https://platform.claude.com/docs/en/managed-agents/self-hosted-sandboxes)
