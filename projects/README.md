@@ -1,13 +1,32 @@
 # Sample Projects
 
-This directory contains project briefs and starter skeletons (each `main.py` is a minimal entry point to build on) for real-world applications with the Claude API. The feature lists below describe the target design for you to implement.
+Four complete, runnable projects built on the Claude API. Each has a CLI, sample data, a README with an architecture diagram, and an **offline test suite that uses a fake client**, so you can run the tests and most demos without an API key or any cost.
+
+| # | Project | Run offline | Tests |
+|---|---------|-------------|-------|
+| 1 | [Customer Support Bot](./1_customer_support_bot/) | `python main.py --dry-run` | 26 |
+| 2 | [Document Q&A (RAG)](./2_document_qa_system/) | `python main.py search "refund"` (retrieval only) | 27 |
+| 3 | [Code Review Agent](./3_code_review_agent/) | `python main.py --diff examples/sample.diff --dry-run` | 64 |
+| 4 | [Research Assistant](./4_research_assistant/) | `python main.py --offline-demo "your question"` | 31 |
+
+Quick start for any project:
+```bash
+cd projects/<project>
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+pytest -q                      # offline
+cp .env.example .env           # add ANTHROPIC_API_KEY for live runs
+python main.py --help
+```
+
+> **Honest status:** the code was verified against the installed SDK's signatures and the official docs, and tested with fake clients, but it was **not run against the live API**. Expect to adjust small details (model behaviour, tool versions, cache thresholds) on first live run. Each README lists what is unverified. Project 5 below is still planned.
 
 ## 🚀 Available Projects
 
 ### 1. [Customer Support Chatbot](./1_customer_support_bot/)
 **Level**: Intermediate | **Time**: 3-4 hours
 
-A production-ready customer support chatbot with:
+A customer support chatbot with:
 - Streaming responses for real-time interaction
 - Conversation history and context management
 - Tool use for accessing knowledge base
