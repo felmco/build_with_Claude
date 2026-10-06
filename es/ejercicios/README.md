@@ -22,91 +22,91 @@ Cada ejercicio incluye:
 
 ### [Ejercicio 2: Chatbot Simple](principiante/02_chatbot_simple.md)
 **Tiempo**: 20 minutos
-- Construye un bucle interactivo de chat
-- Maneja la entrada del usuario
-- Implementa condiciones de salida
+- Construye un bucle de entrada interactivo
+- Envía cada mensaje a Claude
+- Sal de forma limpia
 
 ### [Ejercicio 3: Generación de Texto](principiante/03_generacion_texto.md)
 **Tiempo**: 20 minutos
-- Resumen de textos y reescritura
-- Ajustes de tono y estilo
-- Extracción de información (NER)
+- Resume y reescribe textos
+- Ajusta el tono
+- Extrae los puntos clave
 
 ### [Ejercicio 4: Sistema Q&A](principiante/04_sistema_qa.md)
 **Tiempo**: 25 minutos
-- Preguntas y Respuestas basadas en contexto
-- Inyección de conocimiento en el prompt
-- Prevención de alucinaciones
+- Inyecta contexto en un prompt
+- Basa las respuestas en el texto proporcionado
+- Maneja las preguntas que el contexto no puede responder
 
 ### [Ejercicio 5: Experimentos de Temperatura](principiante/05_experimentos_temperatura.md)
 **Tiempo**: 15 minutos
-- Prueba configuraciones de temperatura (creativity)
-- Compara determinismo vs creatividad
-- Entiende los parámetros de muestreo
+- Prueba distintas configuraciones de temperatura (en Haiku 4.5)
+- Compara las respuestas
+- Aprende qué modelos todavía aceptan parámetros de muestreo
 
 ## 🔧 Ejercicios Intermedios
 
 ### [Ejercicio 6: Chatbot en Streaming](intermedio/01_chatbot_streaming.md)
 **Tiempo**: 45 minutos
-- Implementa respuestas en tiempo real (streaming)
-- Gestiona una experiencia de usuario fluida
-- Maneja eventos de stream
+- Implementa respuestas en streaming
+- Gestiona el historial de conversación
+- Maneja las interrupciones
 
 ### [Ejercicio 7: Analizador de Imágenes](intermedio/02_herramienta_analisis_imagenes.md)
 **Tiempo**: 30 minutos
-- Uso de capacidades de visión (multimodal)
-- Codificación de imágenes en Base64
-- Preguntas y respuestas sobre imágenes
+- Procesa archivos de imagen
+- Extrae información
+- Genera descripciones
 
 ### [Ejercicio 8: Uso Básico de Herramientas](intermedio/03_implementacion_uso_herramientas.md)
 **Tiempo**: 40 minutos
-- Definición de esquemas de herramientas (JSON)
-- Implementación de una calculadora
-- Ciclo de ejecución de herramientas
+- Define una herramienta calculadora
+- Maneja las llamadas a herramientas
+- Devuelve los resultados a Claude
 
 ### [Ejercicio 9: Gestión de Conversación](intermedio/04_gestion_conversacion.md)
 **Tiempo**: 30 minutos
-- Manejo de historial de mensajes (state)
-- Modelado de contexto de conversación
-- Roles de usuario y asistente
+- Mantén un historial de mensajes
+- Añade un prompt de sistema
+- Maneja conversaciones largas
 
 ### [Ejercicio 10: Interacciones Multi-Turno](intermedio/05_interacciones_multi_turno.md)
 **Tiempo**: 45 minutos
-- Lógica de juego compleja (20 preguntas)
-- Guiado de conversación mediante System Prompts
-- Mantenimiento de coherencia en múltiples turnos
+- Construye un juego de "20 Preguntas"
+- Haz cumplir las reglas con un prompt de sistema
+- Sigue el estado a lo largo de los turnos
 
 ## 🚀 Ejercicios Avanzados
 
-### [Ejercicio 11: Sistema RAG Simple](avanzado/01_sistema_rag.md)
-**Tiempo**: 45 minutos
-- Implementación de Retrieval Augmented Generation
-- Búsqueda en base de conocimiento simple
-- Inyección dinámica de contexto
+### [Ejercicio 11: Sistema RAG](avanzado/01_sistema_rag.md)
+**Tiempo**: 2-3 horas
+- Genera embeddings de documentos con un proveedor de embeddings de terceros
+- Implementa la recuperación
+- Genera respuestas con contexto
 
-### [Ejercicio 12: Agente Autónomo](avanzado/02_agente_autonomo.md)
-**Tiempo**: 60 minutos
-- Bucle de razonamiento y acción (ReAct)
-- Uso autónomo de múltiples herramientas
-- Resolución de tareas de múltiples pasos
+### [Ejercicio 12: Agente de Investigación Autónomo](avanzado/02_agente_autonomo.md)
+**Tiempo**: 2-3 horas
+- Crea un bucle de agente
+- Integra la herramienta de búsqueda web
+- Sintetiza información
 
-### [Ejercicio 13: Procesamiento por Lotes](avanzado/03_procesamiento_lotes.md)
-**Tiempo**: 30 minutos
-- Uso de la API de Message Batches
-- Procesamiento asíncrono de alto volumen
-- Optimización de costes (50% de ahorro)
+### [Ejercicio 13: Procesamiento con la API Batch](avanzado/03_procesamiento_lotes.md)
+**Tiempo**: 2-3 horas
+- Procesa múltiples peticiones
+- Maneja los resultados de forma asíncrona
+- Implementa recuperación de errores
 
 ### [Ejercicio 14: Servidor MCP Personalizado](avanzado/04_servidor_mcp_personalizado.md)
-**Tiempo**: 60 minutos
-- Implementación del Model Context Protocol
-- Creación de un servidor MCP local
-- Exposición de recursos y herramientas
+**Tiempo**: 3-4 horas
+- Construye un servidor MCP
+- Define herramientas personalizadas
+- Pruébalo con Claude Desktop
 
-### [Ejercicio 15: Aplicación de Producción](avanzado/05_aplicacion_produccion.md)
-**Tiempo**: 45 minutos
-- Logging estructurado y observabilidad
-- Manejo robusto de errores y reintentos (backoff)
-- Moderación y seguridad
+### [Ejercicio 15: Preparación para Producción](avanzado/05_aplicacion_produccion.md)
+**Tiempo**: 2-3 horas
+- Añade reintentos, logging y seguimiento de costes
+- Añade pruebas y evaluaciones
+- Prepara el despliegue
 
 ## 📝 Cómo Usar Estos Ejercicios
 
@@ -129,6 +129,69 @@ Cada ejercicio incluye:
 - Prueba las ideas de extensión
 - Añade tus propias características
 - Comparte tus implementaciones
+
+## 💡 Consejos para el Éxito
+
+1. **Empieza Simple**: Comienza con los ejercicios para principiantes
+2. **Programa Junto al Ejemplo**: Escribe tú mismo el código
+3. **Experimenta**: Modifica los ejemplos para ver qué ocurre
+4. **Depura**: Practica la resolución de errores
+5. **Documenta**: Añade comentarios para explicar tu código
+6. **Comparte**: Muestra tus soluciones a otras personas
+
+## 🎓 Lista de Verificación de Ejercicios
+
+Sigue tu progreso:
+
+### Nivel Principiante
+- [ ] Ejercicio 1: Hola Claude
+- [ ] Ejercicio 2: Chatbot Simple
+- [ ] Ejercicio 3: Generación y Resumen de Texto
+- [ ] Ejercicio 4: Q&A Basado en Contexto
+- [ ] Ejercicio 5: Experimentos de Temperatura
+
+### Nivel Intermedio
+- [ ] Ejercicio 6: Chatbot en Streaming
+- [ ] Ejercicio 7: Herramienta de Análisis de Imágenes
+- [ ] Ejercicio 8: Uso Básico de Herramientas
+- [ ] Ejercicio 9: Gestión de Conversación
+- [ ] Ejercicio 10: Lógica Multi-Turno
+
+### Nivel Avanzado
+- [ ] Ejercicio 11: Sistema RAG
+- [ ] Ejercicio 12: Agente de Investigación Autónomo
+- [ ] Ejercicio 13: Procesamiento con la API Batch
+- [ ] Ejercicio 14: Servidor MCP Personalizado
+- [ ] Ejercicio 15: Preparación para Producción
+
+## 🏆 Desafíos
+
+### Desafío 1: Carrera Contrarreloj
+Completa todos los ejercicios para principiantes en menos de 2 horas
+
+### Desafío 2: Sin Pistas
+Completa los ejercicios intermedios sin mirar las soluciones
+
+### Desafío 3: Maestro de las Extensiones
+Completa todas las tareas de extensión de los ejercicios avanzados
+
+### Desafío 4: Proyecto Propio
+Construye tu propio proyecto combinando varios conceptos
+
+## 🤝 Obtener Ayuda
+
+- Revisa las lecciones de los módulos relacionados
+- Consulta la documentación oficial
+- Pregunta en los foros de la comunidad
+- Compara con el código de la solución
+
+## 📚 Práctica Adicional
+
+¿Quieres más práctica?
+- Prueba a combinar varios ejercicios
+- Construye mini-proyectos
+- Aporta nuevas ideas de ejercicios
+- Ayuda a otras personas con sus ejercicios
 
 ---
 

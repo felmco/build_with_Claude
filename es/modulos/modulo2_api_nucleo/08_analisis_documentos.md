@@ -8,6 +8,8 @@ Claude destaca en la conversión de datos de documentos no estructurados a JSON 
 **Prompt:**
 > "Extrae el número de factura, la fecha y el importe total de este documento. Devuelve JSON."
 
+Para una salida que deba cumplir siempre un esquema, usa salidas estructuradas (`output_config={"format": {"type": "json_schema", ...}}`, ver [Gestionando Conversaciones](03_conversaciones.md)).
+
 ## 2. Resumen
 Para documentos largos, pide resúmenes por niveles.
 
@@ -25,19 +27,21 @@ Claude puede interpretar gráficos en PDFs/Imágenes.
 Envía dos documentos (ej. Contrato V1 y Contrato V2) y pide una diferencia (diff).
 
 ```python
-messages=[
+# doc_v1 / doc_v2: cadenas base64 de PDF (o usa fuentes {"type": "file", "file_id": ...})
+messages = [
     {"role": "user", "content": [
-        {"type": "document", "source": {...data_v1...}}, # Doc 1
-        {"type": "text", "text": "Here is Version 1."},
-        {"type": "document", "source": {...data_v2...}}, # Doc 2
-        {"type": "text", "text": "Here is Version 2. Highlight the changes in the liability clause."}
+        {"type": "text", "text": "Version 1:"},
+        {"type": "document", "source": {"type": "base64", "media_type": "application/pdf", "data": doc_v1}},
+        {"type": "text", "text": "Version 2:"},
+        {"type": "document", "source": {"type": "base64", "media_type": "application/pdf", "data": doc_v2}},
+        {"type": "text", "text": "Highlight the changes in the liability clause."},
     ]}
 ]
 ```
 
 ## Manejo de Diseños Complejos
 Los PDFs con múltiples columnas o tablas complejas pueden ser difíciles.
-- **Consejo:** Pide a Claude que "Piense paso a paso sobre el diseño" si lee mal una tabla.
+- **Consejo:** Pide a Claude que lea la tabla fila por fila, o sube `output_config.effort`, si lee mal una tabla.
 - **Consejo:** Usa herramientas de extracción en modo `text` (Python `pypdf`) junto con la visión de Claude para verificación.
 
 ## Próximos Pasos

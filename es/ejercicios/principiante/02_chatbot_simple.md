@@ -7,7 +7,7 @@ Construye un bucle interactivo que permita una conversación continua con Claude
 20 minutos
 
 ## 📚 Requisitos Previos
-- Python 3.7+ instalado
+- Python 3.10+ instalado
 - SDK de Anthropic instalado
 - Clave API configurada
 
@@ -93,7 +93,7 @@ Usa `if user_input.lower() == 'salir': break`
 <summary>Click para ver solución</summary>
 
 ```python
-import os
+import anthropic
 from anthropic import Anthropic
 
 def main():
@@ -115,9 +115,9 @@ def main():
                     {"role": "user", "content": user_input}
                 ]
             )
-            print(f"Claude: {message.content[0].text}")
+            print(f"Claude: {message.content[0].text}")  # respuesta solo de texto; ver Ej. 1 para unir bloques
             
-        except Exception as e:
+        except anthropic.APIError as e:
             print(f"Error: {e}")
 
 if __name__ == "__main__":

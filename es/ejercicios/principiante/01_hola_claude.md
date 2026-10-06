@@ -7,7 +7,7 @@ Haz tu primera llamada a la API de Claude y muestra una respuesta formateada.
 15 minutos
 
 ## 📚 Requisitos Previos
-- Python 3.7+ instalado
+- Python 3.10+ instalado
 - SDK de Anthropic instalado
 - Clave API configurada
 - Completado [Módulo 1: Primera Llamada a la API](../../modulos/modulo1_fundamentos/07_primera_llamada_api.md)
@@ -132,24 +132,33 @@ print(response_text)
 #!/usr/bin/env python3
 """Ejercicio 1: Hola Claude - Solución"""
 
-from anthropic import Anthropic
 import os
+
+import anthropic
+from anthropic import Anthropic
 
 def send_message(client, user_message: str):
     """Enviar un mensaje a Claude y devolver respuesta"""
-    message = client.messages.create(
-        model="claude-sonnet-5-5",
-        max_tokens=1024,
-        messages=[
-            {"role": "user", "content": user_message}
-        ]
-    )
-    return message
+    try:
+        return client.messages.create(
+            model="claude-sonnet-5-5",
+            max_tokens=1024,
+            messages=[
+                {"role": "user", "content": user_message}
+            ]
+        )
+    except anthropic.APIError as e:
+        print(f"❌ Error de API: {e}")
+        return None
 
 def display_response(user_message: str, message):
     """Mostrar respuesta formateada"""
+    if message is None:
+        return
+    # Unir los bloques de texto (en algunos modelos content también puede incluir bloques que no son de texto)
+    text = "".join(b.text for b in message.content if b.type == "text")
     print(f"\nTú: {user_message}\n")
-    print(f"Claude: {message.content[0].text}\n")
+    print(f"Claude: {text}\n")
     print("📊 Uso:")
     print(f"   Tokens de entrada: {message.usage.input_tokens}")
     print(f"   Tokens de salida: {message.usage.output_tokens}")
