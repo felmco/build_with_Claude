@@ -53,7 +53,16 @@ curl -X DELETE https://api.anthropic.com/v1/files/file_id_here \
   -H "anthropic-version: 2023-06-01"
 ```
 
-Or with the SDK: `client.files.list()` and `client.files.delete(file_id)`.
+Or with the SDK:
+
+```python
+for f in client.files.list():  # auto-paginates
+    print(f.id, f.filename, f.size_bytes)
+
+client.files.delete(file_id)
+```
+
+Uploaded files stay in your organization's storage until you delete them.
 
 ## Next Steps
 - Move on to [Reliability and Error Handling](./11_error_handling.md).
