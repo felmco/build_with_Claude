@@ -1,13 +1,32 @@
 # Proyectos de Ejemplo
 
-Este directorio contiene descripciones de proyectos y esqueletos de partida (cada `main.py` es un punto de entrada mínimo sobre el que construir) para aplicaciones del mundo real con la API de Claude. Las listas de características de abajo describen el diseño objetivo que debes implementar.
+Cuatro proyectos completos y ejecutables construidos sobre la API de Claude. Cada uno tiene una CLI, datos de ejemplo, un README con un diagrama de arquitectura y una **suite de pruebas offline que usa un cliente falso**, así que puedes ejecutar las pruebas y la mayoría de las demos sin clave de API y sin ningún coste.
+
+| # | Proyecto | Ejecución offline | Pruebas |
+|---|----------|-------------------|---------|
+| 1 | [Bot de Soporte al Cliente](./1_bot_soporte_cliente/) | `python main.py --dry-run` | 26 |
+| 2 | [Q&A de Documentos (RAG)](./2_sistema_qa_documentos/) | `python main.py search "refund"` (solo recuperación) | 27 |
+| 3 | [Agente de Revisión de Código](./3_agente_revision_codigo/) | `python main.py --diff examples/sample.diff --repo examples/sample_repo --dry-run` | 64 |
+| 4 | [Asistente de Investigación](./4_asistente_investigacion/) | `python main.py --offline-demo "your question"` | 31 |
+
+Inicio rápido para cualquier proyecto:
+```bash
+cd es/proyectos/<proyecto>
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+pytest -q                      # offline
+cp .env.example .env           # añade ANTHROPIC_API_KEY para ejecuciones reales
+python main.py --help
+```
+
+> **Estado honesto:** el código se verificó contra las firmas del SDK instalado y la documentación oficial, y se probó con clientes falsos, pero **no se ha ejecutado contra la API real**. Espera tener que ajustar pequeños detalles (comportamiento del modelo, versiones de herramientas, umbrales de caché) en la primera ejecución real. Cada README indica lo que no está verificado. El Proyecto 5 de abajo sigue siendo un plan.
 
 ## 🚀 Proyectos Disponibles
 
-### 1. [Chatbot de Soporte al Cliente](1_bot_soporte_cliente)
+### 1. [Chatbot de Soporte al Cliente](./1_bot_soporte_cliente/)
 **Nivel**: Intermedio | **Tiempo**: 3-4 horas
 
-Un chatbot de soporte al cliente listo para producción con:
+Un chatbot de soporte al cliente con:
 - Respuestas en streaming para interacción en tiempo real
 - Historial de conversación y gestión de contexto
 - Uso de herramientas para acceder a base de conocimiento
@@ -24,7 +43,7 @@ Un chatbot de soporte al cliente listo para producción con:
 
 ---
 
-### 2. [Sistema de Q&A de Documentos](2_sistema_qa_documentos)
+### 2. [Sistema de Q&A de Documentos](./2_sistema_qa_documentos/)
 **Nivel**: Avanzado | **Tiempo**: 4-6 horas
 
 Sistema basado en RAG para responder preguntas sobre documentos:
@@ -43,7 +62,7 @@ Sistema basado en RAG para responder preguntas sobre documentos:
 
 ---
 
-### 3. [Agente de Revisión de Código](3_agente_revision_codigo)
+### 3. [Agente de Revisión de Código](./3_agente_revision_codigo/)
 **Nivel**: Avanzado | **Tiempo**: 4-5 horas
 
 Agente autónomo para revisar código:
@@ -62,7 +81,7 @@ Agente autónomo para revisar código:
 
 ---
 
-### 4. [Asistente de Investigación](4_asistente_investigacion)
+### 4. [Asistente de Investigación](./4_asistente_investigacion/)
 **Nivel**: Avanzado | **Tiempo**: 5-6 horas
 
 Sistema multi-agente para tareas de investigación:

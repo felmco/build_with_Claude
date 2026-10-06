@@ -1,0 +1,44 @@
+[
+  {
+    "id": "KB-001",
+    "title": "Return and refund policy",
+    "tags": ["refund", "return", "money back", "policy"],
+    "text": "Items can be returned within 30 days of delivery if unused and in original packaging. Refunds go back to the original payment method within 5-7 business days after we receive the item. Digital goods are refundable within 14 days if not downloaded. Shipping fees are not refunded unless the item arrived damaged or wrong."
+  },
+  {
+    "id": "KB-002",
+    "title": "Shipping times and costs",
+    "tags": ["shipping", "delivery", "tracking", "international"],
+    "text": "Standard shipping takes 3-5 business days (free over 50 USD, otherwise 4.99 USD). Express shipping takes 1-2 business days (12.99 USD). International delivery takes 7-14 business days and customs fees are paid by the recipient. A tracking link is emailed once the parcel ships."
+  },
+  {
+    "id": "KB-003",
+    "title": "Reset your password",
+    "tags": ["password", "login", "account", "locked", "reset"],
+    "text": "Choose 'Forgot password' on the login page and enter your account email. The reset link is valid for 30 minutes. After 5 failed sign-in attempts the account is locked for 15 minutes. If you no longer have access to your email, a support agent must verify your identity."
+  },
+  {
+    "id": "KB-004",
+    "title": "Cancel or change an order",
+    "tags": ["cancel", "order", "change", "address"],
+    "text": "Orders can be cancelled or have their address changed within 1 hour of purchase from the 'My orders' page. After that the order enters fulfilment and cannot be modified; you can refuse delivery or return it instead."
+  },
+  {
+    "id": "KB-005",
+    "title": "Subscription plans and billing",
+    "tags": ["subscription", "billing", "invoice", "plan", "charge", "cancel"],
+    "text": "Plans are billed monthly or yearly on the sign-up date. You can cancel any time under Settings > Billing; access continues until the end of the paid period. Invoices are available under Settings > Billing > History. Duplicate or unexpected charges must be reviewed by the billing team."
+  },
+  {
+    "id": "KB-006",
+    "title": "Warranty and damaged products",
+    "tags": ["warranty", "damaged", "broken", "defective", "repair"],
+    "text": "All hardware has a 12-month warranty against manufacturing defects. For damaged or defective items send a photo and your order number; we ship a replacement or refund at no cost. Warranty does not cover accidental damage or water damage."
+  },
+  {
+    "id": "KB-007",
+    "title": "Contact hours and channels",
+    "tags": ["contact", "hours", "phone", "email", "human", "agent"],
+    "text": "Human support is available Monday to Friday 9:00-18:00 CET by email (support@example.com) and phone (+1 555 0100). Tickets created outside these hours are answered the next business day."
+  }
+]
