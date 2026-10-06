@@ -4,7 +4,7 @@ Before working with the Claude API, you need to set up a proper development envi
 
 ## 1. Install Python
 
-You need **Python 3.7 or higher**.
+You need **Python 3.10 or higher** (the current `anthropic` SDK requires it).
 
 ### Check if Python is installed
 Open your terminal or command prompt and run:

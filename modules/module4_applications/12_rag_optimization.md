@@ -9,7 +9,7 @@ Combine **Keyword Search** (BM25) with **Semantic Search** (Embeddings).
 
 ## 2. Reranking
 1. Retrieve top 50 results (fast).
-2. Use a **Reranker** model (Cohere Rerank) to sort them by relevance to the query.
+2. Use a **Reranker** model (e.g. Cohere Rerank or Voyage AI rerank) to sort them by relevance to the query.
 3. Pass top 5 to Claude.
 
 ## 3. Query Expansion
@@ -20,7 +20,7 @@ Ask Claude to generate synonyms or sub-questions.
 ## 4. Contextual Retrieval
 Instead of embedding just a raw chunk, ask Claude to add context *before* embedding.
 - **Chunk:** "It was 50 dollars." (Ambiguous)
-- **Enriched Chunk:** "The price of the Widget X mentioned in the 2024 report was 50 dollars." (Embed this).
+- **Enriched Chunk:** "The price of the Widget X mentioned in the 2024 report was 50 dollars." (Embed this). This is Anthropic's "Contextual Retrieval" technique; prompt caching keeps the per-chunk cost low because the full document is reused across calls.
 
 ## Next Steps
 - Introduction to [MCP](./13_mcp_intro.md).

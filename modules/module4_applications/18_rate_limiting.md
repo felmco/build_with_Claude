@@ -12,6 +12,8 @@ Your app goes viral. 10,000 users hit "Send". You hit Anthropic rate limits imme
    - If available: Process job.
    - If not: Sleep / Retry later.
 
+Note: the SDK retries 429s automatically (`max_retries`, honoring `retry-after`). A queue is for smoothing bursts beyond that. For non-urgent bulk work, the Message Batches API runs at a 50% discount without consuming real-time rate limits.
+
 ## Libraries
 - Python: `celery` or `rq`.
 - Redis: For the queue.

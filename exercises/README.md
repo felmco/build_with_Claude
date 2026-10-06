@@ -20,29 +20,29 @@ Each exercise includes:
 - Handle responses
 - Print formatted output
 
-### [Exercise 2: Temperature Experiments](./beginner/02_temperature.md)
+### [Exercise 2: Simple Chatbot](./beginner/02_simple_chatbot.md)
 **Time**: 20 minutes
-- Test different temperature settings
+- Build an interactive input loop
+- Send each message to Claude
+- Exit cleanly
+
+### [Exercise 3: Text Generation & Summarization](./beginner/03_text_generation.md)
+**Time**: 20 minutes
+- Summarize and rewrite text
+- Adjust tone
+- Extract key points
+
+### [Exercise 4: Context-based Q&A](./beginner/04_qa_system.md)
+**Time**: 25 minutes
+- Inject context into a prompt
+- Ground answers in the provided text
+- Handle questions the context cannot answer
+
+### [Exercise 5: Temperature Experiments](./beginner/05_temperature_experiments.md)
+**Time**: 15 minutes
+- Test different temperature settings (on Haiku 4.5)
 - Compare responses
-- Understand creativity vs consistency
-
-### [Exercise 3: Simple Q&A Bot](./beginner/03_qa_bot.md)
-**Time**: 30 minutes
-- Build a question-answering system
-- Handle user input
-- Format responses nicely
-
-### [Exercise 4: Text Summarizer](./beginner/04_summarizer.md)
-**Time**: 30 minutes
-- Summarize long texts
-- Use system prompts
-- Control output length
-
-### [Exercise 5: Language Translator](./beginner/05_translator.md)
-**Time**: 30 minutes
-- Translate between languages
-- Handle multiple languages
-- Format translations
+- Learn which models still accept sampling parameters
 
 ## 🔧 Intermediate Exercises
 
@@ -52,61 +52,61 @@ Each exercise includes:
 - Manage conversation history
 - Handle interruptions
 
-### [Exercise 7: Image Analyzer](./intermediate/02_image_analyzer.md)
-**Time**: 45 minutes
+### [Exercise 7: Image Analysis Tool](./intermediate/02_image_analysis_tool.md)
+**Time**: 30 minutes
 - Process image files
 - Extract information
 - Generate descriptions
 
-### [Exercise 8: PDF Document Q&A](./intermediate/03_pdf_qa.md)
-**Time**: 60 minutes
-- Extract text from PDFs
-- Answer questions about content
-- Handle large documents
-
-### [Exercise 9: Calculator Tool](./intermediate/04_calculator_tool.md)
-**Time**: 60 minutes
-- Implement tool use
+### [Exercise 8: Basic Tool Use](./intermediate/03_tool_use_implementation.md)
+**Time**: 40 minutes
+- Define a calculator tool
 - Handle tool calls
 - Return results to Claude
 
-### [Exercise 10: Multi-Turn Conversation](./intermediate/05_conversation.md)
-**Time**: 60 minutes
-- Manage conversation state
-- Track context
+### [Exercise 9: Conversation Management](./intermediate/04_conversation_management.md)
+**Time**: 30 minutes
+- Maintain a message history
+- Add a system prompt
 - Handle long conversations
+
+### [Exercise 10: Multi-turn Logic](./intermediate/05_multi_turn_interactions.md)
+**Time**: 45 minutes
+- Build a "20 Questions" game
+- Enforce rules with a system prompt
+- Track state across turns
 
 ## 🚀 Advanced Exercises
 
 ### [Exercise 11: RAG System](./advanced/01_rag_system.md)
 **Time**: 2-3 hours
-- Build vector database
+- Embed documents with a third-party embeddings provider
 - Implement retrieval
 - Generate answers with context
 
-### [Exercise 12: Web Search Agent](./advanced/02_web_agent.md)
+### [Exercise 12: Autonomous Research Agent](./advanced/02_autonomous_agent.md)
 **Time**: 2-3 hours
-- Create autonomous agent
-- Integrate web search
+- Create an agent loop
+- Integrate the web search tool
 - Synthesize information
 
-### [Exercise 13: Code Review Agent](./advanced/03_code_review.md)
-**Time**: 2-3 hours
-- Analyze code files
-- Provide feedback
-- Suggest improvements
-
-### [Exercise 14: Batch Processing Pipeline](./advanced/04_batch_pipeline.md)
+### [Exercise 13: Batch API Processing](./advanced/03_batch_processing.md)
 **Time**: 2-3 hours
 - Process multiple requests
 - Handle results asynchronously
 - Implement error recovery
 
-### [Exercise 15: Custom MCP Server](./advanced/05_mcp_server.md)
+### [Exercise 14: Custom MCP Server](./advanced/04_custom_mcp_server.md)
 **Time**: 3-4 hours
-- Build MCP server
+- Build an MCP server
 - Define custom tools
 - Test with Claude Desktop
+
+### [Exercise 15: Production Readiness](./advanced/05_production_app.md)
+**Time**: 2-3 hours
+- Add retries, logging and cost tracking
+- Add tests and evals
+- Prepare for deployment
 
 ## 📝 How to Use These Exercises
 
@@ -145,24 +145,24 @@ Track your progress:
 
 ### Beginner Level
 - [ ] Exercise 1: Hello Claude
-- [ ] Exercise 2: Temperature Experiments
-- [ ] Exercise 3: Simple Q&A Bot
-- [ ] Exercise 4: Text Summarizer
-- [ ] Exercise 5: Language Translator
+- [ ] Exercise 2: Simple Chatbot
+- [ ] Exercise 3: Text Generation & Summarization
+- [ ] Exercise 4: Context-based Q&A
+- [ ] Exercise 5: Temperature Experiments
 
 ### Intermediate Level
 - [ ] Exercise 6: Streaming Chatbot
-- [ ] Exercise 7: Image Analyzer
-- [ ] Exercise 8: PDF Document Q&A
-- [ ] Exercise 9: Calculator Tool
-- [ ] Exercise 10: Multi-Turn Conversation
+- [ ] Exercise 7: Image Analysis Tool
+- [ ] Exercise 8: Basic Tool Use
+- [ ] Exercise 9: Conversation Management
+- [ ] Exercise 10: Multi-turn Logic
 
 ### Advanced Level
 - [ ] Exercise 11: RAG System
-- [ ] Exercise 12: Web Search Agent
-- [ ] Exercise 13: Code Review Agent
-- [ ] Exercise 14: Batch Processing Pipeline
-- [ ] Exercise 15: Custom MCP Server
+- [ ] Exercise 12: Autonomous Research Agent
+- [ ] Exercise 13: Batch API Processing
+- [ ] Exercise 14: Custom MCP Server
+- [ ] Exercise 15: Production Readiness
 
 ## 🏆 Challenges
 

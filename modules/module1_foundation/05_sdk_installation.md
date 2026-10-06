@@ -4,7 +4,7 @@
 The Anthropic Python SDK is the official library for interacting with Claude's API. It provides a clean, Pythonic interface with built-in features like error handling, retries, and type hints.
 
 ## Prerequisites
-- Python 3.7 or higher
+- Python 3.10 or higher
 - pip (Python package installer)
 - Virtual environment (recommended)
 
@@ -19,8 +19,8 @@ pip install anthropic
 ### Method 2: Using pip with specific version
 
 ```bash
-# Install specific version
-pip install anthropic==0.40.0
+# Install a specific version (pin the one you tested with; see PyPI for releases)
+pip install "anthropic==<version>"
 
 # Install latest pre-release version
 pip install --pre anthropic
@@ -110,11 +110,11 @@ def check_python_version():
     version = sys.version_info
     print(f"Python version: {version.major}.{version.minor}.{version.micro}")
 
-    if version.major >= 3 and version.minor >= 7:
+    if version >= (3, 10):
         print("✅ Python version is compatible")
         return True
     else:
-        print("❌ Python 3.7+ required")
+        print("❌ Python 3.10+ required")
         return False
 
 if __name__ == "__main__":
@@ -165,7 +165,7 @@ async def main():
         max_tokens=1024,
         messages=[{"role": "user", "content": "Hello!"}]
     )
-    print(message.content)
+    print(next(b.text for b in message.content if b.type == "text"))
 
 asyncio.run(main())
 ```
@@ -203,7 +203,6 @@ from anthropic import (
     APIError,
     APIConnectionError,
     RateLimitError,
-    APIStatusError
 )
 
 try:
@@ -226,9 +225,7 @@ pip install anthropic Pillow
 ```
 
 ### For Async Support
-```bash
-pip install anthropic httpx[http2]
-```
+`AsyncAnthropic` ships with the base package, so no extra install is needed.
 
 ### For Development
 ```bash
@@ -239,9 +236,8 @@ pip install anthropic pytest python-dotenv
 
 **requirements.txt**:
 ```txt
-anthropic>=0.40.0
+anthropic>=1.0.0
 python-dotenv>=1.0.0
-httpx[http2]>=0.25.0
 ```
 
 Install all dependencies:
@@ -297,7 +293,7 @@ source fresh_env/bin/activate
 pip install anthropic
 
 # Or specify version constraints
-pip install 'anthropic>=0.40.0,<1.0.0'
+pip install 'anthropic>=1.0.0,<2.0.0'
 ```
 
 ### Issue 4: Import Errors After Installation
@@ -328,8 +324,6 @@ pip install anthropic
 **settings.json**:
 ```json
 {
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
     "python.analysis.typeCheckingMode": "basic"
 }
 ```
@@ -384,7 +378,8 @@ def main():
             {"role": "user", "content": "Hello, Claude!"}
         ]
     )
-    print(message.content[0].text)
+    # content can also hold thinking blocks, so pick out the text block
+    print(next(b.text for b in message.content if b.type == "text"))
 
 if __name__ == "__main__":
     main()

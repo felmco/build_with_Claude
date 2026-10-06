@@ -7,7 +7,7 @@ Build an interactive loop that allows continuous conversation with Claude.
 20 minutes
 
 ## 📚 Prerequisites
-- Python 3.7+ installed
+- Python 3.10+ installed
 - Anthropic SDK installed
 - API key configured
 

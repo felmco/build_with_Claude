@@ -4,7 +4,7 @@
 This guide walks you through making your first API call to Claude. By the end, you'll have sent a message to Claude and received a response!
 
 ## Prerequisites
-- ✅ Python 3.7+ installed
+- ✅ Python 3.10+ installed
 - ✅ Anthropic SDK installed (`pip install anthropic`)
 - ✅ API key configured (see [API Key Management](./06_api_keys.md))
 
@@ -41,6 +41,8 @@ I'm Claude, an AI assistant created by Anthropic to be helpful, harmless, and ho
 ```
 
 🎉 Congratulations! You've just made your first API call to Claude!
+
+> **Note:** `message.content[0].text` is the short form used throughout the course. It works for plain text replies, but `content` can also start with a `thinking` block (Opus 5.5 and Fable 5.1 always think) or be empty when `stop_reason` is `"refusal"`. In production code, pick the text block instead: `next(b.text for b in message.content if b.type == "text")`.
 
 ## Understanding the Code
 
@@ -302,6 +304,7 @@ message = client.messages.create(
 **Guidelines**:
 - Minimum: 1 token
 - Maximum: up to 128K tokens on current models (64K on Haiku 4.5); model-specific
+- Use streaming for large values (roughly above 16K) so the request does not time out
 - 1 token ≈ 0.75 English words
 - Set based on expected response length
 

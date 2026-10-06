@@ -161,7 +161,7 @@ Optimize and deploy production-ready applications:
 
 ### Required
 - Basic Python programming knowledge (variables, functions, classes)
-- Python 3.7 or higher installed
+- Python 3.10 or higher (required by the current `anthropic` SDK) installed
 - Text editor or IDE (VS Code, PyCharm, etc.)
 - Command line familiarity
 - Anthropic API account ([sign up here](https://console.anthropic.com))

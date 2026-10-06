@@ -22,7 +22,8 @@ def retrieve(query):
     # Keyword search (TF-IDF) or just return all for tiny sets
     return "\n\n".join(docs)
 
-context = retrieve("question")
+query = "question"
+context = retrieve(query)
 prompt = f"Context:\n{context}\n\nQuestion: {query}"
 ```
 

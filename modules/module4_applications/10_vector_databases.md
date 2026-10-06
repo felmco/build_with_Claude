@@ -11,7 +11,7 @@ Vector databases store data as high-dimensional numbers (embeddings), allowing f
 ## Integration Pattern
 
 ```python
-# Pseudo-code
+# Chroma embeds with its own default local model (not Claude)
 import chromadb
 
 client = chromadb.Client()
@@ -28,7 +28,7 @@ results = collection.query(
     query_texts=["feline"],
     n_results=1
 )
-# Returns "This is a doc about cats"
+# results["documents"] -> [["This is a doc about cats"]]
 ```
 
 ## Next Steps

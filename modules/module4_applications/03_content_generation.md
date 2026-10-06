@@ -19,14 +19,26 @@ LLMs perform better when focusing on one task at a time (reasoning vs. writing v
 ## Example: Marketing Email Generator
 
 ```python
+import anthropic
+
+client = anthropic.Anthropic()
+
+def ask(prompt):
+    response = client.messages.create(
+        model="claude-sonnet-5-5",
+        max_tokens=1024,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return response.content[0].text
+
 # 1. Generate ideas
-ideas = client.messages.create(..., prompt="Generate 3 email angles for product X").content[0].text
+ideas = ask("Generate 3 email angles for product X")
 
 # 2. Select best (User or Claude)
-best_idea = ...
+best_idea = ideas  # or ask Claude / the user to pick one
 
 # 3. Write copy
-copy = client.messages.create(..., prompt=f"Write email based on: {best_idea}").content[0].text
+copy = ask(f"Write email based on: {best_idea}")
 ```
 
 ## Next Steps

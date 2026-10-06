@@ -112,7 +112,6 @@ ANTHROPIC_MODEL=claude-sonnet-5-5
 
 # Optional settings
 MAX_TOKENS=1024
-TEMPERATURE=1.0
 ```
 
 ### Step 3: Add .env to .gitignore
@@ -195,7 +194,6 @@ class Config:
 
     # Request Defaults
     MAX_TOKENS = int(os.getenv("MAX_TOKENS", "1024"))
-    TEMPERATURE = float(os.getenv("TEMPERATURE", "1.0"))
 
     # Application Settings
     DEBUG = os.getenv("DEBUG", "False").lower() == "true"
@@ -427,7 +425,7 @@ class MonitoredClient:
 ### Error: Invalid API Key
 
 ```python
-from anthropic import APIError, AuthenticationError
+from anthropic import Anthropic, AuthenticationError
 
 try:
     client = Anthropic(api_key="invalid-key")

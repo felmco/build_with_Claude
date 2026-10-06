@@ -160,7 +160,7 @@ python test_setup.py
 ## 🛠️ Tools & Resources
 
 ### Required
-- Python 3.7+
+- Python 3.10+
 - Anthropic API key
 - Text editor/IDE
 
@@ -227,4 +227,4 @@ Or dive right into coding with [Exercise 1: Hello Claude](./exercises/beginner/0
 
 *This course was created and developed by **[Future Tales](https://futuretales.ai)***
 
-*Based on official Anthropic documentation and best practices. Last updated: January 2026*
+*Based on official Anthropic documentation and best practices. Last updated: October 2026*

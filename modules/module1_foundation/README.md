@@ -30,7 +30,7 @@ By the end of this module, you will be able to:
 
 ## Prerequisites
 - Basic Python programming knowledge
-- Python 3.7 or higher installed
+- Python 3.10 or higher (required by the current `anthropic` SDK) installed
 - A text editor or IDE (VS Code, PyCharm, etc.)
 - An Anthropic API account (sign up at https://console.anthropic.com)
 
