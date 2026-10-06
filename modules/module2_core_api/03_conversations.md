@@ -25,8 +25,8 @@ def chat_turn(user_input):
         messages=conversation_history
     )
 
-    # 3. Get assistant response
-    assistant_reply = response.content[0].text
+    # 3. Get assistant response (join the text blocks; content can also hold thinking blocks)
+    assistant_reply = "".join(b.text for b in response.content if b.type == "text")
     print(f"Claude: {assistant_reply}")
 
     # 4. Add assistant response to history
@@ -52,10 +52,15 @@ Claude has a large context window (200K to 1M tokens depending on the model), bu
 ```python
 MAX_HISTORY = 10  # Keep last 10 messages
 
-if len(conversation_history) > MAX_HISTORY:
-    # Keep the system prompt or first message if crucial?
-    # Here we just slice the last N messages
-    conversation_history = conversation_history[-MAX_HISTORY:]
+def truncate(history, max_messages=MAX_HISTORY):
+    """Keep the last N messages; the system prompt is a separate parameter, so it is unaffected."""
+    trimmed = history[-max_messages:]
+    # The list must start with a user message
+    while trimmed and trimmed[0]["role"] != "user":
+        trimmed = trimmed[1:]
+    return trimmed
+
+conversation_history = truncate(conversation_history)
 ```
 
 ## User vs. Assistant Roles
@@ -64,7 +69,7 @@ if len(conversation_history) > MAX_HISTORY:
 - **Assistant**: Claude's output.
 
 **Rules:**
-- Roles must alternate (User -> Assistant -> User).
+- Roles should alternate (User -> Assistant -> User).
 - The list must start with a `user` message.
 
 ### Controlling the Output Format (Prefill Is Removed)
@@ -94,7 +99,7 @@ response = client.messages.create(
         }
     },
 )
-print(response.content[0].text)  # valid JSON matching the schema
+print(response.content[0].text)  # valid JSON matching the schema (check stop_reason != "refusal" first)
 ```
 
 Check the [Structured outputs docs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs) for the SDK helper `client.messages.parse()`.

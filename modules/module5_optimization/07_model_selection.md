@@ -4,7 +4,7 @@ Choosing the right model is the biggest optimization lever.
 
 ## The Haiku First Strategy
 Try to solve the problem with **Claude Haiku 4.5** (`claude-haiku-4-5`) first.
-- It is the fastest and cheapest model ($1 / $5 per MTok) and has near-frontier intelligence.
+- It is the fastest and cheapest model ($1 / $5 per MTok), with a 200K-token context window (the other current models have 1M).
 - Use advanced prompting (Few-Shot, CoT) to boost its capabilities.
 - It is a good fit for sub-agents and high-volume routes.
 

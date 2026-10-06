@@ -13,9 +13,26 @@ If Claude is down, what happens?
 3. **Another Provider:** Fallback to a different model (if compatible).
 
 ## Timeout Management
-Anthropic requests can take 30s+.
-- Set client timeouts (`timeout=60.0`).
+Long generations can take a minute or more.
+- Set client timeouts, e.g. `anthropic.Anthropic(timeout=60.0)` or per request with `client.with_options(timeout=60.0)`. The SDK default is 10 minutes.
+- For large `max_tokens` use streaming (`client.messages.stream(...)`); the SDK refuses non-streaming requests it expects to be too long.
 - Don't let your web server worker hang forever.
+
+## Catching errors
+The SDK already retries 429, 5xx and connection errors (see [Retry Logic](./19_retry_logic.md)). Handle what is left, most specific first:
+
+```python
+try:
+    response = client.messages.create(...)
+except anthropic.RateLimitError:
+    ...  # still rate limited after SDK retries: queue or shed load
+except anthropic.APIConnectionError:
+    ...  # network problem
+except anthropic.APIStatusError as e:
+    ...  # other HTTP errors; e.status_code, e.response
+```
+
+Also check `response.stop_reason` before using the content: `"refusal"` and `"max_tokens"` are not errors but need handling.
 
 ## Next Steps
 - [Retry Logic](./19_retry_logic.md).

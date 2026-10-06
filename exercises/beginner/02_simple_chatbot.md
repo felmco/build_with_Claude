@@ -93,7 +93,7 @@ Use `if user_input.lower() == 'quit': break`
 <summary>Click to view solution</summary>
 
 ```python
-import os
+import anthropic
 from anthropic import Anthropic
 
 def main():
@@ -115,9 +115,9 @@ def main():
                     {"role": "user", "content": user_input}
                 ]
             )
-            print(f"Claude: {message.content[0].text}")
+            print(f"Claude: {message.content[0].text}")  # text-only reply; see Ex. 1 for joining blocks
             
-        except Exception as e:
+        except anthropic.APIError as e:
             print(f"Error: {e}")
 
 if __name__ == "__main__":

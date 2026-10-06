@@ -16,6 +16,7 @@ Streaming allows you to receive Claude's response in real-time as it's generated
 - Long-form content generation
 - Real-time applications
 - Interactive tools
+- Any request with a large `max_tokens` (roughly above 16K): the SDK refuses long non-streaming requests because they risk HTTP timeouts, and Opus 5.5 and Fable 5.1 can think for minutes on hard tasks
 
 ### When NOT to Use Streaming
 - Batch processing
@@ -31,7 +32,7 @@ from anthropic import Anthropic
 
 client = Anthropic()
 
-# Enable streaming with stream=True
+# client.messages.stream() is a context manager that handles the SSE connection
 with client.messages.stream(
     model="claude-sonnet-5-5",
     max_tokens=1024,
@@ -422,7 +423,9 @@ class StreamingChatbot:
 
             # Get complete response
             final_message = stream.get_final_message()
-            assistant_message = final_message.content[0].text
+            assistant_message = "".join(
+                b.text for b in final_message.content if b.type == "text"
+            )
 
         # Add assistant response to conversation
         self.conversation.append({
@@ -471,6 +474,7 @@ def measure_streaming_performance(prompt: str):
     """Measure streaming performance metrics"""
     start_time = time.time()
     first_token_time = None
+    ttft = None
     token_count = 0
 
     with client.messages.stream(
@@ -547,7 +551,7 @@ def handle_interrupted_stream(prompt: str):
         try:
             partial = stream.get_final_text()
             print(f"Partial response: {partial}")
-        except:
+        except Exception:
             pass
 
 # Usage

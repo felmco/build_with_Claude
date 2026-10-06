@@ -555,7 +555,7 @@ response = client.messages.create(
     max_tokens=1024,
     messages=conversation
 )
-conversation.append({"role": "assistant", "content": response.content[0].text})
+conversation.append({"role": "assistant", "content": response.content[0].text})  # text-only reply
 
 # Turn 2 (with context)
 conversation.append({"role": "user", "content": "What are its main uses?"})

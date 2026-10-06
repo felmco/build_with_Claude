@@ -48,8 +48,33 @@ Use system prompt to enforce rules.
 <summary>Click to view solution</summary>
 
 ```python
-N/A (Logic logic focused)
+import anthropic
+
+client = anthropic.Anthropic()
+system_prompt = (
+    "You are hosting a game of 20 questions. Secretly pick an object (a toaster). "
+    "Answer each question only with 'Yes', 'No' or 'Sometimes'. Never reveal the object "
+    "unless the player guesses it or has used 20 questions. Count the questions."
+)
+messages = []
+
+while True:
+    user_input = input("You: ")
+    if user_input.lower() in ("quit", "exit"):
+        break
+    messages.append({"role": "user", "content": user_input})
+    response = client.messages.create(
+        model="claude-sonnet-5-5",
+        max_tokens=300,
+        system=system_prompt,
+        messages=messages,
+    )
+    reply = "".join(b.text for b in response.content if b.type == "text")
+    messages.append({"role": "assistant", "content": reply})
+    print(f"Claude: {reply}")
 ```
+
+Note: the secret object lives only in the system prompt, so the player never sees it. For a different object each game, pick one in your own code and insert it into the prompt.
 </details>
 
 ## 🚀 Extensions

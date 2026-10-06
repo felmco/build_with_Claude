@@ -1,7 +1,7 @@
 # 5.2 Batch Processing for Cost Reduction
 
 ## The 50% Rule
-Anything that doesn't need to be answered in <10 seconds should go to Batch.
+The Message Batches API costs 50% less than standard calls. Anything that doesn't need an answer right away should go to Batch. Most batches finish within an hour, but allow up to 24 hours.
 
 ## Architecture
 1. **Queue:** Accumulate non-urgent requests in a DB table.
@@ -10,10 +10,33 @@ Anything that doesn't need to be answered in <10 seconds should go to Batch.
 4. **Retrieve:** Poll for results and update the DB.
 
 ## Cost Savings Example
-- **Scenario:** Processing 1M documents/month with Sonnet.
-- **Standard:** $3 input + $15 output / MTok.
-- **Batch:** $1.50 input + $7.50 output.
-- **Savings:** Thousands of dollars.
+- **Scenario:** Processing 1M documents/month with Sonnet 5.5, assuming 2K input and 500 output tokens each (2,000 MTok in, 500 MTok out).
+- **Standard:** $2 input + $10 output / MTok = $4,000 + $5,000 = $9,000.
+- **Batch:** $1 input + $5 output / MTok = $4,500.
+- **Savings:** about $4,500 per month. Check current prices before budgeting.
+
+## Minimal example
+```python
+import anthropic
+
+client = anthropic.Anthropic()
+batch = client.messages.batches.create(requests=[
+    {
+        "custom_id": f"doc-{i}",
+        "params": {
+            "model": "claude-sonnet-5-5",
+            "max_tokens": 1024,
+            "messages": [{"role": "user", "content": f"Summarize: {doc}"}],
+        },
+    }
+    for i, doc in enumerate(docs)
+])
+# Later: poll client.messages.batches.retrieve(batch.id) until processing_status == "ended",
+# then iterate client.messages.batches.results(batch.id) and match on custom_id
+# (results are not returned in request order).
+```
+
+Message Batches is not available on Amazon Bedrock or Vertex AI; use the first-party API (or Claude Platform on AWS) for it.
 
 ## Next Steps
 - Move to [Latency Optimization](./10_latency.md).
